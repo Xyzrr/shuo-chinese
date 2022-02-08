@@ -1,4 +1,6 @@
 import { parse, HTMLElement, TextNode } from "node-html-parser";
+import fetch from "node-fetch";
+import fs from "fs";
 
 const fetchAndParse = async (url: string) => {
   const result = await fetch(url);
@@ -147,8 +149,6 @@ const extractContentFromArticlePage = (
             }
           });
 
-          console.log(example);
-
           examples.push(example);
         });
 
@@ -163,17 +163,31 @@ const extractContentFromArticlePage = (
   return blocks;
 };
 
-const baseURL = "https://resources.allsetlearning.com";
-const a1URL =
-  "https://resources.allsetlearning.com/chinese/grammar/A1_grammar_points";
+const scrapeLevel = async (level: string) => {
+  const url = `https://resources.allsetlearning.com/chinese/grammar/${level}_grammar_points`;
+  const page = await fetchAndParse(url);
+  const links = extractLinksFromListPage(page);
 
-// const listPage = await fetchAndParse(a1URL);
-// const links = extractLinksFromListPage(listPage);
+  const articles: any[] = [];
 
-const articleURL =
-  "https://resources.allsetlearning.com/chinese/grammar/Continuation_with_%22hai%22";
+  for (const link of links) {
+    const page = await fetchAndParse(
+      `https://resources.allsetlearning.com${link.url}`
+    );
+    const blocks = extractContentFromArticlePage(page);
 
-const articlePage = fetchAndParse(articleURL).then((articlePage) => {
-  const content = extractContentFromArticlePage(articlePage);
-  // console.log("content", content);
-});
+    console.log("Parsed article:", link.title);
+
+    articles.push({
+      title: link.title,
+      pattern: link.pattern,
+      blocks,
+    });
+  }
+
+  fs.writeFileSync(`src/articles/${level}.json`, JSON.stringify(articles));
+};
+
+const levels = ["A1", "A2", "B1", "B2", "C1"];
+
+scrapeLevel("A1");
