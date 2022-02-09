@@ -9,7 +9,7 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({ words }) => {
     <div>
       {words.map((word, i) => (
         <S.WordWrapper key={i}>
-          <S.Pinyin>{word.pinyin}</S.Pinyin>
+          <S.Pinyin>{word.pinyin || "\xa0"}</S.Pinyin>
           <S.Chars>{word.chars}</S.Chars>
         </S.WordWrapper>
       ))}
