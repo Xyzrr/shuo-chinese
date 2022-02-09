@@ -4,12 +4,23 @@ export const GlobalStyle = createGlobalStyle`
   body {
       background: #060606;
       color: #c8c8c8;
-      font-family: Open Sans;
+      font-family: Source Sans Pro;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  a {
+    color: #989898;
+    &:hover {
+      color: #a8a8a8;
+    }
   }
 `;
 
 export const EnglishWrapper = styled.div`
   padding: 32px;
+  text-align: right;
+  width: calc(45vw - 32px);
 `;
 
 export const EnglishItemInner = styled.span`
@@ -30,11 +41,15 @@ export const EnglishItem = styled.div<{ active?: boolean }>`
 `;
 
 export const GrammarArticleWrapper = styled.div`
+  background: #191919;
+  padding: 32px;
   position: fixed;
-  right: 0;
-  width: 60vw;
-  height: 100vh;
+  right: 32px;
+  top: 32px;
+  width: 55vw;
+  height: calc(100vh - 64px);
   overflow: auto;
+  border-radius: 8px;
 `;
 
 export const AppWrapper = styled.div`
