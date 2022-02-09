@@ -11,7 +11,7 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
 }) => {
   return (
     <>
-      <h1>{article.title}</h1>
+      <S.H1>{article.title}</S.H1>
       {article.blocks.map((block: any, i: any) => {
         switch (block.type) {
           case "heading":
