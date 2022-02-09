@@ -36,14 +36,14 @@ export const EnglishItem = styled.div<{ active?: boolean }>`
   cursor: default;
   &:hover {
     ${EnglishItemInner} {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.03);
     }
   }
   ${(props) =>
     props.active &&
     css`
       ${EnglishItemInner} {
-        background: #323232;
+        background: #323232 !important;
       }
     `}
 `;
@@ -71,4 +71,17 @@ export const AnswerWrapper = styled.div`
   top: -22px;
   transform: translateX(32px);
   text-align: left;
+  cursor: auto;
+`;
+
+export const ShowArticleButton = styled.div`
+  display: inline-block;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 4px;
+  border-radius: 4px;
+  cursor: default;
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 `;

@@ -36,30 +36,46 @@ const App: React.FC = () => {
 
   const [reveal, setReveal] = React.useState("none");
 
+  console.log("reveal", reveal);
+
   return (
-    <S.AppWrapper>
+    <S.AppWrapper onClick={() => setReveal("none")}>
       <S.GlobalStyle />
       <S.EnglishWrapper>
         {cards.map((card, i) => (
           <S.EnglishItem
             key={i}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               console.log("selected", i);
-              setSelectedIndex(i);
-              setReveal("answer");
+              if (selectedIndex === i) {
+                setReveal((r) => (r === "none" ? "answer" : "none"));
+              } else {
+                setSelectedIndex(i);
+                setReveal("answer");
+              }
             }}
             active={selectedIndex === i}
           >
             <S.EnglishItemInner>{card.english}</S.EnglishItemInner>
             {selectedIndex === i && reveal === "answer" && (
-              <S.AnswerWrapper>
+              <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
                 <ChineseRenderer words={cards[selectedIndex].chineseWords} />
+                <S.ShowArticleButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log("wtf");
+                    setReveal("article");
+                  }}
+                >
+                  {sourceArticle?.pattern}
+                </S.ShowArticleButton>
               </S.AnswerWrapper>
             )}
           </S.EnglishItem>
         ))}
       </S.EnglishWrapper>
-      {reveal == "article" && (
+      {reveal === "article" && (
         <S.GrammarArticleWrapper>
           <GrammarArticleRenderer article={sourceArticle} />
         </S.GrammarArticleWrapper>
