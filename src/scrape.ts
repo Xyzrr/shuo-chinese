@@ -91,6 +91,9 @@ const extractContentFromArticlePage = (
           if (exampleNode.classList.contains("o")) {
             example.specialType = "correction";
           }
+          if (exampleNode.querySelector(".speaker")) {
+            example.specialType = "dialogue";
+          }
 
           exampleNode.childNodes.forEach((child) => {
             if (child instanceof TextNode) {
