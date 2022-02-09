@@ -19,8 +19,7 @@ export const GlobalStyle = createGlobalStyle`
 
 export const EnglishWrapper = styled.div`
   padding: 32px;
-  text-align: right;
-  width: calc(45vw - 32px);
+  padding-left: calc(55vw + 64px);
 `;
 
 export const EnglishItemInner = styled.div`
@@ -52,7 +51,7 @@ export const GrammarArticleWrapper = styled.div`
   background: #323232;
   padding: 32px;
   position: fixed;
-  right: 32px;
+  left: 32px;
   top: 32px;
   width: 55vw;
   height: calc(100vh - 64px);
@@ -66,11 +65,11 @@ export const AppWrapper = styled.div`
 
 export const AnswerWrapper = styled.div`
   position: absolute;
-  right: -45vw;
+  left: -45vw;
   width: 45vw;
   top: -22px;
-  transform: translateX(32px);
-  text-align: left;
+  transform: translateX(-32px);
+  text-align: right;
   cursor: auto;
 `;
 

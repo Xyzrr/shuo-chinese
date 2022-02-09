@@ -41,6 +41,16 @@ const App: React.FC = () => {
   return (
     <S.AppWrapper onClick={() => setReveal("none")}>
       <S.GlobalStyle />
+
+      {reveal === "article" && (
+        <S.GrammarArticleWrapper
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <GrammarArticleRenderer article={sourceArticle} />
+        </S.GrammarArticleWrapper>
+      )}
       <S.EnglishWrapper>
         {cards.map((card, i) => (
           <S.EnglishItem
@@ -57,7 +67,6 @@ const App: React.FC = () => {
             }}
             active={selectedIndex === i}
           >
-            <S.EnglishItemInner>{card.english}</S.EnglishItemInner>
             {selectedIndex === i && reveal === "answer" && (
               <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
                 <ChineseRenderer words={cards[selectedIndex].chineseWords} />
@@ -72,18 +81,10 @@ const App: React.FC = () => {
                 </S.ShowArticleButton>
               </S.AnswerWrapper>
             )}
+            <S.EnglishItemInner>{card.english}</S.EnglishItemInner>
           </S.EnglishItem>
         ))}
       </S.EnglishWrapper>
-      {reveal === "article" && (
-        <S.GrammarArticleWrapper
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <GrammarArticleRenderer article={sourceArticle} />
-        </S.GrammarArticleWrapper>
-      )}
     </S.AppWrapper>
   );
 };
