@@ -6,7 +6,6 @@ export const WordWrapper = styled.div`
 `;
 
 export const Pinyin = styled.div`
-  text-align: center;
   font-size: 14px;
   color: #bbb;
   user-select: none;
