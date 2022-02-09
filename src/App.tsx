@@ -3,6 +3,7 @@ import React from "react";
 import A1 from "./articles/A1.json";
 import ChineseRenderer from "./ChineseRenderer";
 import GrammarArticleRenderer from "./GrammarArticleRenderer";
+import SearchIcon from "@mui/icons-material/Search";
 
 const cards: any[] = [];
 
@@ -88,6 +89,7 @@ const App: React.FC = () => {
                     setReveal("article");
                   }}
                 >
+                  <SearchIcon fontSize="inherit" />
                   {sourceArticle?.pattern}
                 </S.ShowArticleButton>
               </S.AnswerWrapper>

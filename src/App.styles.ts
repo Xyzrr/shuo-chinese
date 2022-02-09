@@ -80,10 +80,16 @@ export const ShowArticleButton = styled.div`
   display: inline-block;
   font-size: 14px;
   background: rgba(255, 255, 255, 0.05);
-  padding: 2px 4px;
+  padding: 2px 8px;
   border-radius: 4px;
   cursor: default;
+  display: inline-flex;
+  align-items: center;
   &:hover {
     background: rgba(255, 255, 255, 0.1);
+  }
+  .MuiSvgIcon-root {
+    opacity: 0.6;
+    margin-right: 4px;
   }
 `;
