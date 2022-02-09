@@ -23,7 +23,8 @@ export const EnglishWrapper = styled.div`
   width: calc(45vw - 32px);
 `;
 
-export const EnglishItemInner = styled.span`
+export const EnglishItemInner = styled.div`
+  display: inline-block;
   padding: 4px 8px;
   border-radius: 4px;
 `;
@@ -31,7 +32,7 @@ export const EnglishItemInner = styled.span`
 export const EnglishItem = styled.div<{ active?: boolean }>`
   position: relative;
   font-size: 18px;
-  padding: 8px;
+  padding: 4px 0;
   cursor: default;
   &:hover {
     ${EnglishItemInner} {
