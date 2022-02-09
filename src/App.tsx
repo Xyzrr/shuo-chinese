@@ -34,6 +34,8 @@ const App: React.FC = () => {
     (article) => article.title === cards[selectedIndex].article
   );
 
+  const [reveal, setReveal] = React.useState("none");
+
   return (
     <S.AppWrapper>
       <S.GlobalStyle />
@@ -44,16 +46,24 @@ const App: React.FC = () => {
             onClick={() => {
               console.log("selected", i);
               setSelectedIndex(i);
+              setReveal("answer");
             }}
             active={selectedIndex === i}
           >
             <S.EnglishItemInner>{card.english}</S.EnglishItemInner>
+            {selectedIndex === i && reveal === "answer" && (
+              <S.AnswerWrapper>
+                <ChineseRenderer words={cards[selectedIndex].chineseWords} />
+              </S.AnswerWrapper>
+            )}
           </S.EnglishItem>
         ))}
       </S.EnglishWrapper>
-      <S.GrammarArticleWrapper>
-        <GrammarArticleRenderer article={sourceArticle} />
-      </S.GrammarArticleWrapper>
+      {reveal == "article" && (
+        <S.GrammarArticleWrapper>
+          <GrammarArticleRenderer article={sourceArticle} />
+        </S.GrammarArticleWrapper>
+      )}
     </S.AppWrapper>
   );
 };
