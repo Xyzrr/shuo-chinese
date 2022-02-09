@@ -79,21 +79,27 @@ const App: React.FC = () => {
             active={selectedIndex === i}
           >
             <S.EnglishItemInner>{card.english}</S.EnglishItemInner>
-            {selectedIndex === i && reveal === "answer" && (
-              <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
-                <ChineseRenderer words={cards[selectedIndex].chineseWords} />
-                <S.ShowArticleButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    console.log("wtf");
-                    setReveal("article");
-                  }}
-                >
-                  <SearchIcon fontSize="inherit" />
-                  {sourceArticle?.pattern}
-                </S.ShowArticleButton>
-              </S.AnswerWrapper>
-            )}
+            {selectedIndex === i &&
+              reveal === "answer" &&
+              sourceArticle != null && (
+                <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
+                  <ChineseRenderer words={cards[selectedIndex].chineseWords} />
+                  <S.ShowArticleButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log("wtf");
+                      setReveal("article");
+                    }}
+                  >
+                    <SearchIcon fontSize="inherit" />
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: sourceArticle.pattern,
+                      }}
+                    ></span>
+                  </S.ShowArticleButton>
+                </S.AnswerWrapper>
+              )}
           </S.EnglishItem>
         ))}
       </S.EnglishWrapper>
