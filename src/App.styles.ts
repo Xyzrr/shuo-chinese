@@ -2,7 +2,7 @@ import styled, { css, createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   body {
-      background: #060606;
+      background: #252525;
       color: #c8c8c8;
       font-family: Source Sans Pro;
   }
@@ -41,7 +41,7 @@ export const EnglishItem = styled.div<{ active?: boolean }>`
 `;
 
 export const GrammarArticleWrapper = styled.div`
-  background: #191919;
+  background: #323232;
   padding: 32px;
   position: fixed;
   right: 32px;

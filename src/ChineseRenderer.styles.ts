@@ -6,9 +6,11 @@ export const WordWrapper = styled.div`
 `;
 
 export const Pinyin = styled.div`
-  font-size: 12px;
+  font-size: 14px;
+  text-align: center;
+  color: #bbb;
 `;
 
 export const Chars = styled.div`
-  font-size: 24px;
+  font-size: 28px;
 `;

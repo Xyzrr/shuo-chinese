@@ -1,3 +1,4 @@
+import { StyledComponent } from "styled-components";
 import ChineseRenderer from "./ChineseRenderer";
 import * as S from "./GrammarArticleRenderer.styles";
 
@@ -14,7 +15,22 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
       {article.blocks.map((block: any, i: any) => {
         switch (block.type) {
           case "heading":
-            return <S.Heading key={i}>{block.text}</S.Heading>;
+            let Component: StyledComponent<"h2" | "h3" | "h4" | "h5", any>;
+            switch (block.level) {
+              case 1:
+                Component = S.H1;
+                break;
+              case 2:
+                Component = S.H2;
+                break;
+              case 3:
+                Component = S.H3;
+                break;
+              default:
+                Component = S.H4;
+                break;
+            }
+            return <Component key={i}>{block.text}</Component>;
           case "paragraph":
             return <p dangerouslySetInnerHTML={{ __html: block.html }}></p>;
           // return <p>{block.html}</p>;
@@ -31,6 +47,8 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
                 })}
               </S.ExampleSet>
             );
+          case "unordered-list":
+            return <ul dangerouslySetInnerHTML={{ __html: block.html }}></ul>;
         }
         return <div></div>;
       })}
