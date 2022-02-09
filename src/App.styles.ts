@@ -68,7 +68,7 @@ export const AnswerWrapper = styled.div`
   position: absolute;
   right: -45vw;
   width: 45vw;
-  top: -22px;
+  top: -16px;
   transform: translateX(32px);
   text-align: left;
   cursor: auto;
