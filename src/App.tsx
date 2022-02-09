@@ -11,6 +11,9 @@ A1.forEach((article) => {
     if (block.type === "exampleSet") {
       block.children?.forEach((example: any) => {
         if (!example.specialType) {
+          example.chineseWords.forEach((word: any) => {
+            word.chars = word.chars.replace("？", "?");
+          });
           cards.push({ ...example, level: "A1", article: article.title });
         }
       });
