@@ -19,7 +19,7 @@ export const GlobalStyle = createGlobalStyle`
 
 export const EnglishWrapper = styled.div`
   padding: 32px;
-  text-align: right;
+  text-align: left;
   width: calc(45vw - 32px);
 `;
 
@@ -72,6 +72,8 @@ export const AnswerWrapper = styled.div`
   transform: translateX(32px);
   text-align: left;
   cursor: auto;
+  padding-left: 16px;
+  border-left: 1px solid #555;
 `;
 
 export const ShowArticleButton = styled.div`
