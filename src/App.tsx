@@ -76,7 +76,11 @@ const App: React.FC = () => {
         ))}
       </S.EnglishWrapper>
       {reveal === "article" && (
-        <S.GrammarArticleWrapper>
+        <S.GrammarArticleWrapper
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <GrammarArticleRenderer article={sourceArticle} />
         </S.GrammarArticleWrapper>
       )}
