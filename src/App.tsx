@@ -18,8 +18,21 @@ A1.forEach((article) => {
   });
 });
 
+function shuffleArray(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+shuffleArray(cards);
+
 const App: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const sourceArticle = A1.find(
+    (article) => article.title === cards[selectedIndex].article
+  );
 
   return (
     <S.AppWrapper>
@@ -39,7 +52,7 @@ const App: React.FC = () => {
         ))}
       </S.EnglishWrapper>
       <S.GrammarArticleWrapper>
-        <GrammarArticleRenderer article={A1[0]} />
+        <GrammarArticleRenderer article={sourceArticle} />
       </S.GrammarArticleWrapper>
     </S.AppWrapper>
   );

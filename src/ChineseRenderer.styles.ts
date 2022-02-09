@@ -9,6 +9,7 @@ export const Pinyin = styled.div`
   font-size: 14px;
   text-align: center;
   color: #bbb;
+  user-select: none;
 `;
 
 export const Chars = styled.div`

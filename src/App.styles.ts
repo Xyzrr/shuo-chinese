@@ -31,11 +31,17 @@ export const EnglishItemInner = styled.span`
 export const EnglishItem = styled.div<{ active?: boolean }>`
   font-size: 18px;
   padding: 8px;
+  cursor: default;
+  &:hover {
+    ${EnglishItemInner} {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
   ${(props) =>
     props.active &&
     css`
       ${EnglishItemInner} {
-        background: rgba(255, 255, 255, 0.1);
+        background: #323232;
       }
     `}
 `;
