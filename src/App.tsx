@@ -39,6 +39,23 @@ const App: React.FC = () => {
 
   const [reveal, setReveal] = React.useState("none");
 
+  React.useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setSelectedIndex((i) => Math.min(cards.length, i + 1));
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setSelectedIndex((i) => Math.max(0, i - 1));
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+  }, []);
+
   console.log("reveal", reveal);
 
   return (
