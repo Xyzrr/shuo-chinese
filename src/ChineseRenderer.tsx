@@ -6,14 +6,14 @@ interface ChineseRendererProps {
 
 const ChineseRenderer: React.FC<ChineseRendererProps> = ({ words }) => {
   return (
-    <span>
+    <div>
       {words.map((word) => (
         <S.WordWrapper>
           <S.Pinyin>{word.pinyin}</S.Pinyin>
           <S.Chars>{word.chars}</S.Chars>
         </S.WordWrapper>
       ))}
-    </span>
+    </div>
   );
 };
 

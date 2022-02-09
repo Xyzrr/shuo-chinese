@@ -2,6 +2,7 @@ import * as S from "./App.styles";
 import React from "react";
 import A1 from "./articles/A1.json";
 import ChineseRenderer from "./ChineseRenderer";
+import GrammarArticleRenderer from "./GrammarArticleRenderer";
 
 const cards: any[] = [];
 
@@ -21,7 +22,8 @@ const App: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
-    <div className="App">
+    <S.AppWrapper>
+      <S.GlobalStyle />
       <S.EnglishWrapper>
         {cards.map((card, i) => (
           <S.EnglishItem
@@ -32,11 +34,14 @@ const App: React.FC = () => {
             }}
             active={selectedIndex === i}
           >
-            {card.english}
+            <S.EnglishItemInner>{card.english}</S.EnglishItemInner>
           </S.EnglishItem>
         ))}
       </S.EnglishWrapper>
-    </div>
+      <S.GrammarArticleWrapper>
+        <GrammarArticleRenderer article={A1[0]} />
+      </S.GrammarArticleWrapper>
+    </S.AppWrapper>
   );
 };
 
