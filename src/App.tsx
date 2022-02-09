@@ -1,6 +1,5 @@
+import * as S from "./App.styles";
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import A1 from "./articles/A1.json";
 import ChineseRenderer from "./ChineseRenderer";
 
@@ -9,24 +8,34 @@ const cards: any[] = [];
 A1.forEach((article) => {
   article.blocks.forEach((block) => {
     if (block.type === "exampleSet") {
-      block.children?.forEach((example) => {
-        cards.push({ ...example, level: "A1", article: article.title });
+      block.children?.forEach((example: any) => {
+        if (!example.specialType) {
+          cards.push({ ...example, level: "A1", article: article.title });
+        }
       });
     }
   });
 });
 
 const App: React.FC = () => {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
   return (
     <div className="App">
-      <p>
-        {cards.map((card) => (
-          <>
-            <div>{card.english}</div>
-            <ChineseRenderer words={card.chineseWords} />
-          </>
+      <S.EnglishWrapper>
+        {cards.map((card, i) => (
+          <S.EnglishItem
+            key={i}
+            onClick={() => {
+              console.log("selected", i);
+              setSelectedIndex(i);
+            }}
+            active={selectedIndex === i}
+          >
+            {card.english}
+          </S.EnglishItem>
         ))}
-      </p>
+      </S.EnglishWrapper>
     </div>
   );
 };
