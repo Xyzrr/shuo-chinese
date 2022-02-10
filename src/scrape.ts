@@ -39,11 +39,47 @@ const extractContentFromArticlePage = (
   page: import("node-html-parser").HTMLElement
 ) => {
   const blocks: any[] = [];
+  const metadata: any = { similarTo: [], usedFor: [], keywords: [] };
 
   const content = page.querySelector(".mw-parser-output");
 
   content?.childNodes.forEach((node) => {
     if (node instanceof HTMLElement) {
+      if (node.id === "ibox") {
+        node.querySelectorAll(".ibox-level-cefr-hsk a").forEach((a, i) => {
+          if (i === 0) {
+            metadata.cefrLevel = a.innerText.trim();
+          } else {
+            metadata.hskLevel = a.innerText.trim();
+          }
+        });
+        node.querySelectorAll(".ibox-similarto .smw-row").forEach((row) => {
+          const link = row.querySelector("a");
+          const url = link?.getAttribute("href");
+          const title = link?.innerText.trim();
+          const cefrLevel = row
+            .querySelectorAll(".smw-value")[1]
+            .innerText.trim();
+          metadata.similarTo.push({
+            url,
+            title,
+            cefrLevel,
+          });
+        });
+        node.querySelectorAll(".ibox-usedfor a").forEach((link) => {
+          const url = link?.getAttribute("href");
+          const title = link?.innerText.trim();
+          metadata.usedFor.push({
+            url,
+            title,
+          });
+        });
+        node.querySelectorAll(".ibox-keywords a").forEach((link) => {
+          metadata.keywords.push(link.innerText.trim());
+        });
+
+        console.log("METADATA", metadata);
+      }
       if (node.tagName === "P") {
         blocks.push({ type: "paragraph", html: node.innerHTML });
       }
@@ -96,33 +132,28 @@ const extractContentFromArticlePage = (
           }
 
           exampleNode.childNodes.forEach((child) => {
-            if (child instanceof TextNode) {
+            const addWordsWithAttributes = (attributes: any = {}) => {
               const words = child.innerText
                 .trim()
-                .replaceAll(" ，", "，")
-                .replaceAll("，", "， ")
-                .replaceAll(" 。", "。")
-                .replaceAll("。", "。 ")
-                .replaceAll(" ？", "？")
-                .replaceAll("？", "？ ")
+                .replaceAll("，", " ， ")
+                .replaceAll("。", " 。 ")
+                .replaceAll("？", " ？ ")
                 .split(" ");
               words.forEach((word) => {
                 if (word !== "") {
-                  example.chineseWords.push({ chars: word });
+                  example.chineseWords.push({ chars: word, ...attributes });
                 }
               });
+            };
+
+            if (child instanceof TextNode) {
+              addWordsWithAttributes();
             }
             if (child instanceof HTMLElement && child.tagName === "EM") {
-              const words = child.innerText.trim().split(" ");
-              words.forEach((word) => {
-                example.chineseWords.push({ chars: word, emphasis: true });
-              });
+              addWordsWithAttributes({ emphasis: true });
             }
             if (child instanceof HTMLElement && child.tagName === "STRONG") {
-              const words = child.innerText.trim().split(" ");
-              words.forEach((word) => {
-                example.chineseWords.push({ chars: word, strong: true });
-              });
+              addWordsWithAttributes({ strong: true });
             }
             if (
               child instanceof HTMLElement &&
@@ -136,12 +167,7 @@ const extractContentFromArticlePage = (
               child.tagName === "SPAN" &&
               child.classList.contains("pinyin")
             ) {
-              const words = child.innerText.trim().split(" ");
-              words.forEach((word, i) => {
-                if (example.chineseWords[i]) {
-                  example.chineseWords[i].pinyin = word;
-                }
-              });
+              example.pinyin = child.innerText.trim();
             }
             if (
               child instanceof HTMLElement &&
@@ -152,8 +178,12 @@ const extractContentFromArticlePage = (
             }
           });
 
+          // console.log("words", example.chineseWords);
+
           examples.push(example);
         });
+
+        // console.log(examples);
 
         blocks.push({
           type: "exampleSet",
@@ -182,6 +212,7 @@ const scrapeLevel = async (level: string) => {
     console.log("Parsed article:", link.title);
 
     articles.push({
+      url: link.url,
       title: link.title,
       pattern: link.pattern,
       blocks,
@@ -193,4 +224,12 @@ const scrapeLevel = async (level: string) => {
 
 const levels = ["A1", "A2", "B1", "B2", "C1"];
 
-scrapeLevel("A1");
+// scrapeLevel("A1");
+
+(async () => {
+  const page = await fetchAndParse(
+    "https://resources.allsetlearning.com/chinese/grammar/Expressing_distance_with_%22li%22"
+  );
+  const content = extractContentFromArticlePage(page);
+  // console.log(content);
+})();
