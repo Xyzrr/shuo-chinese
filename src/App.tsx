@@ -6,6 +6,7 @@ import GrammarArticleRenderer from "./GrammarArticleRenderer";
 import SearchIcon from "@mui/icons-material/Search";
 import EnglishRenderer from "./EnglishRenderer";
 import MultiEnglishRenderer from "./MultiEnglishRenderer";
+import MultiChineseRenderer from "./MultiChineseRenderer";
 
 const cards: any[] = [];
 
@@ -59,6 +60,8 @@ shuffleArray(cards);
 
 const App: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const selectedCard = cards[selectedIndex];
 
   const sourceArticle = A1.find(
     (article) => article.title === cards[selectedIndex].article
@@ -116,7 +119,11 @@ const App: React.FC = () => {
               reveal === "answer" &&
               sourceArticle != null && (
                 <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
-                  <ChineseRenderer words={cards[selectedIndex].chineseWords} />
+                  {selectedCard.multi ? (
+                    <MultiChineseRenderer children={selectedCard.children} />
+                  ) : (
+                    <ChineseRenderer chineseWords={selectedCard.chineseWords} />
+                  )}
                   <S.ShowArticleButton
                     onClick={(e) => {
                       e.stopPropagation();
