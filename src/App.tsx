@@ -54,8 +54,6 @@ const App: React.FC = () => {
     window.addEventListener("keydown", onKeyDown);
   }, []);
 
-  console.log("reveal", reveal);
-
   return (
     <S.AppWrapper onClick={() => setReveal("none")}>
       <S.GlobalStyle />
@@ -75,7 +73,12 @@ const App: React.FC = () => {
             }}
             active={selectedIndex === i}
           >
-            <S.EnglishItemInner>{card.english}</S.EnglishItemInner>
+            <S.EnglishItemInner>
+              {card.english}
+              {card.explanation && (
+                <S.EnglishItemExtra>({card.explanation})</S.EnglishItemExtra>
+              )}
+            </S.EnglishItemInner>
             {selectedIndex === i &&
               reveal === "answer" &&
               sourceArticle != null && (

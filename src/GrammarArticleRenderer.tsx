@@ -34,6 +34,10 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
           case "paragraph":
             return <p dangerouslySetInnerHTML={{ __html: block.html }}></p>;
           // return <p>{block.html}</p>;
+          case "jiegou":
+            return (
+              <S.Structure dangerouslySetInnerHTML={{ __html: block.html }} />
+            );
           case "exampleSet":
             console.log("children", block.children);
             return (

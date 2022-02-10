@@ -51,7 +51,7 @@ const extractContentFromArticlePage = (
         blocks.push({ type: "unordered-list", html: node.innerHTML });
       }
       if (node.classList.contains("jiegou")) {
-        blocks.push({ type: "jiegou", html: node.innerHTML });
+        blocks.push({ type: "jiegou", text: node.innerText });
       }
       if (node.tagName === "H2") {
         blocks.push({

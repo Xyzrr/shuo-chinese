@@ -26,3 +26,9 @@ export const ExampleSet = styled.div`
   border-radius: 4px;
   background: #2a2a2a;
 `;
+
+export const Structure = styled.div`
+  padding: 8px;
+  margin: 0 -8px;
+  border: 1px solid #444;
+`;

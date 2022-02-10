@@ -29,6 +29,11 @@ export const EnglishItemInner = styled.div`
   border-radius: 4px;
 `;
 
+export const EnglishItemExtra = styled.div`
+  font-size: 14px;
+  opacity: 0.7;
+`;
+
 export const EnglishItem = styled.div<{ active?: boolean }>`
   position: relative;
   font-size: 18px;
