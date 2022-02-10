@@ -78,7 +78,7 @@ const extractContentFromArticlePage = (
           metadata.keywords.push(link.innerText.trim());
         });
 
-        console.log("METADATA", metadata);
+        // console.log("METADATA", metadata);
       }
       if (node.tagName === "P") {
         blocks.push({ type: "paragraph", html: node.innerHTML });
@@ -121,6 +121,10 @@ const extractContentFromArticlePage = (
             chineseWords: [],
           };
 
+          if (exampleNode.classList.contains("q")) {
+            // ???
+            example.specialType = "q";
+          }
           if (exampleNode.classList.contains("x")) {
             example.specialType = "incorrect";
           }
@@ -224,12 +228,12 @@ const scrapeLevel = async (level: string) => {
 
 const levels = ["A1", "A2", "B1", "B2", "C1"];
 
-// scrapeLevel("A1");
+scrapeLevel("A1");
 
-(async () => {
-  const page = await fetchAndParse(
-    "https://resources.allsetlearning.com/chinese/grammar/Expressing_distance_with_%22li%22"
-  );
-  const content = extractContentFromArticlePage(page);
-  // console.log(content);
-})();
+// (async () => {
+//   const page = await fetchAndParse(
+//     "https://resources.allsetlearning.com/chinese/grammar/Expressing_distance_with_%22li%22"
+//   );
+//   const content = extractContentFromArticlePage(page);
+//   // console.log(content);
+// })();

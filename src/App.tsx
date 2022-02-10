@@ -4,17 +4,46 @@ import A1 from "./articles/A1.json";
 import ChineseRenderer from "./ChineseRenderer";
 import GrammarArticleRenderer from "./GrammarArticleRenderer";
 import SearchIcon from "@mui/icons-material/Search";
+import EnglishRenderer from "./EnglishRenderer";
+import MultiEnglishRenderer from "./MultiEnglishRenderer";
 
 const cards: any[] = [];
 
 A1.forEach((article) => {
   article.blocks.forEach((block) => {
     if (block.type === "exampleSet") {
+      let isDialogue = false;
       block.children?.forEach((example: any) => {
-        if (!example.specialType) {
-          cards.push({ ...example, level: "A1", article: article.title });
+        if (example.specialType === "dialogue") {
+          isDialogue = true;
         }
       });
+      if (isDialogue) {
+        let multiCard: any = {
+          level: "A1",
+          article: article.title,
+          multi: true,
+          children: [],
+        };
+        block.children?.forEach((example: any) => {
+          if (example.chineseWords.length > 0 && example.english) {
+            multiCard.children.push(example);
+          }
+        });
+        if (multiCard.children.length > 0) {
+          cards.push(multiCard);
+        }
+      } else {
+        block.children?.forEach((example: any) => {
+          if (
+            !example.specialType &&
+            example.chineseWords.length > 0 &&
+            example.english
+          ) {
+            cards.push({ ...example, level: "A1", article: article.title });
+          }
+        });
+      }
     }
   });
 });
@@ -74,9 +103,13 @@ const App: React.FC = () => {
             active={selectedIndex === i}
           >
             <S.EnglishItemInner>
-              {card.english}
-              {card.explanation && (
-                <S.EnglishItemExtra>({card.explanation})</S.EnglishItemExtra>
+              {card.multi ? (
+                <MultiEnglishRenderer children={card.children} />
+              ) : (
+                <EnglishRenderer
+                  english={card.english}
+                  explanation={card.explanation}
+                />
               )}
             </S.EnglishItemInner>
             {selectedIndex === i &&
