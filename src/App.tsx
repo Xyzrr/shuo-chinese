@@ -109,11 +109,39 @@ const App: React.FC = () => {
           e.preventDefault();
           setSelectedIndex((i) => Math.max(0, i - 1));
           break;
+        case "ArrowLeft":
+          if (reveal === "article") {
+            setReveal("answer");
+          }
+          if (reveal === "answer") {
+            setReveal("none");
+          }
+          break;
+        case "ArrowRight":
+          if (reveal === "none") {
+            setReveal("answer");
+          }
+          if (reveal === "answer") {
+            setReveal("article");
+          }
+          break;
+        case "Escape":
+          if (reveal === "article") {
+            setReveal("answer");
+          }
+          if (reveal === "answer") {
+            setReveal("none");
+          }
+          break;
       }
     };
 
     window.addEventListener("keydown", onKeyDown);
-  }, []);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  });
 
   return (
     <S.AppWrapper onClick={() => setReveal("none")}>
