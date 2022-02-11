@@ -96,7 +96,9 @@ const App: React.FC = () => {
     (article) => article.title === cards[selectedIndex].article
   );
 
-  const [reveal, setReveal] = React.useState("none");
+  const [reveal, setReveal] = React.useState<"none" | "answer" | "article">(
+    "none"
+  );
 
   React.useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -146,6 +148,7 @@ const App: React.FC = () => {
           {cards.map((card, i) => (
             <S.EnglishItem
               key={i}
+              reveal={reveal}
               onClick={(e) => {
                 e.stopPropagation();
                 console.log("selected", i);

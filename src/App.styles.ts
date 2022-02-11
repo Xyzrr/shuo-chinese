@@ -21,6 +21,7 @@ export const FullPage = styled.div``;
 
 export const EnglishWrapper = styled.div`
   padding: 32px;
+  padding-left: 16px;
   text-align: left;
   width: calc(min(45vw, 1200px * 0.45) - 32px);
 `;
@@ -31,10 +32,14 @@ export const EnglishItemInner = styled.div`
   border-radius: 4px;
 `;
 
-export const EnglishItem = styled.div<{ active?: boolean }>`
+export const EnglishItem = styled.div<{
+  active?: boolean;
+  reveal: "none" | "answer" | "article";
+}>`
   position: relative;
   font-size: 18px;
-  padding: 4px 0;
+  padding: 4px;
+  padding-left: 12px;
   margin: 8px 0;
   cursor: default;
   &:hover {
@@ -42,13 +47,19 @@ export const EnglishItem = styled.div<{ active?: boolean }>`
       background: rgba(255, 255, 255, 0.03);
     }
   }
+  border-left: 1px solid transparent;
+
   ${(props) =>
     props.active &&
-    css`
-      ${EnglishItemInner} {
-        background: #323232 !important;
-      }
-    `}
+    (props.reveal === "none"
+      ? css`
+          border-left: 1px solid #555;
+        `
+      : css`
+          ${EnglishItemInner} {
+            background: #323232 !important;
+          }
+        `)}
 `;
 
 export const GrammarArticleWrapper = styled.div`
