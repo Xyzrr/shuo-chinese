@@ -7,8 +7,31 @@ import SearchIcon from "@mui/icons-material/Search";
 import EnglishRenderer from "./EnglishRenderer";
 import MultiEnglishRenderer from "./MultiEnglishRenderer";
 import MultiChineseRenderer from "./MultiChineseRenderer";
+import split from "pinyin-split";
 
 const cards: any[] = [];
+
+const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
+  const splitPinyin = split(pinyin);
+  console.log("splitPinyin", pinyin, splitPinyin, chineseWords);
+  let pinyinIndex = 0;
+  chineseWords.forEach((word) => {
+    const notChars = ["，", "。", "？"];
+    if (!notChars.includes(word.chars)) {
+      word.pinyin = splitPinyin
+        .slice(pinyinIndex, pinyinIndex + word.chars.length)
+        .join("");
+      pinyinIndex += word.chars.length;
+      console.log(
+        "pinyinIndex",
+        pinyinIndex,
+        word.chars.length,
+        word.chars,
+        word.pinyin
+      );
+    }
+  });
+};
 
 A1.forEach((article) => {
   article.blocks.forEach((block) => {
@@ -28,6 +51,7 @@ A1.forEach((article) => {
         };
         block.children?.forEach((example: any) => {
           if (example.chineseWords.length > 0 && example.english) {
+            attachPinyinToChinese(example.pinyin, example.chineseWords);
             multiCard.children.push(example);
           }
         });
@@ -41,6 +65,7 @@ A1.forEach((article) => {
             example.chineseWords.length > 0 &&
             example.english
           ) {
+            attachPinyinToChinese(example.pinyin, example.chineseWords);
             cards.push({ ...example, level: "A1", article: article.title });
           }
         });
