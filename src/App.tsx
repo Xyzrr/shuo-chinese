@@ -104,12 +104,16 @@ const App: React.FC = () => {
     const onKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "ArrowDown":
-          e.preventDefault();
-          setSelectedIndex((i) => Math.min(cards.length, i + 1));
+          if (reveal !== "article") {
+            e.preventDefault();
+            setSelectedIndex((i) => Math.min(cards.length, i + 1));
+          }
           break;
         case "ArrowUp":
-          e.preventDefault();
-          setSelectedIndex((i) => Math.max(0, i - 1));
+          if (reveal !== "article") {
+            e.preventDefault();
+            setSelectedIndex((i) => Math.max(0, i - 1));
+          }
           break;
         case "ArrowLeft":
           if (reveal === "article") {
