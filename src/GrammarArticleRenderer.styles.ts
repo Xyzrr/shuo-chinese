@@ -31,4 +31,7 @@ export const Structure = styled.div`
   padding: 8px;
   margin: 0 -8px;
   border: 1px solid #444;
+  border-radius: 4px;
+  background: #2a2a2a;
+  display: inline-block;
 `;
