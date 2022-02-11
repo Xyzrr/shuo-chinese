@@ -88,6 +88,7 @@ export const ShowArticleButton = styled.div`
   font-size: 14px;
   background: rgba(255, 255, 255, 0.05);
   padding: 2px 8px;
+  margin-top: 4px;
   border-radius: 4px;
   cursor: default;
   display: inline-flex;

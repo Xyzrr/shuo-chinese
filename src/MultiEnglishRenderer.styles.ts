@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
 export const Child = styled.div`
-  &:not(:last-child) {
-    margin-bottom: 8px;
-  }
+  line-height: 28px;
 `;
 
 export const Prefix = styled.span`
