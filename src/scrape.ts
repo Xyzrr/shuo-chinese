@@ -139,6 +139,7 @@ const extractContentFromArticlePage = (
             const addWordsWithAttributes = (attributes: any = {}) => {
               const words = child.innerText
                 .trim()
+                .replaceAll("、", " 、 ")
                 .replaceAll("，", " ， ")
                 .replaceAll("。", " 。 ")
                 .replaceAll("？", " ？ ")

@@ -16,7 +16,7 @@ const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
   console.log("splitPinyin", pinyin, splitPinyin, chineseWords);
   let pinyinIndex = 0;
   chineseWords.forEach((word) => {
-    const notChars = ["，", "。", "？"];
+    const notChars = ["，", "。", "？", "、"];
     if (!notChars.includes(word.chars)) {
       word.pinyin = splitPinyin
         .slice(pinyinIndex, pinyinIndex + word.chars.length)
@@ -42,6 +42,12 @@ A1.forEach((article) => {
           isDialogue = true;
         }
       });
+      block.children?.forEach((example: any) => {
+        if (example.pinyin) {
+          attachPinyinToChinese(example.pinyin, example.chineseWords);
+        }
+      });
+
       if (isDialogue) {
         let multiCard: any = {
           level: "A1",
@@ -51,7 +57,6 @@ A1.forEach((article) => {
         };
         block.children?.forEach((example: any) => {
           if (example.chineseWords.length > 0 && example.english) {
-            attachPinyinToChinese(example.pinyin, example.chineseWords);
             multiCard.children.push(example);
           }
         });
@@ -65,7 +70,6 @@ A1.forEach((article) => {
             example.chineseWords.length > 0 &&
             example.english
           ) {
-            attachPinyinToChinese(example.pinyin, example.chineseWords);
             cards.push({ ...example, level: "A1", article: article.title });
           }
         });

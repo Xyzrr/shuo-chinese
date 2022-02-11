@@ -12,7 +12,7 @@ const MultiChineseRenderer: React.FC<MultiChineseRendererProps> = ({
     <>
       {children.map((child, i) => {
         return (
-          <S.Child>
+          <S.Child key={i}>
             <S.Prefix>{String.fromCharCode("A".charCodeAt(0) + i)}: </S.Prefix>
             <ChineseRenderer chineseWords={child.chineseWords} />
           </S.Child>
