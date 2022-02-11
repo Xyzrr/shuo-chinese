@@ -61,6 +61,8 @@ export const GrammarArticleWrapper = styled.div`
   height: calc(100vh - 64px);
   overflow: auto;
   border-radius: 8px;
+  font-size: 18px;
+  line-height: 28px;
 `;
 
 export const AppWrapper = styled.div`
