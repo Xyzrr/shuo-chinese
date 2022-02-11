@@ -126,12 +126,7 @@ const App: React.FC = () => {
           }
           break;
         case "Escape":
-          if (reveal === "article") {
-            setReveal("answer");
-          }
-          if (reveal === "answer") {
-            setReveal("none");
-          }
+          setReveal("none");
           break;
       }
     };
@@ -144,72 +139,76 @@ const App: React.FC = () => {
   });
 
   return (
-    <S.AppWrapper onClick={() => setReveal("none")}>
-      <S.GlobalStyle />
-      <S.EnglishWrapper>
-        {cards.map((card, i) => (
-          <S.EnglishItem
-            key={i}
+    <S.FullPage onClick={() => setReveal("none")}>
+      <S.AppWrapper>
+        <S.GlobalStyle />
+        <S.EnglishWrapper>
+          {cards.map((card, i) => (
+            <S.EnglishItem
+              key={i}
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("selected", i);
+                if (selectedIndex === i) {
+                  setReveal((r) => (r === "none" ? "answer" : "none"));
+                } else {
+                  setSelectedIndex(i);
+                  setReveal("answer");
+                }
+              }}
+              active={selectedIndex === i}
+            >
+              <S.EnglishItemInner>
+                {card.multi ? (
+                  <MultiEnglishRenderer children={card.children} />
+                ) : (
+                  <EnglishRenderer
+                    english={card.english}
+                    explanation={card.explanation}
+                  />
+                )}
+              </S.EnglishItemInner>
+              {selectedIndex === i &&
+                reveal === "answer" &&
+                sourceArticle != null && (
+                  <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
+                    {selectedCard.multi ? (
+                      <MultiChineseRenderer children={selectedCard.children} />
+                    ) : (
+                      <ChineseRenderer
+                        chineseWords={selectedCard.chineseWords}
+                      />
+                    )}
+                    <S.ShowArticleButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log("wtf");
+                        setReveal("article");
+                      }}
+                    >
+                      <SearchIcon fontSize="inherit" />
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: sourceArticle.pattern,
+                        }}
+                      ></span>
+                    </S.ShowArticleButton>
+                  </S.AnswerWrapper>
+                )}
+            </S.EnglishItem>
+          ))}
+        </S.EnglishWrapper>
+        {reveal === "article" && (
+          <S.GrammarArticleWrapper
             onClick={(e) => {
               e.stopPropagation();
-              console.log("selected", i);
-              if (selectedIndex === i) {
-                setReveal((r) => (r === "none" ? "answer" : "none"));
-              } else {
-                setSelectedIndex(i);
-                setReveal("answer");
-              }
             }}
-            active={selectedIndex === i}
           >
-            <S.EnglishItemInner>
-              {card.multi ? (
-                <MultiEnglishRenderer children={card.children} />
-              ) : (
-                <EnglishRenderer
-                  english={card.english}
-                  explanation={card.explanation}
-                />
-              )}
-            </S.EnglishItemInner>
-            {selectedIndex === i &&
-              reveal === "answer" &&
-              sourceArticle != null && (
-                <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
-                  {selectedCard.multi ? (
-                    <MultiChineseRenderer children={selectedCard.children} />
-                  ) : (
-                    <ChineseRenderer chineseWords={selectedCard.chineseWords} />
-                  )}
-                  <S.ShowArticleButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log("wtf");
-                      setReveal("article");
-                    }}
-                  >
-                    <SearchIcon fontSize="inherit" />
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: sourceArticle.pattern,
-                      }}
-                    ></span>
-                  </S.ShowArticleButton>
-                </S.AnswerWrapper>
-              )}
-          </S.EnglishItem>
-        ))}
-      </S.EnglishWrapper>
-      {reveal === "article" && (
-        <S.GrammarArticleWrapper
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <GrammarArticleRenderer article={sourceArticle} />
-        </S.GrammarArticleWrapper>
-      )}
-    </S.AppWrapper>
+            <GrammarArticleRenderer article={sourceArticle} />
+          </S.GrammarArticleWrapper>
+        )}
+      </S.AppWrapper>
+    </S.FullPage>
   );
 };
 

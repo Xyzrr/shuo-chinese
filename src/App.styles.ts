@@ -17,10 +17,12 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
+export const FullPage = styled.div``;
+
 export const EnglishWrapper = styled.div`
   padding: 32px;
   text-align: left;
-  width: calc(45vw - 32px);
+  width: calc(min(45vw, 1200px * 0.45) - 32px);
 `;
 
 export const EnglishItemInner = styled.div`
@@ -53,9 +55,9 @@ export const GrammarArticleWrapper = styled.div`
   background: #323232;
   padding: 32px;
   position: fixed;
-  right: 32px;
+  right: max(32px + (100vw - 1200px) / 2, 32px);
   top: 32px;
-  width: 55vw;
+  width: min(55vw, 1200px * 0.55);
   height: calc(100vh - 64px);
   overflow: auto;
   border-radius: 8px;
@@ -63,6 +65,8 @@ export const GrammarArticleWrapper = styled.div`
 
 export const AppWrapper = styled.div`
   display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 export const AnswerWrapper = styled.div`
