@@ -129,6 +129,10 @@ const App: React.FC = () => {
           }
           if (reveal === "answer") {
             setReveal("article");
+            setTimeout(() => {
+              console.log("CURRENT", articleRef.current);
+              articleRef.current?.focus();
+            });
           }
           break;
         case "Escape":
@@ -143,6 +147,8 @@ const App: React.FC = () => {
       window.removeEventListener("keydown", onKeyDown);
     };
   });
+
+  const articleRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <S.FullPage onClick={() => setReveal("none")}>
@@ -210,6 +216,8 @@ const App: React.FC = () => {
             onClick={(e) => {
               e.stopPropagation();
             }}
+            ref={articleRef}
+            tabIndex={-1}
           >
             <GrammarArticleRenderer article={sourceArticle} />
           </S.GrammarArticleWrapper>

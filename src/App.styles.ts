@@ -63,6 +63,7 @@ export const EnglishItem = styled.div<{
 `;
 
 export const GrammarArticleWrapper = styled.div`
+  outline: none;
   background: #323232;
   padding: 32px;
   position: fixed;
