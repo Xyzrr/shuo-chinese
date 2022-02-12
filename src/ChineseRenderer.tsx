@@ -2,9 +2,13 @@ import * as S from "./ChineseRenderer.styles";
 
 interface ChineseRendererProps {
   chineseWords: any[];
+  english?: string;
 }
 
-const ChineseRenderer: React.FC<ChineseRendererProps> = ({ chineseWords }) => {
+const ChineseRenderer: React.FC<ChineseRendererProps> = ({
+  chineseWords,
+  english,
+}) => {
   return (
     <div>
       {chineseWords.map((word, i) => (
@@ -13,6 +17,7 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({ chineseWords }) => {
           <S.Chars>{word.chars}</S.Chars>
         </S.WordWrapper>
       ))}
+      {english && <S.English>{english}</S.English>}
     </div>
   );
 };

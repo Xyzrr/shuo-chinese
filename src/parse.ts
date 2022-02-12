@@ -143,65 +143,69 @@ const extractContentFromArticlePage = (
                 example.speaker = speaker.innerText.trim().slice(0, -1);
               }
 
-              exampleNode.childNodes.forEach((exampleChild) => {
-                const addWordsWithAttributes = (attributes: any = {}) => {
-                  const words = exampleChild.innerText
-                    .trim()
-                    .replaceAll("、", " 、 ")
-                    .replaceAll("，", " ， ")
-                    .replaceAll("。", " 。 ")
-                    .replaceAll("？", " ？ ")
-                    .split(" ");
-                  words.forEach((word) => {
-                    if (word !== "") {
-                      example.chineseWords.push({ chars: word, ...attributes });
-                    }
-                  });
-                };
+              if (blockNode.classList.contains("liju-en")) {
+                example.english = exampleNode.innerText.trim();
+              } else {
+                exampleNode.childNodes.forEach((exampleChild) => {
+                  const addWordsWithAttributes = (attributes: any = {}) => {
+                    const words = exampleChild.innerText
+                      .trim()
+                      .replaceAll("、", " 、 ")
+                      .replaceAll("，", " ， ")
+                      .replaceAll("。", " 。 ")
+                      .replaceAll("？", " ？ ")
+                      .split(" ");
+                    words.forEach((word) => {
+                      if (word !== "") {
+                        example.chineseWords.push({
+                          chars: word,
+                          ...attributes,
+                        });
+                      }
+                    });
+                  };
 
-                if (exampleChild instanceof TextNode) {
-                  addWordsWithAttributes();
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "EM"
-                ) {
-                  addWordsWithAttributes({ emphasis: true });
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "STRONG"
-                ) {
-                  addWordsWithAttributes({ strong: true });
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "SPAN" &&
-                  exampleChild.classList.contains("expl")
-                ) {
-                  example.explanation = exampleChild.innerText;
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "SPAN" &&
-                  exampleChild.classList.contains("pinyin")
-                ) {
-                  attachPinyinToChinese(
-                    exampleChild.innerText.trim(),
-                    example.chineseWords
-                  );
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "SPAN" &&
-                  exampleChild.classList.contains("trans")
-                ) {
-                  if (exampleChild.innerText === "Are you a college student?") {
-                    console.log("OFFENDER:");
+                  if (exampleChild instanceof TextNode) {
+                    addWordsWithAttributes();
                   }
-                  example.english = exampleChild.innerText;
-                }
-              });
+                  if (
+                    exampleChild instanceof HTMLElement &&
+                    exampleChild.tagName === "EM"
+                  ) {
+                    addWordsWithAttributes({ emphasis: true });
+                  }
+                  if (
+                    exampleChild instanceof HTMLElement &&
+                    exampleChild.tagName === "STRONG"
+                  ) {
+                    addWordsWithAttributes({ strong: true });
+                  }
+                  if (
+                    exampleChild instanceof HTMLElement &&
+                    exampleChild.tagName === "SPAN" &&
+                    exampleChild.classList.contains("expl")
+                  ) {
+                    example.explanation = exampleChild.innerText;
+                  }
+                  if (
+                    exampleChild instanceof HTMLElement &&
+                    exampleChild.tagName === "SPAN" &&
+                    exampleChild.classList.contains("pinyin")
+                  ) {
+                    attachPinyinToChinese(
+                      exampleChild.innerText.trim(),
+                      example.chineseWords
+                    );
+                  }
+                  if (
+                    exampleChild instanceof HTMLElement &&
+                    exampleChild.tagName === "SPAN" &&
+                    exampleChild.classList.contains("trans")
+                  ) {
+                    example.english = exampleChild.innerText;
+                  }
+                });
+              }
 
               block.children.push(example);
             });

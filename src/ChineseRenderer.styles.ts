@@ -15,3 +15,8 @@ export const Pinyin = styled.div`
 export const Chars = styled.div`
   font-size: 28px;
 `;
+
+export const English = styled.div`
+  font-size: 14px;
+  color: #bbb;
+`;

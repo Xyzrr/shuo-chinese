@@ -52,7 +52,10 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
                 {block.children.map((example: any) => {
                   return (
                     <>
-                      <ChineseRenderer chineseWords={example.chineseWords} />
+                      <ChineseRenderer
+                        chineseWords={example.chineseWords}
+                        english={example.english}
+                      />
                     </>
                   );
                 })}

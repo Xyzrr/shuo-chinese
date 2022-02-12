@@ -150,7 +150,10 @@ const App: React.FC = () => {
                 sourceArticle != null && (
                   <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
                     {selectedCard.multi ? (
-                      <MultiChineseRenderer children={selectedCard.children} />
+                      <MultiChineseRenderer
+                        children={selectedCard.children}
+                        hideEnglish
+                      />
                     ) : (
                       <ChineseRenderer
                         chineseWords={selectedCard.chineseWords}
