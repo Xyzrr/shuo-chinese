@@ -7,48 +7,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import EnglishRenderer from "./EnglishRenderer";
 import MultiEnglishRenderer from "./MultiEnglishRenderer";
 import MultiChineseRenderer from "./MultiChineseRenderer";
-import split from "pinyin-split";
 
 const cards: any[] = [];
 
-const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
-  const splitPinyin = split(pinyin);
-  console.log("splitPinyin", pinyin, splitPinyin, chineseWords);
-  let pinyinIndex = 0;
-  chineseWords.forEach((word) => {
-    const notChars = ["，", "。", "？", "、"];
-    if (!notChars.includes(word.chars)) {
-      word.pinyin = splitPinyin
-        .slice(pinyinIndex, pinyinIndex + word.chars.length)
-        .join("");
-      pinyinIndex += word.chars.length;
-      console.log(
-        "pinyinIndex",
-        pinyinIndex,
-        word.chars.length,
-        word.chars,
-        word.pinyin
-      );
-    }
-  });
-};
-
 A1.forEach((article) => {
-  article.blocks.forEach((block) => {
+  article.blocks.forEach((block: any) => {
+    console.log("type", block.type);
     if (block.type === "exampleSet") {
-      let isDialogue = false;
-      block.children?.forEach((example: any) => {
-        if (example.specialType === "dialogue") {
-          isDialogue = true;
-        }
-      });
-      block.children?.forEach((example: any) => {
-        if (example.pinyin) {
-          attachPinyinToChinese(example.pinyin, example.chineseWords);
-        }
-      });
-
-      if (isDialogue) {
+      if (block.specialType === "dialogue") {
         let multiCard: any = {
           level: "A1",
           article: article.title,
@@ -130,7 +96,6 @@ const App: React.FC = () => {
           if (reveal === "answer") {
             setReveal("article");
             setTimeout(() => {
-              console.log("CURRENT", articleRef.current);
               articleRef.current?.focus();
             });
           }
@@ -161,7 +126,6 @@ const App: React.FC = () => {
               reveal={reveal}
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("selected", i);
                 if (selectedIndex === i) {
                   setReveal((r) => (r === "none" ? "answer" : "none"));
                 } else {

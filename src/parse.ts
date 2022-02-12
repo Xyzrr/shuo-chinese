@@ -4,8 +4,22 @@ import A2 from "./scraped/A2.json";
 import B1 from "./scraped/B1.json";
 import B2 from "./scraped/B2.json";
 import C1 from "./scraped/C1.json";
-import fetch from "node-fetch";
 import fs from "fs";
+import split from "pinyin-split";
+
+const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
+  const splitPinyin = split(pinyin);
+  let pinyinIndex = 0;
+  chineseWords.forEach((word) => {
+    const notChars = ["，", "。", "？", "、"];
+    if (!notChars.includes(word.chars)) {
+      word.pinyin = splitPinyin
+        .slice(pinyinIndex, pinyinIndex + word.chars.length)
+        .join("");
+      pinyinIndex += word.chars.length;
+    }
+  });
+};
 
 const extractContentFromArticlePage = (
   page: import("node-html-parser").HTMLElement
@@ -86,7 +100,10 @@ const extractContentFromArticlePage = (
         });
       }
       if (node.classList.contains("liju")) {
-        const examples: any[] = [];
+        const block: any = {
+          type: "exampleSet",
+          children: [],
+        };
 
         node.querySelectorAll("li").forEach((exampleNode) => {
           const example: any = {
@@ -105,6 +122,7 @@ const extractContentFromArticlePage = (
           }
           if (exampleNode.querySelector(".speaker")) {
             example.specialType = "dialogue";
+            block.specialType = "dialogue";
           }
 
           exampleNode.childNodes.forEach((child) => {
@@ -144,7 +162,10 @@ const extractContentFromArticlePage = (
               child.tagName === "SPAN" &&
               child.classList.contains("pinyin")
             ) {
-              example.pinyin = child.innerText.trim();
+              attachPinyinToChinese(
+                child.innerText.trim(),
+                example.chineseWords
+              );
             }
             if (
               child instanceof HTMLElement &&
@@ -157,15 +178,12 @@ const extractContentFromArticlePage = (
 
           // console.log("words", example.chineseWords);
 
-          examples.push(example);
+          block.children.push(example);
         });
 
         // console.log(examples);
 
-        blocks.push({
-          type: "exampleSet",
-          children: examples,
-        });
+        blocks.push(block);
       }
     }
   });
@@ -194,6 +212,10 @@ const parseLevel = (level: keyof typeof levelMap) => {
   }
 
   fs.writeFileSync(`./src/parsed/${level}.json`, JSON.stringify(articles));
+
+  console.log(`${level} done`);
 };
+
+console.log("Loaded modules, parsing...");
 
 parseLevel("A1");
