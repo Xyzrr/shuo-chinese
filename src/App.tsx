@@ -148,6 +148,7 @@ const App: React.FC = () => {
     React.useState<SVGElement | null>(null);
 
   const handleSettingsClick = (e: React.MouseEvent<SVGElement>) => {
+    e.stopPropagation();
     setSettingsAnchorEl(settingsAnchorEl ? null : e.currentTarget);
   };
 
