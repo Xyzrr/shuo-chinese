@@ -12,6 +12,7 @@ import EnglishRenderer from "./EnglishRenderer";
 import MultiEnglishRenderer from "./MultiEnglishRenderer";
 import MultiChineseRenderer from "./MultiChineseRenderer";
 import { createTheme, ThemeProvider, Popper } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const darkTheme = createTheme({
   palette: {
@@ -145,9 +146,9 @@ const App: React.FC = () => {
   const articleRef = React.useRef<HTMLDivElement>(null);
 
   const [settingsAnchorEl, setSettingsAnchorEl] =
-    React.useState<SVGElement | null>(null);
+    React.useState<HTMLElement | null>(null);
 
-  const handleSettingsClick = (e: React.MouseEvent<SVGElement>) => {
+  const handleSettingsClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     setSettingsAnchorEl(settingsAnchorEl ? null : e.currentTarget);
   };
@@ -163,7 +164,6 @@ const App: React.FC = () => {
       >
         <S.AppWrapper>
           <S.GlobalStyle />
-          <S.SettingsButton />
           <Popper
             open={open}
             anchorEl={settingsAnchorEl}
@@ -190,7 +190,9 @@ const App: React.FC = () => {
               />
             </S.SettingsWrapper>
           </Popper>
-          <S.SettingsButton onClick={handleSettingsClick} />
+          <S.SettingsButton onClick={handleSettingsClick}>
+            <SettingsIcon />
+          </S.SettingsButton>
           <S.EnglishWrapper>
             {cards.map((card, i) => (
               <S.EnglishItem

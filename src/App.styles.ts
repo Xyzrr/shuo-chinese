@@ -1,6 +1,5 @@
 import styled, { css, createGlobalStyle } from "styled-components";
 import Slider from "@mui/material/Slider";
-import SettingsIcon from "@mui/icons-material/Settings";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -153,18 +152,20 @@ export const StyledSlider = styled(Slider)`
   }
 `;
 
-export const SettingsButton = styled(SettingsIcon)`
+export const SettingsButton = styled.div`
   position: fixed;
   right: max(32px + (100vw - 1200px) / 2, 32px);
   top: 40px;
   color: rgba(200, 200, 200, 0.5);
   border-radius: 50%;
-  background: rgba(37, 37, 37, 0.5);
+  background: rgba(37, 37, 37, 0.8);
   padding: 4px;
+  box-sizing: border-box;
   z-index: 1;
   &:hover {
     color: rgba(200, 200, 200, 0.8);
   }
+  font-size: 24px !important;
 `;
 
 export const SettingsWrapper = styled.div`
