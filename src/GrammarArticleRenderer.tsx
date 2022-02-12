@@ -1,5 +1,4 @@
 import { StyledComponent } from "styled-components";
-import ChineseRenderer from "./ChineseRenderer";
 import * as S from "./GrammarArticleRenderer.styles";
 import MultiChineseRenderer from "./MultiChineseRenderer";
 
@@ -17,6 +16,7 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
         <a
           href={`https://resources.allsetlearning.com/${article.url}`}
           target="_blank"
+          rel="noreferrer"
         >
           AllSet Learning Chinese Grammar Wiki
         </a>
