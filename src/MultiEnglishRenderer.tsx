@@ -13,7 +13,7 @@ const MultiEnglishRenderer: React.FC<MultiEnglishRendererProps> = ({
       {children.map((child, i) => {
         return (
           <S.Child key={i}>
-            <S.Prefix>{String.fromCharCode("A".charCodeAt(0) + i)}: </S.Prefix>
+            {child.speaker && <S.Prefix>{child.speaker}: </S.Prefix>}
             <EnglishRenderer
               english={child.english}
               explanation={child.explanation}

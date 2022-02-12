@@ -29,30 +29,32 @@ const extractContentFromArticlePage = (
 
   const content = page.querySelector(".mw-parser-output");
 
-  content?.childNodes.forEach((node) => {
-    if (node instanceof HTMLElement) {
-      if (node.id === "ibox") {
-        node.querySelectorAll(".ibox-level-cefr-hsk a").forEach((a, i) => {
+  content?.childNodes.forEach((blockNode) => {
+    if (blockNode instanceof HTMLElement) {
+      if (blockNode.id === "ibox") {
+        blockNode.querySelectorAll(".ibox-level-cefr-hsk a").forEach((a, i) => {
           if (i === 0) {
             metadata.cefrLevel = a.innerText.trim();
           } else {
             metadata.hskLevel = a.innerText.trim();
           }
         });
-        node.querySelectorAll(".ibox-similarto .smw-row").forEach((row) => {
-          const link = row.querySelector("a");
-          const url = link?.getAttribute("href");
-          const title = link?.innerText.trim();
-          const cefrLevel = row
-            .querySelectorAll(".smw-value")[1]
-            .innerText.trim();
-          metadata.similarTo.push({
-            url,
-            title,
-            cefrLevel,
+        blockNode
+          .querySelectorAll(".ibox-similarto .smw-row")
+          .forEach((row) => {
+            const link = row.querySelector("a");
+            const url = link?.getAttribute("href");
+            const title = link?.innerText.trim();
+            const cefrLevel = row
+              .querySelectorAll(".smw-value")[1]
+              .innerText.trim();
+            metadata.similarTo.push({
+              url,
+              title,
+              cefrLevel,
+            });
           });
-        });
-        node.querySelectorAll(".ibox-usedfor a").forEach((link) => {
+        blockNode.querySelectorAll(".ibox-usedfor a").forEach((link) => {
           const url = link?.getAttribute("href");
           const title = link?.innerText.trim();
           metadata.usedFor.push({
@@ -60,130 +62,147 @@ const extractContentFromArticlePage = (
             title,
           });
         });
-        node.querySelectorAll(".ibox-keywords a").forEach((link) => {
+        blockNode.querySelectorAll(".ibox-keywords a").forEach((link) => {
           metadata.keywords.push(link.innerText.trim());
         });
 
         // console.log("METADATA", metadata);
       }
-      if (node.tagName === "P") {
-        blocks.push({ type: "paragraph", html: node.innerHTML });
+      if (blockNode.tagName === "P") {
+        blocks.push({ type: "paragraph", html: blockNode.innerHTML });
       }
-      if (node.tagName === "UL") {
-        blocks.push({ type: "unordered-list", html: node.innerHTML });
+      if (blockNode.tagName === "UL") {
+        blocks.push({ type: "unordered-list", html: blockNode.innerHTML });
       }
-      if (node.classList.contains("jiegou")) {
-        blocks.push({ type: "jiegou", text: node.innerText });
+      if (blockNode.classList.contains("jiegou")) {
+        blocks.push({ type: "jiegou", text: blockNode.innerText });
       }
-      if (node.tagName === "H2") {
+      if (blockNode.tagName === "H2") {
         blocks.push({
           type: "heading",
           level: 2,
-          html: node.innerHTML,
-          text: node.text,
+          html: blockNode.innerHTML,
+          text: blockNode.text,
         });
       }
-      if (node.tagName === "H3") {
+      if (blockNode.tagName === "H3") {
         blocks.push({
           type: "heading",
           level: 3,
-          html: node.innerHTML,
-          text: node.text,
+          html: blockNode.innerHTML,
+          text: blockNode.text,
         });
       }
-      if (node.tagName === "H4") {
+      if (blockNode.tagName === "H4") {
         blocks.push({
           type: "heading",
           level: 4,
-          html: node.innerHTML,
-          text: node.text,
+          html: blockNode.innerHTML,
+          text: blockNode.text,
         });
       }
-      if (node.classList.contains("liju")) {
-        const block: any = {
-          type: "exampleSet",
-          children: [],
-        };
-
-        node.querySelectorAll("li").forEach((exampleNode) => {
-          const example: any = {
-            chineseWords: [],
-          };
-
-          if (exampleNode.classList.contains("q")) {
-            // ???
-            example.specialType = "q";
+      if (blockNode.classList.contains("liju")) {
+        blockNode.childNodes.forEach((lijuChild) => {
+          if (lijuChild instanceof HTMLElement && lijuChild.tagName === "P") {
+            blocks.push({ type: "paragraph", html: blockNode.innerHTML });
           }
-          if (exampleNode.classList.contains("x")) {
-            example.specialType = "incorrect";
-          }
-          if (exampleNode.classList.contains("o")) {
-            example.specialType = "correction";
-          }
-          if (exampleNode.querySelector(".speaker")) {
-            example.specialType = "dialogue";
-            block.specialType = "dialogue";
-          }
-
-          exampleNode.childNodes.forEach((child) => {
-            const addWordsWithAttributes = (attributes: any = {}) => {
-              const words = child.innerText
-                .trim()
-                .replaceAll("、", " 、 ")
-                .replaceAll("，", " ， ")
-                .replaceAll("。", " 。 ")
-                .replaceAll("？", " ？ ")
-                .split(" ");
-              words.forEach((word) => {
-                if (word !== "") {
-                  example.chineseWords.push({ chars: word, ...attributes });
-                }
-              });
+          if (lijuChild instanceof HTMLElement && lijuChild.tagName === "UL") {
+            const block: any = {
+              type: "exampleSet",
+              children: [],
             };
 
-            if (child instanceof TextNode) {
-              addWordsWithAttributes();
+            if (lijuChild.classList.contains("dialog")) {
+              block.specialType = "dialogue";
             }
-            if (child instanceof HTMLElement && child.tagName === "EM") {
-              addWordsWithAttributes({ emphasis: true });
-            }
-            if (child instanceof HTMLElement && child.tagName === "STRONG") {
-              addWordsWithAttributes({ strong: true });
-            }
-            if (
-              child instanceof HTMLElement &&
-              child.tagName === "SPAN" &&
-              child.classList.contains("expl")
-            ) {
-              example.explanation = child.innerText;
-            }
-            if (
-              child instanceof HTMLElement &&
-              child.tagName === "SPAN" &&
-              child.classList.contains("pinyin")
-            ) {
-              attachPinyinToChinese(
-                child.innerText.trim(),
-                example.chineseWords
-              );
-            }
-            if (
-              child instanceof HTMLElement &&
-              child.tagName === "SPAN" &&
-              child.classList.contains("trans")
-            ) {
-              example.english = child.innerText;
-            }
-          });
 
-          // console.log("words", example.chineseWords);
+            lijuChild.querySelectorAll("li").forEach((exampleNode) => {
+              const example: any = {
+                chineseWords: [],
+              };
 
-          block.children.push(example);
+              if (exampleNode.classList.contains("q")) {
+                // ???
+                example.specialType = "q";
+              }
+              if (exampleNode.classList.contains("x")) {
+                example.specialType = "incorrect";
+              }
+              if (exampleNode.classList.contains("o")) {
+                example.specialType = "correction";
+              }
+              const speaker = exampleNode.querySelector(".speaker");
+              if (speaker) {
+                example.speaker = speaker.innerText.trim().slice(0, -1);
+              }
+
+              exampleNode.childNodes.forEach((exampleChild) => {
+                const addWordsWithAttributes = (attributes: any = {}) => {
+                  const words = exampleChild.innerText
+                    .trim()
+                    .replaceAll("、", " 、 ")
+                    .replaceAll("，", " ， ")
+                    .replaceAll("。", " 。 ")
+                    .replaceAll("？", " ？ ")
+                    .split(" ");
+                  words.forEach((word) => {
+                    if (word !== "") {
+                      example.chineseWords.push({ chars: word, ...attributes });
+                    }
+                  });
+                };
+
+                if (exampleChild instanceof TextNode) {
+                  addWordsWithAttributes();
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "EM"
+                ) {
+                  addWordsWithAttributes({ emphasis: true });
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "STRONG"
+                ) {
+                  addWordsWithAttributes({ strong: true });
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "SPAN" &&
+                  exampleChild.classList.contains("expl")
+                ) {
+                  example.explanation = exampleChild.innerText;
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "SPAN" &&
+                  exampleChild.classList.contains("pinyin")
+                ) {
+                  attachPinyinToChinese(
+                    exampleChild.innerText.trim(),
+                    example.chineseWords
+                  );
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "SPAN" &&
+                  exampleChild.classList.contains("trans")
+                ) {
+                  if (exampleChild.innerText === "Are you a college student?") {
+                    console.log("OFFENDER:");
+                  }
+                  example.english = exampleChild.innerText;
+                }
+              });
+
+              block.children.push(example);
+            });
+            blocks.push(block);
+          }
         });
 
         // console.log(examples);
-
-        blocks.push(block);
       }
     }
   });
