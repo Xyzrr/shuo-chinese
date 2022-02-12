@@ -65,9 +65,7 @@ const extractCards = (level: number) => {
     });
   });
 
-  shuffleArray(cards);
-
-  return cards.slice(0, 50);
+  return cards;
 };
 
 const App: React.FC = () => {
@@ -76,10 +74,12 @@ const App: React.FC = () => {
   const [levels, setLevels] = React.useState<number[]>([1, 2]);
 
   const cards = React.useMemo(() => {
-    const result: any[] = [];
+    let result: any[] = [];
     for (let i = levels[0]; i <= levels[1]; i++) {
       result.push(...extractCards(i));
     }
+    shuffleArray(result);
+    result = result.slice(0, 50);
     return result;
   }, [levels]);
 
