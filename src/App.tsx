@@ -128,7 +128,7 @@ const App: React.FC = () => {
     React.useState<SVGElement | null>(null);
 
   const handleSettingsClick = (event: React.MouseEvent<SVGElement>) => {
-    setSettingsAnchorEl((v) => (v ? null : event.currentTarget));
+    setSettingsAnchorEl(settingsAnchorEl ? null : event.currentTarget);
   };
 
   const open = Boolean(settingsAnchorEl);
