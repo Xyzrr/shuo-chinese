@@ -1,6 +1,14 @@
 import styled from "styled-components";
 
+export const OriginalLink = styled.div`
+  color: #999;
+  opacity: 0.7;
+  margin-top: 16px;
+  font-size: 16px;
+`;
+
 export const H1 = styled.h1`
+  margin-top: 0;
   font-size: 36px;
   line-height: normal;
 `;

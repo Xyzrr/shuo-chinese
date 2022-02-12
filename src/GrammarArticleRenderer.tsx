@@ -11,6 +11,15 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
 }) => {
   return (
     <>
+      <S.OriginalLink>
+        From the{" "}
+        <a
+          href={`https://resources.allsetlearning.com/${article.url}`}
+          target="_blank"
+        >
+          AllSet Learning Chinese Grammar Wiki
+        </a>
+      </S.OriginalLink>
       <S.H1>{article.title}</S.H1>
       {article.blocks.map((block: any, i: any) => {
         switch (block.type) {
