@@ -4,12 +4,14 @@ interface ChineseRendererProps {
   chineseWords: any[];
   english?: string;
   specialType?: string;
+  explanation?: string;
 }
 
 const ChineseRenderer: React.FC<ChineseRendererProps> = ({
   chineseWords,
   english,
   specialType,
+  explanation,
 }) => {
   return (
     <S.Wrapper specialType={specialType}>
@@ -29,7 +31,12 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
             </S.WordWrapper>
           );
         })}
-        {english && <S.English>{english}</S.English>}
+        {english && (
+          <S.English>
+            {english}
+            {explanation && ` (${explanation})`}
+          </S.English>
+        )}
       </S.InnerWrapper>
     </S.Wrapper>
   );

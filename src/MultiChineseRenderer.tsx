@@ -20,6 +20,7 @@ const MultiChineseRenderer: React.FC<MultiChineseRendererProps> = ({
               chineseWords={child.chineseWords}
               english={hideEnglish ? undefined : child.english}
               specialType={child.specialType}
+              explanation={child.explanation}
             />
           </S.Child>
         );
