@@ -58,8 +58,12 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
                 })}
               </S.ExampleSet>
             );
-          case "unordered-list":
-            return <ul dangerouslySetInnerHTML={{ __html: block.html }}></ul>;
+          case "list":
+            if (block.ordered) {
+              return <ol dangerouslySetInnerHTML={{ __html: block.html }}></ol>;
+            } else {
+              return <ul dangerouslySetInnerHTML={{ __html: block.html }}></ul>;
+            }
         }
         return <div></div>;
       })}

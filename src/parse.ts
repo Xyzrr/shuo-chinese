@@ -71,8 +71,15 @@ const extractContentFromArticlePage = (
       if (blockNode.tagName === "P") {
         blocks.push({ type: "paragraph", html: blockNode.innerHTML });
       }
+      if (blockNode.tagName === "OL") {
+        blocks.push({ type: "list", html: blockNode.innerHTML, ordered: true });
+      }
       if (blockNode.tagName === "UL") {
-        blocks.push({ type: "unordered-list", html: blockNode.innerHTML });
+        blocks.push({
+          type: "list",
+          html: blockNode.innerHTML,
+          ordered: false,
+        });
       }
       if (blockNode.classList.contains("jiegou")) {
         blocks.push({ type: "jiegou", text: blockNode.innerText });
