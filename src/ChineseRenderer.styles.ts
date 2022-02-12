@@ -1,6 +1,10 @@
 import styled, { css } from "styled-components";
+import XIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 
 export const Wrapper = styled.div<{ specialType?: string }>`
+  display: flex;
+  align-items: center;
   strong {
     color: rgb(150, 250, 130);
   }
@@ -12,6 +16,8 @@ export const Wrapper = styled.div<{ specialType?: string }>`
       }
     `}
 `;
+
+export const InnerWrapper = styled.div``;
 
 export const WordWrapper = styled.div`
   display: inline-flex;
@@ -48,4 +54,14 @@ export const English = styled.div`
   font-size: 14px;
   color: #bbb;
   line-height: normal;
+`;
+
+export const StyledCheckIcon = styled(CheckIcon)`
+  color: rgb(150, 250, 130);
+  margin-right: 8px;
+`;
+
+export const StyledXIcon = styled(XIcon)`
+  color: rgb(235, 59, 46);
+  margin-right: 8px;
 `;

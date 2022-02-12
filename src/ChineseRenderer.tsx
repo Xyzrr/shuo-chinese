@@ -13,20 +13,24 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
 }) => {
   return (
     <S.Wrapper specialType={specialType}>
-      {chineseWords.map((word, i) => {
-        const CharsComponent = word.emphasis
-          ? S.EmphasisChars
-          : word.strong
-          ? S.StrongChars
-          : S.Chars;
-        return (
-          <S.WordWrapper key={i}>
-            <S.Pinyin>{word.pinyin || "\xa0"}</S.Pinyin>
-            <CharsComponent>{word.chars}</CharsComponent>
-          </S.WordWrapper>
-        );
-      })}
-      {english && <S.English>{english}</S.English>}
+      {specialType === "correction" && <S.StyledCheckIcon />}
+      {specialType === "incorrect" && <S.StyledXIcon />}
+      <S.InnerWrapper>
+        {chineseWords.map((word, i) => {
+          const CharsComponent = word.emphasis
+            ? S.EmphasisChars
+            : word.strong
+            ? S.StrongChars
+            : S.Chars;
+          return (
+            <S.WordWrapper key={i}>
+              <S.Pinyin>{word.pinyin || "\xa0"}</S.Pinyin>
+              <CharsComponent>{word.chars}</CharsComponent>
+            </S.WordWrapper>
+          );
+        })}
+        {english && <S.English>{english}</S.English>}
+      </S.InnerWrapper>
     </S.Wrapper>
   );
 };
