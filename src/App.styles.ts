@@ -26,6 +26,10 @@ export const EnglishWrapper = styled.div`
   padding-left: 16px;
   text-align: left;
   width: calc(min(45vw, 1200px * 0.45) - 32px);
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const EnglishItemInner = styled.div`
@@ -77,6 +81,14 @@ export const GrammarArticleWrapper = styled.div`
   border-radius: 8px;
   font-size: 18px;
   line-height: 28px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    right: auto;
+    left: auto;
+    bottom: 0;
+    height: calc(100% - 32px);
+  }
 `;
 
 export const AppWrapper = styled.div`
@@ -96,13 +108,27 @@ export const AnswerWrapper = styled.div`
   cursor: auto;
   padding-left: 16px;
   border-left: 1px solid #555;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: auto;
+    right: auto;
+    border-left: none;
+    background: #323232;
+    z-index: 1;
+    width: 100%;
+    transform: none;
+    padding: 16px 32px;
+  }
 `;
 
 export const ShowArticleButton = styled.div`
   display: inline-block;
   font-size: 14px;
   background: rgba(255, 255, 255, 0.05);
-  padding: 2px 8px;
+  padding: 2px 8px 2px 6px;
   margin-top: 4px;
   border-radius: 4px;
   cursor: default;
@@ -112,8 +138,9 @@ export const ShowArticleButton = styled.div`
     background: rgba(255, 255, 255, 0.1);
   }
   .MuiSvgIcon-root {
-    opacity: 0.6;
-    margin-right: 4px;
+    opacity: 0.5;
+    margin-right: 8px;
+    font-size: 16px;
   }
 `;
 

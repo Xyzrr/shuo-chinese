@@ -7,7 +7,7 @@ import B2 from "./parsed/B2.json";
 import C1 from "./parsed/C1.json";
 import ChineseRenderer from "./ChineseRenderer";
 import GrammarArticleRenderer from "./GrammarArticleRenderer";
-import SearchIcon from "@mui/icons-material/Search";
+import SubjectIcon from "@mui/icons-material/Subject";
 import EnglishRenderer from "./EnglishRenderer";
 import MultiEnglishRenderer from "./MultiEnglishRenderer";
 import MultiChineseRenderer from "./MultiChineseRenderer";
@@ -237,7 +237,7 @@ const App: React.FC = () => {
                           setReveal("article");
                         }}
                       >
-                        <SearchIcon fontSize="inherit" />
+                        <SubjectIcon fontSize="inherit" />
                         <span
                           dangerouslySetInnerHTML={{
                             __html: sourceArticle.pattern,
