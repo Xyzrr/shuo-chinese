@@ -159,7 +159,11 @@ export const SettingsButton = styled.div`
   color: rgba(200, 200, 200, 0.5);
   border-radius: 50%;
   background: rgba(37, 37, 37, 0.8);
-  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   box-sizing: border-box;
   z-index: 1;
   &:hover {
