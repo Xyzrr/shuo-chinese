@@ -138,13 +138,14 @@ const extractContentFromArticlePage = (
               if (exampleNode.classList.contains("o")) {
                 example.specialType = "correction";
               }
-              const speaker = exampleNode.querySelector(".speaker");
-              if (speaker) {
-                example.speaker = speaker.innerText.trim().slice(0, -1);
+              const speakerNode = exampleNode.querySelector(".speaker");
+              if (speakerNode) {
+                example.speaker = speakerNode.innerText.trim().slice(0, -1);
+                speakerNode.remove();
               }
 
               if (blockNode.classList.contains("liju-en")) {
-                example.english = exampleNode.innerText.trim();
+                example.english = exampleNode.innerText;
               } else {
                 exampleNode.childNodes.forEach((exampleChild) => {
                   const addWordsWithAttributes = (attributes: any = {}) => {

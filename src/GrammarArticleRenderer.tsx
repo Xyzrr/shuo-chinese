@@ -1,6 +1,7 @@
 import { StyledComponent } from "styled-components";
 import ChineseRenderer from "./ChineseRenderer";
 import * as S from "./GrammarArticleRenderer.styles";
+import MultiChineseRenderer from "./MultiChineseRenderer";
 
 interface GrammarArticleRendererProps {
   article: any;
@@ -49,16 +50,7 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
             console.log("children", block.children);
             return (
               <S.ExampleSet key={i}>
-                {block.children.map((example: any) => {
-                  return (
-                    <>
-                      <ChineseRenderer
-                        chineseWords={example.chineseWords}
-                        english={example.english}
-                      />
-                    </>
-                  );
-                })}
+                <MultiChineseRenderer children={block.children} />
               </S.ExampleSet>
             );
           case "list":
