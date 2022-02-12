@@ -31,7 +31,7 @@ export const H4 = styled.h4`
 
 export const ExampleSet = styled.div`
   padding: 8px 12px;
-  margin: 0 -2px;
+  margin: 0 -2px 8px;
   border: 1px solid #444;
   border-radius: 4px;
   background: #2a2a2a;
