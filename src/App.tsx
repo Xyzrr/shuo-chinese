@@ -1,6 +1,10 @@
 import * as S from "./App.styles";
 import React from "react";
 import A1 from "./parsed/A1.json";
+import A2 from "./parsed/A2.json";
+import B1 from "./parsed/B1.json";
+import B2 from "./parsed/B2.json";
+import C1 from "./parsed/C1.json";
 import ChineseRenderer from "./ChineseRenderer";
 import GrammarArticleRenderer from "./GrammarArticleRenderer";
 import SearchIcon from "@mui/icons-material/Search";
@@ -15,53 +19,70 @@ const darkTheme = createTheme({
   },
 });
 
-const cards: any[] = [];
+const articles = [A1, A2, B1, B2, C1];
 
-A1.forEach((article) => {
-  article.blocks.forEach((block: any) => {
-    console.log("type", block.type);
-    if (block.type === "exampleSet") {
-      if (block.specialType === "dialogue") {
-        let multiCard: any = {
-          level: "A1",
-          article: article.title,
-          multi: true,
-          children: [],
-        };
-        block.children?.forEach((example: any) => {
-          if (example.chineseWords.length > 0 && example.english) {
-            multiCard.children.push(example);
-          }
-        });
-        if (multiCard.children.length > 0) {
-          cards.push(multiCard);
-        }
-      } else {
-        block.children?.forEach((example: any) => {
-          if (
-            !example.specialType &&
-            example.chineseWords.length > 0 &&
-            example.english
-          ) {
-            cards.push({ ...example, level: "A1", article: article.title });
-          }
-        });
-      }
-    }
-  });
-});
-
-function shuffleArray(array: any[]) {
+const shuffleArray = (array: any[]) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-}
+};
 
-shuffleArray(cards);
+const extractCards = (level: number) => {
+  const article = articles[level];
+  const cards: any[] = [];
+
+  article.forEach((article) => {
+    article.blocks.forEach((block: any) => {
+      console.log("type", block.type);
+      if (block.type === "exampleSet") {
+        if (block.specialType === "dialogue") {
+          let multiCard: any = {
+            level: "A1",
+            article: article.title,
+            multi: true,
+            children: [],
+          };
+          block.children?.forEach((example: any) => {
+            if (example.chineseWords.length > 0 && example.english) {
+              multiCard.children.push(example);
+            }
+          });
+          if (multiCard.children.length > 0) {
+            cards.push(multiCard);
+          }
+        } else {
+          block.children?.forEach((example: any) => {
+            if (
+              !example.specialType &&
+              example.chineseWords.length > 0 &&
+              example.english
+            ) {
+              cards.push({ ...example, level: "A1", article: article.title });
+            }
+          });
+        }
+      }
+    });
+  });
+
+  shuffleArray(cards);
+
+  return cards.slice(0, 50);
+};
 
 const App: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const [levels, setLevels] = React.useState<number[]>([1, 2]);
+
+  const cards = React.useMemo(() => {
+    const result: any[] = [];
+    for (let i = levels[0]; i <= levels[1]; i++) {
+      result.push(...extractCards(i));
+    }
+    return result;
+  }, [levels]);
 
   const selectedCard = cards[selectedIndex];
 
@@ -122,20 +143,22 @@ const App: React.FC = () => {
 
   const articleRef = React.useRef<HTMLDivElement>(null);
 
-  const [levels, setLevels] = React.useState<number[]>([1, 2]);
-
   const [settingsAnchorEl, setSettingsAnchorEl] =
     React.useState<SVGElement | null>(null);
 
-  const handleSettingsClick = (event: React.MouseEvent<SVGElement>) => {
-    setSettingsAnchorEl(settingsAnchorEl ? null : event.currentTarget);
+  const handleSettingsClick = (e: React.MouseEvent<SVGElement>) => {
+    setSettingsAnchorEl(settingsAnchorEl ? null : e.currentTarget);
   };
 
   const open = Boolean(settingsAnchorEl);
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <S.FullPage onClick={() => setReveal("none")}>
+      <S.FullPage
+        onClick={() => {
+          setReveal("none");
+        }}
+      >
         <S.AppWrapper>
           <S.GlobalStyle />
           <S.SettingsButton />
@@ -149,7 +172,8 @@ const App: React.FC = () => {
                 size="small"
                 value={levels}
                 onChange={(e, value) => {
-                  setLevels(value as number[]);
+                  const v = value as number[];
+                  if (v[0] !== levels[0] || v[1] !== levels[1]) setLevels(v);
                 }}
                 min={0}
                 max={4}
