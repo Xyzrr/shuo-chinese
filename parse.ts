@@ -1,9 +1,9 @@
 import { parse, HTMLElement, TextNode } from "node-html-parser";
-import A1 from "./scraped/A1.json";
-import A2 from "./scraped/A2.json";
-import B1 from "./scraped/B1.json";
-import B2 from "./scraped/B2.json";
-import C1 from "./scraped/C1.json";
+import A1 from "./src/scraped/A1.json";
+import A2 from "./src/scraped/A2.json";
+import B1 from "./src/scraped/B1.json";
+import B2 from "./src/scraped/B2.json";
+import C1 from "./src/scraped/C1.json";
 import fs from "fs";
 import split from "pinyin-split";
 
