@@ -101,7 +101,7 @@ const App: React.FC = () => {
         case "ArrowDown":
           if (reveal !== "article") {
             e.preventDefault();
-            setSelectedIndex((i) => Math.min(cards.length, i + 1));
+            setSelectedIndex((i) => Math.min(cards.length - 1, i + 1));
           }
           break;
         case "ArrowUp":
