@@ -1,6 +1,6 @@
 import * as S from "./App.styles";
 import React from "react";
-import A1 from "./articles/A1.json";
+import A1 from "./parsed/A1.json";
 import ChineseRenderer from "./ChineseRenderer";
 import GrammarArticleRenderer from "./GrammarArticleRenderer";
 import SearchIcon from "@mui/icons-material/Search";

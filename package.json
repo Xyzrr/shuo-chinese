@@ -35,7 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "scrape": "ncc run ./src/scrape.ts"
+    "scrape": "ncc run ./src/scrape.ts",
+    "parse": "ncc run ./src/parse.ts"
   },
   "eslintConfig": {
     "extends": [
