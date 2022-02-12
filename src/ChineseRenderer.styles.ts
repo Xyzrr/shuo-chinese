@@ -34,6 +34,7 @@ export const EmphasisChars = styled.div`
 `;
 
 export const StrongChars = styled.strong`
+  font-weight: normal;
   font-size: 28px;
   line-height: normal;
 `;
