@@ -47,7 +47,6 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
           case "jiegou":
             return <S.Structure>{block.text}</S.Structure>;
           case "exampleSet":
-            console.log("children", block.children);
             return (
               <S.ExampleSet key={i}>
                 <MultiChineseRenderer children={block.children} />

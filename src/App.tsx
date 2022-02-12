@@ -19,7 +19,7 @@ const darkTheme = createTheme({
   },
 });
 
-const articles = [A1, A2, B1, B2, C1];
+const articleSets: any[][] = [A1, A2, B1, B2, C1];
 
 const shuffleArray = (array: any[]) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -29,16 +29,15 @@ const shuffleArray = (array: any[]) => {
 };
 
 const extractCards = (level: number) => {
-  const article = articles[level];
+  const articleSet = articleSets[level];
   const cards: any[] = [];
 
-  article.forEach((article) => {
+  articleSet.forEach((article) => {
     article.blocks.forEach((block: any) => {
-      console.log("type", block.type);
       if (block.type === "exampleSet") {
         if (block.specialType === "dialogue") {
           let multiCard: any = {
-            level: "A1",
+            level,
             article: article.title,
             multi: true,
             children: [],
@@ -58,7 +57,7 @@ const extractCards = (level: number) => {
               example.chineseWords.length > 0 &&
               example.english
             ) {
-              cards.push({ ...example, level: "A1", article: article.title });
+              cards.push({ ...example, level, article: article.title });
             }
           });
         }
@@ -86,9 +85,11 @@ const App: React.FC = () => {
 
   const selectedCard = cards[selectedIndex];
 
-  const sourceArticle = A1.find(
-    (article) => article.title === cards[selectedIndex].article
-  );
+  const sourceArticle = React.useMemo(() => {
+    return articleSets[selectedCard.level].find(
+      (article) => article.title === selectedCard.article
+    );
+  }, [selectedCard]);
 
   const [reveal, setReveal] = React.useState<"none" | "answer" | "article">(
     "none"
@@ -232,7 +233,6 @@ const App: React.FC = () => {
                       <S.ShowArticleButton
                         onClick={(e) => {
                           e.stopPropagation();
-                          console.log("wtf");
                           setReveal("article");
                         }}
                       >

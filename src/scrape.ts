@@ -58,7 +58,7 @@ const scrapeLevel = async (level: string) => {
   fs.writeFileSync(`src/scraped/${level}.json`, JSON.stringify(articles));
 };
 
-const levels = ["A2", "B1", "B2", "C1"];
+const levels = ["A1", "A2", "B1", "B2", "C1"];
 
 for (const level of levels) {
   scrapeLevel(level);
