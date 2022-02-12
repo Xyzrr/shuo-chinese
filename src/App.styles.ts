@@ -1,4 +1,6 @@
 import styled, { css, createGlobalStyle } from "styled-components";
+import Slider from "@mui/material/Slider";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -81,6 +83,7 @@ export const AppWrapper = styled.div`
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
 `;
 
 export const AnswerWrapper = styled.div`
@@ -112,4 +115,30 @@ export const ShowArticleButton = styled.div`
     opacity: 0.6;
     margin-right: 4px;
   }
+`;
+
+export const StyledSlider = styled(Slider)`
+  // max-width: 200px;
+  filter: saturate(0);
+  width: 100%;
+  .MuiSlider-markLabel {
+    font-family: Source Sans Pro;
+  }
+`;
+
+export const SettingsButton = styled(SettingsIcon)`
+  position: fixed;
+  right: max(32px + (100vw - 1200px) / 2, 32px);
+  top: 40px;
+  opacity: 0.3;
+  &:hover {
+    opacity: 0.6;
+  }
+`;
+
+export const SettingsWrapper = styled.div`
+  width: 200px;
+  background: #323232;
+  border-radius: 4px;
+  padding: 16px 24px;
 `;
