@@ -157,9 +157,13 @@ export const SettingsButton = styled(SettingsIcon)`
   position: fixed;
   right: max(32px + (100vw - 1200px) / 2, 32px);
   top: 40px;
-  opacity: 0.3;
+  color: rgba(200, 200, 200, 0.5);
+  border-radius: 50%;
+  background: rgba(37, 37, 37, 0.5);
+  padding: 4px;
+  z-index: 1;
   &:hover {
-    opacity: 0.6;
+    color: rgba(200, 200, 200, 0.8);
   }
 `;
 
