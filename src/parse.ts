@@ -249,4 +249,10 @@ const parseLevel = (level: keyof typeof levelMap) => {
 
 console.log("Loaded modules, parsing...");
 
-parseLevel("A1");
+const levels = ["A1", "A2", "B1", "B2", "C1"];
+
+for (const level of levels) {
+  parseLevel(level);
+}
+
+// parseLevel("A1");
