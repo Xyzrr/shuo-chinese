@@ -50,7 +50,7 @@ export const EnglishItem = styled.div<{
   cursor: default;
   border-left: 1px solid transparent;
 
-  @media (min-width: 769px) {
+  @media (hover: hover) {
     &:hover {
       ${EnglishItemInner} {
         background: rgba(255, 255, 255, 0.03);
@@ -58,7 +58,7 @@ export const EnglishItem = styled.div<{
     }
   }
 
-  @media (max-width: 768px) {
+  @media (hover: none) {
     &:active {
       ${EnglishItemInner} {
         background: rgba(255, 255, 255, 0.03);
