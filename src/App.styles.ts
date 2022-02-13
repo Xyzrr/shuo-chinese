@@ -1,5 +1,6 @@
 import styled, { css, createGlobalStyle } from "styled-components";
 import Slider from "@mui/material/Slider";
+import { LEVEL_COLORS } from "./colors";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -128,7 +129,7 @@ export const ShowArticleButton = styled.div`
   display: inline-block;
   font-size: 14px;
   background: rgba(255, 255, 255, 0.05);
-  padding: 2px 8px 2px 6px;
+  padding: 2px 8px;
   margin-top: 4px;
   border-radius: 4px;
   cursor: default;
@@ -137,11 +138,14 @@ export const ShowArticleButton = styled.div`
   &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
-  .MuiSvgIcon-root {
-    opacity: 0.5;
-    margin-right: 8px;
-    font-size: 16px;
-  }
+`;
+
+export const ArticleLevelIndicator = styled.div<{ level: number }>`
+  width: 6px;
+  height: 6px;
+  background: ${(props) => LEVEL_COLORS[props.level]};
+  border-radius: 50%;
+  margin-right: 8px;
 `;
 
 export const StyledSlider = styled(Slider)`
