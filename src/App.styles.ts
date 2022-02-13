@@ -48,12 +48,23 @@ export const EnglishItem = styled.div<{
   padding-left: 12px;
   margin: 8px 0;
   cursor: default;
-  &:hover {
-    ${EnglishItemInner} {
-      background: rgba(255, 255, 255, 0.03);
+  border-left: 1px solid transparent;
+
+  @media (min-width: 769px) {
+    &:hover {
+      ${EnglishItemInner} {
+        background: rgba(255, 255, 255, 0.03);
+      }
     }
   }
-  border-left: 1px solid transparent;
+
+  @media (max-width: 768px) {
+    &:active {
+      ${EnglishItemInner} {
+        background: rgba(255, 255, 255, 0.03);
+      }
+    }
+  }
 
   ${(props) =>
     props.active &&
