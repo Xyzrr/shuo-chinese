@@ -22,6 +22,7 @@ export const InnerWrapper = styled.div``;
 export const WordWrapper = styled.div`
   display: inline-flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 export const Pinyin = styled.div`
