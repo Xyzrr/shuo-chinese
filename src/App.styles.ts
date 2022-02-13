@@ -80,6 +80,7 @@ export const GrammarArticleWrapper = styled.div`
   border-radius: 8px;
   font-size: 18px;
   line-height: 28px;
+  z-index: 2;
 
   @media (max-width: 768px) {
     width: 100%;
