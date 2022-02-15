@@ -194,7 +194,7 @@ const App: React.FC = () => {
             <SettingsIcon />
           </S.SettingsButton>
           <S.EnglishWrapper>
-            <S.Logo>Shuo Chinese</S.Logo>
+            <S.Logo>说 Chinese</S.Logo>
             {cards.map((card, i) => (
               <S.EnglishItem
                 key={i}

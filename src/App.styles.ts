@@ -25,7 +25,7 @@ export const Logo = styled.div`
   color: rgba(200, 200, 200, 0.3);
   font-size: 32px;
   padding-left: 20px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   margin-top: 4px;
   font-weight: bold;
 `;
