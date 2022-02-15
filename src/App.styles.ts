@@ -29,6 +29,8 @@ export const EnglishWrapper = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
+    padding-left: 8px;
+    padding-right: 24px;
   }
 `;
 
@@ -102,6 +104,8 @@ export const GrammarArticleWrapper = styled.div`
     bottom: 0;
     height: 100%;
     border-radius: 0;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 `;
 
@@ -134,7 +138,7 @@ export const AnswerWrapper = styled.div`
     z-index: 1;
     width: 100%;
     transform: none;
-    padding: 16px 32px;
+    padding: 16px 24px;
   }
 `;
 
