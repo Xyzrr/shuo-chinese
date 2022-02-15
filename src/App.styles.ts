@@ -100,7 +100,7 @@ export const GrammarArticleWrapper = styled.div`
     left: auto;
     top: 0;
     bottom: 0;
-    height: calc(100% - 32px);
+    height: 100%;
     border-radius: 0;
   }
 `;
