@@ -98,8 +98,10 @@ export const GrammarArticleWrapper = styled.div`
     width: 100%;
     right: auto;
     left: auto;
+    top: 0;
     bottom: 0;
     height: calc(100% - 32px);
+    border-radius: 0;
   }
 `;
 
@@ -193,4 +195,24 @@ export const SettingsWrapper = styled.div`
   background: #323232;
   border-radius: 4px;
   padding: 16px 24px;
+`;
+
+export const CloseArticleButton = styled.div`
+  position: fixed;
+  top: 48px;
+  right: max(48px + (100vw - 1200px) / 2, 48px);
+  background: rgba(50, 50, 50, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 8px;
+  z-index: 3;
+  &:hover {
+    background: rgba(70, 70, 70, 0.8);
+  }
+  @media (max-width: 768px) {
+    top: 24px;
+    right: 24px;
+  }
 `;

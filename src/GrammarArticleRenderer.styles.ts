@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const OriginalLink = styled.div`
   color: #999;
   opacity: 0.7;
-  margin-top: 16px;
+  margin-top: 24px;
   font-size: 16px;
 `;
 

@@ -12,6 +12,7 @@ import MultiEnglishRenderer from "./MultiEnglishRenderer";
 import MultiChineseRenderer from "./MultiChineseRenderer";
 import { createTheme, ThemeProvider, Popper } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
+import XIcon from "@mui/icons-material/Clear";
 
 const darkTheme = createTheme({
   palette: {
@@ -258,6 +259,13 @@ const App: React.FC = () => {
               ref={articleRef}
               tabIndex={-1}
             >
+              <S.CloseArticleButton
+                onClick={() => {
+                  setReveal("answer");
+                }}
+              >
+                <XIcon />
+              </S.CloseArticleButton>
               <GrammarArticleRenderer article={sourceArticle} />
             </S.GrammarArticleWrapper>
           )}
