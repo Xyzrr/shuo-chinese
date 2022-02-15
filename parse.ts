@@ -81,6 +81,12 @@ const extractContentFromArticlePage = (
           ordered: false,
         });
       }
+      if (blockNode.tagName === "TABLE") {
+        blocks.push({
+          type: "table",
+          html: blockNode.innerHTML,
+        });
+      }
       if (blockNode.classList.contains("jiegou")) {
         blocks.push({ type: "jiegou", text: blockNode.innerText });
       }

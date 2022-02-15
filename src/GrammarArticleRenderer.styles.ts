@@ -29,6 +29,21 @@ export const H4 = styled.h4`
   line-height: normal;
 `;
 
+export const Table = styled.table`
+  text-align: left;
+  border-collapse: collapse;
+  margin-left: -2px;
+  margin-right: -2px;
+  tbody {
+    vertical-align: baseline;
+  }
+  th,
+  td {
+    border: 1px solid #555;
+    padding: 2px 4px;
+  }
+`;
+
 export const ExampleSet = styled.div`
   padding: 8px 12px;
   margin: 0 -2px 8px;

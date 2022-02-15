@@ -58,6 +58,8 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
             } else {
               return <ul dangerouslySetInnerHTML={{ __html: block.html }}></ul>;
             }
+          case "table":
+            return <S.Table dangerouslySetInnerHTML={{ __html: block.html }} />;
         }
         return <div></div>;
       })}
