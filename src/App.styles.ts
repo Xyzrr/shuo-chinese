@@ -21,6 +21,15 @@ export const GlobalStyle = createGlobalStyle`
 
 export const FullPage = styled.div``;
 
+export const Logo = styled.div`
+  color: rgba(200, 200, 200, 0.3);
+  font-size: 32px;
+  padding-left: 20px;
+  margin-bottom: 32px;
+  margin-top: 4px;
+  font-weight: bold;
+`;
+
 export const EnglishWrapper = styled.div`
   padding: 32px;
   padding-left: 16px;
@@ -192,6 +201,9 @@ export const SettingsButton = styled.div`
     color: rgba(200, 200, 200, 0.8);
   }
   font-size: 24px !important;
+  @media (max-width: 768px) {
+    right: max(24px + (100vw - 1200px) / 2, 24px);
+  }
 `;
 
 export const SettingsWrapper = styled.div`
