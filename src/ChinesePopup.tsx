@@ -28,10 +28,13 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       lastNodeRef.current = caretRange.startContainer;
       lastOffsetRef.current = caretRange.startOffset;
 
-      const sel = window.getSelection();
       const newRange = document.createRange();
       newRange.setStart(caretRange.startContainer, caretRange.startOffset);
-      newRange.setEnd(caretRange.startContainer, caretRange.startOffset + 1);
+      try {
+        newRange.setEnd(caretRange.startContainer, caretRange.startOffset + 1);
+      } catch (e) {
+        // Sometimes the range is not valid, in which case we just ignore it
+      }
       const hoveredText = newRange.toString();
 
       if (hoveredText === lastText.current) {
@@ -43,21 +46,25 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       const foundHanzi = (hanzi as any)[hoveredText];
 
       if (foundHanzi) {
-        sel?.empty();
-        sel?.addRange(newRange);
         setRect(newRange.getBoundingClientRect());
         setHanziValue(foundHanzi);
       } else {
-        sel?.empty();
         setRect(null);
         setHanziValue(null);
       }
     };
+
+    const onScroll = () => {
+      setRect(null);
+      setHanziValue(null);
+    };
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("click", onMouseMove);
+    window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("click", onMouseMove);
+      window.removeEventListener("scroll", onScroll);
     };
   });
 
@@ -68,6 +75,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
   return (
     <>
       <WBPopup x={rect.left} y={rect.top} direction="top right">
+        <S.FakeHighlight rect={rect} />
         <S.Wrapper>
           <p>{hanziValue.character}</p>
           <p>{hanziValue.pinyin.join(", ")}</p>
