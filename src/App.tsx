@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider, Popper } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import XIcon from "@mui/icons-material/Clear";
 import Checkbox from "@mui/material/Checkbox";
+import ChinesePopup from "./ChinesePopup";
 
 interface SettingsContextValue {
   showPinyin: boolean;
@@ -168,6 +169,7 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <ChinesePopup />
       <SettingsContext.Provider value={{ showPinyin }}>
         <S.FullPage
           onClick={() => {
