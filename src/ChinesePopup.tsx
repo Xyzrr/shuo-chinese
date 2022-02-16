@@ -72,9 +72,15 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
     return null;
   }
 
+  const goUp = rect.bottom > window.innerHeight - 200;
+
   return (
     <>
-      <WBPopup x={rect.left} y={rect.top} direction="top right">
+      <WBPopup
+        x={rect.left}
+        y={goUp ? rect.top : rect.bottom}
+        direction={goUp ? "top right" : "bottom right"}
+      >
         <S.FakeHighlight rect={rect} />
         <S.Wrapper>
           <p>{hanziValue.character}</p>
