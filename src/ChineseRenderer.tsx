@@ -1,3 +1,5 @@
+import React from "react";
+import { SettingsContext } from "./App";
 import * as S from "./ChineseRenderer.styles";
 
 interface ChineseRendererProps {
@@ -13,6 +15,8 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
   specialType,
   explanation,
 }) => {
+  const settingsContext = React.useContext(SettingsContext);
+
   return (
     <S.Wrapper specialType={specialType}>
       {specialType === "correction" && <S.StyledCheckIcon />}
@@ -26,7 +30,9 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
             : S.Chars;
           return (
             <S.WordWrapper key={i}>
-              <S.Pinyin>{word.pinyin || "\xa0"}</S.Pinyin>
+              {settingsContext.showPinyin && (
+                <S.Pinyin>{word.pinyin || "\xa0"}</S.Pinyin>
+              )}
               <CharsComponent>{word.chars}</CharsComponent>
             </S.WordWrapper>
           );

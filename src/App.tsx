@@ -19,7 +19,7 @@ interface SettingsContextValue {
   showPinyin: boolean;
 }
 
-const SettingsContext = React.createContext<SettingsContextValue>({
+export const SettingsContext = React.createContext<SettingsContextValue>({
   showPinyin: true,
 });
 
