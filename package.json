@@ -39,7 +39,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "scrape": "ncc run ./scrape.ts",
-    "parse": "ncc run ./parse.ts"
+    "parse": "ncc run ./parse.ts",
+    "parse-hanzi": "ncc run ./parse-hanzi.ts"
   },
   "eslintConfig": {
     "extends": [
