@@ -5,7 +5,7 @@ import hanzi from "./hanzi.json";
 
 interface ChinesePopupProps {}
 
-const ChinesePopup: React.FC<ChinesePopupProps> = ({}) => {
+const ChinesePopup: React.FC<ChinesePopupProps> = () => {
   const [rect, setRect] = React.useState<DOMRect | null>(null);
   const [hanziValue, setHanziValue] = React.useState<any>(null);
 
