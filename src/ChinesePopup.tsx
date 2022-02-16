@@ -15,7 +15,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
 
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      const caretRange = document.caretRangeFromPoint(e.pageX, e.pageY);
+      const caretRange = document.caretRangeFromPoint(e.clientX, e.clientY);
 
       if (
         !caretRange ||
@@ -69,7 +69,8 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
     <>
       <WBPopup x={rect.left} y={rect.top} direction="top right">
         <S.Wrapper>
-          <p>{hanziValue.pinyin}</p>
+          <p>{hanziValue.character}</p>
+          <p>{hanziValue.pinyin.join(", ")}</p>
           <p>{hanziValue.definition}</p>
           <p>{JSON.stringify(hanziValue.etymology, null, 10)}</p>
         </S.Wrapper>

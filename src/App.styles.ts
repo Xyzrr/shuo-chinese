@@ -23,6 +23,7 @@ export const GlobalStyle = createGlobalStyle`
 export const FullPage = styled.div``;
 
 export const Logo = styled.div`
+  user-select: none;
   color: rgba(200, 200, 200, 0.3);
   font-size: 32px;
   padding-left: 20px;
