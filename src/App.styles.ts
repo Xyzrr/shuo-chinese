@@ -1,6 +1,7 @@
 import styled, { css, createGlobalStyle } from "styled-components";
 import Slider from "@mui/material/Slider";
 import { LEVEL_COLORS } from "./colors";
+import { FormControlLabel } from "@mui/material";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -181,6 +182,7 @@ export const StyledSlider = styled(Slider)`
   .MuiSlider-markLabel {
     font-family: Source Sans Pro;
   }
+  margin-bottom: 28px !important;
 `;
 
 export const SettingsButton = styled.div`
@@ -230,5 +232,13 @@ export const CloseArticleButton = styled.div`
   @media (max-width: 768px) {
     top: 24px;
     right: 24px;
+  }
+`;
+
+export const StyledFormControlLabel = styled(FormControlLabel)`
+  filter: saturate(0);
+  margin-left: -13px !important;
+  .MuiTypography-root {
+    font-family: Source Sans Pro;
   }
 `;

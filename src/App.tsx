@@ -13,6 +13,15 @@ import MultiChineseRenderer from "./MultiChineseRenderer";
 import { createTheme, ThemeProvider, Popper } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import XIcon from "@mui/icons-material/Clear";
+import Checkbox from "@mui/material/Checkbox";
+
+interface SettingsContextValue {
+  showPinyin: boolean;
+}
+
+const SettingsContext = React.createContext<SettingsContextValue>({
+  showPinyin: true,
+});
 
 const darkTheme = createTheme({
   palette: {
@@ -155,123 +164,138 @@ const App: React.FC = () => {
 
   const open = Boolean(settingsAnchorEl);
 
+  const [showPinyin, setShowPinyin] = React.useState(true);
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <S.FullPage
-        onClick={() => {
-          setReveal("none");
-        }}
-      >
-        <S.AppWrapper>
-          <S.GlobalStyle />
-          <Popper
-            open={open}
-            anchorEl={settingsAnchorEl}
-            placement="left-start"
-          >
-            <S.SettingsWrapper>
-              <S.StyledSlider
-                size="small"
-                value={levels}
-                onChange={(e, value) => {
-                  const v = value as number[];
-                  if (v[0] !== levels[0] || v[1] !== levels[1]) setLevels(v);
-                }}
-                min={0}
-                max={4}
-                step={1}
-                marks={[
-                  { value: 0, label: "A1" },
-                  { value: 1, label: "A2" },
-                  { value: 2, label: "B1" },
-                  { value: 3, label: "B2" },
-                  { value: 4, label: "C1" },
-                ]}
-              />
-            </S.SettingsWrapper>
-          </Popper>
-          <S.SettingsButton onClick={handleSettingsClick}>
-            <SettingsIcon />
-          </S.SettingsButton>
-          <S.EnglishWrapper>
-            <S.Logo>说 Chinese</S.Logo>
-            {cards.map((card, i) => (
-              <S.EnglishItem
-                key={i}
-                reveal={reveal}
+      <SettingsContext.Provider value={{ showPinyin }}>
+        <S.FullPage
+          onClick={() => {
+            setReveal("none");
+          }}
+        >
+          <S.AppWrapper>
+            <S.GlobalStyle />
+            <Popper
+              open={open}
+              anchorEl={settingsAnchorEl}
+              placement="left-start"
+            >
+              <S.SettingsWrapper>
+                <S.StyledSlider
+                  size="small"
+                  value={levels}
+                  onChange={(e, value) => {
+                    const v = value as number[];
+                    if (v[0] !== levels[0] || v[1] !== levels[1]) setLevels(v);
+                  }}
+                  min={0}
+                  max={4}
+                  step={1}
+                  marks={[
+                    { value: 0, label: "A1" },
+                    { value: 1, label: "A2" },
+                    { value: 2, label: "B1" },
+                    { value: 3, label: "B2" },
+                    { value: 4, label: "C1" },
+                  ]}
+                />
+                <S.StyledFormControlLabel
+                  label="Show pinyin"
+                  control={
+                    <Checkbox
+                      checked={showPinyin}
+                      onChange={(e, checked) => {
+                        setShowPinyin(checked);
+                      }}
+                    />
+                  }
+                ></S.StyledFormControlLabel>
+              </S.SettingsWrapper>
+            </Popper>
+            <S.SettingsButton onClick={handleSettingsClick}>
+              <SettingsIcon />
+            </S.SettingsButton>
+            <S.EnglishWrapper>
+              <S.Logo>说 Chinese</S.Logo>
+              {cards.map((card, i) => (
+                <S.EnglishItem
+                  key={i}
+                  reveal={reveal}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedIndex === i) {
+                      setReveal((r) => (r === "none" ? "answer" : "none"));
+                    } else {
+                      setSelectedIndex(i);
+                      setReveal("answer");
+                    }
+                  }}
+                  active={selectedIndex === i}
+                >
+                  <S.EnglishItemInner>
+                    {card.multi ? (
+                      <MultiEnglishRenderer children={card.children} />
+                    ) : (
+                      <EnglishRenderer
+                        english={card.english}
+                        explanation={card.explanation}
+                      />
+                    )}
+                  </S.EnglishItemInner>
+                  {selectedIndex === i &&
+                    reveal === "answer" &&
+                    sourceArticle != null && (
+                      <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
+                        {selectedCard.multi ? (
+                          <MultiChineseRenderer
+                            children={selectedCard.children}
+                            hideEnglish
+                          />
+                        ) : (
+                          <ChineseRenderer
+                            chineseWords={selectedCard.chineseWords}
+                          />
+                        )}
+                        <S.ShowArticleButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setReveal("article");
+                          }}
+                        >
+                          <S.ArticleLevelIndicator level={selectedCard.level} />
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: sourceArticle.pattern,
+                            }}
+                          />
+                        </S.ShowArticleButton>
+                      </S.AnswerWrapper>
+                    )}
+                </S.EnglishItem>
+              ))}
+            </S.EnglishWrapper>
+            {reveal === "article" && (
+              <S.GrammarArticleWrapper
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (selectedIndex === i) {
-                    setReveal((r) => (r === "none" ? "answer" : "none"));
-                  } else {
-                    setSelectedIndex(i);
+                }}
+                ref={articleRef}
+                tabIndex={-1}
+              >
+                <S.CloseArticleButton
+                  onClick={() => {
                     setReveal("answer");
-                  }
-                }}
-                active={selectedIndex === i}
-              >
-                <S.EnglishItemInner>
-                  {card.multi ? (
-                    <MultiEnglishRenderer children={card.children} />
-                  ) : (
-                    <EnglishRenderer
-                      english={card.english}
-                      explanation={card.explanation}
-                    />
-                  )}
-                </S.EnglishItemInner>
-                {selectedIndex === i &&
-                  reveal === "answer" &&
-                  sourceArticle != null && (
-                    <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
-                      {selectedCard.multi ? (
-                        <MultiChineseRenderer
-                          children={selectedCard.children}
-                          hideEnglish
-                        />
-                      ) : (
-                        <ChineseRenderer
-                          chineseWords={selectedCard.chineseWords}
-                        />
-                      )}
-                      <S.ShowArticleButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setReveal("article");
-                        }}
-                      >
-                        <S.ArticleLevelIndicator level={selectedCard.level} />
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: sourceArticle.pattern,
-                          }}
-                        />
-                      </S.ShowArticleButton>
-                    </S.AnswerWrapper>
-                  )}
-              </S.EnglishItem>
-            ))}
-          </S.EnglishWrapper>
-          {reveal === "article" && (
-            <S.GrammarArticleWrapper
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              ref={articleRef}
-              tabIndex={-1}
-            >
-              <S.CloseArticleButton
-                onClick={() => {
-                  setReveal("answer");
-                }}
-              >
-                <XIcon />
-              </S.CloseArticleButton>
-              <GrammarArticleRenderer article={sourceArticle} />
-            </S.GrammarArticleWrapper>
-          )}
-        </S.AppWrapper>
-      </S.FullPage>
+                  }}
+                >
+                  <XIcon />
+                </S.CloseArticleButton>
+                <GrammarArticleRenderer article={sourceArticle} />
+              </S.GrammarArticleWrapper>
+            )}
+          </S.AppWrapper>
+        </S.FullPage>
+      </SettingsContext.Provider>
     </ThemeProvider>
   );
 };

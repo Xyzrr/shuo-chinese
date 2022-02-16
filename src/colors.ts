@@ -6,3 +6,5 @@ export const LEVEL_COLORS = [
   "#AB8DAA",
   "#D5BE95",
 ];
+
+export const BACKGROUND_COLOR = "#211f25";
