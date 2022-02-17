@@ -118,7 +118,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       setCurrentMatch(null);
     };
 
-    const canHover = window.matchMedia("(any-hover: none").matches;
+    const canHover = window.matchMedia("(hover: hover)").matches;
     if (canHover) {
       window.addEventListener("mousemove", onMouseMove);
     } else {
