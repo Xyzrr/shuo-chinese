@@ -219,7 +219,7 @@ const App: React.FC = () => {
               <SettingsIcon />
             </S.SettingsButton>
             <S.EnglishWrapper>
-              <S.Logo>说 Chinese</S.Logo>
+              <S.Logo className="no-popup">说 Chinese</S.Logo>
               {cards.map((card, i) => (
                 <S.EnglishItem
                   key={i}
@@ -260,6 +260,7 @@ const App: React.FC = () => {
                           />
                         )}
                         <S.ShowArticleButton
+                          className="no-popup"
                           onClick={(e) => {
                             e.stopPropagation();
                             setReveal("article");

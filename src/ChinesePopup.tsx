@@ -28,6 +28,10 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         return;
       }
 
+      if (caretRange.startContainer.parentElement?.closest(".no-popup")) {
+        return;
+      }
+
       let leftRange = null;
       try {
         const temp = document.createRange();
