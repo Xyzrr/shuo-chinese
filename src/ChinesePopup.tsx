@@ -36,6 +36,12 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         return;
       }
 
+      if (
+        caretRange.startContainer.parentElement?.closest(".secret-pleco-link")
+      ) {
+        return;
+      }
+
       if (caretRange.startContainer.parentElement?.closest(".no-popup")) {
         reset();
         return;
@@ -159,8 +165,13 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         direction={goUp ? "top right" : "bottom right"}
       >
         <S.FakeHighlight rect={currentMatch.rect} />
-        <S.Wrapper>
-          <p>{hanziValue.character}</p>
+        <S.Wrapper className="chinese-popup">
+          <a
+            className="secret-pleco-link"
+            href={`plecoapi://x-callback-url/s?q=${hanziValue.character}`}
+          >
+            {hanziValue.character}
+          </a>
           <p>{hanziValue.pinyin.join(", ")}</p>
           <p>{hanziValue.definition}</p>
           {hanziValue.etymology && (
