@@ -9,11 +9,6 @@ export const Wrapper = styled.div`
   p {
     margin: 0;
   }
-  a {
-    display: inline-block;
-    opacity: 1;
-    text-decoration: none;
-  }
 `;
 
 export const FakeHighlight = styled.div<{ rect: DOMRect }>`
@@ -30,6 +25,20 @@ export const FakeHighlight = styled.div<{ rect: DOMRect }>`
 export const TopRow = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
+export const Character = styled.a`
+  font-size: 20px;
+  opacity: 1;
+  text-decoration: none;
+`;
+
+export const HSKLevelPrefix = styled.span`
+  opacity: 0.6;
+`;
 export const HSKLevel = styled.div``;
+
+export const Pinyin = styled.div`
+  opacity: 0.6;
+`;

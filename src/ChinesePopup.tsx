@@ -175,15 +175,18 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         <S.FakeHighlight rect={currentMatch.rect} />
         <S.Wrapper className="chinese-popup">
           <S.TopRow>
-            <a
+            <S.Character
               className="secret-pleco-link"
               href={`plecoapi://x-callback-url/s?q=${hanziValue.character}`}
             >
               {hanziValue.character}
-            </a>
-            <S.HSKLevel>{getHSKLevel(hanziValue.character)}</S.HSKLevel>
+            </S.Character>
+            <S.HSKLevel>
+              <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
+              {getHSKLevel(hanziValue.character)}
+            </S.HSKLevel>
           </S.TopRow>
-          <p>{hanziValue.pinyin.join(", ")}</p>
+          <S.Pinyin>{hanziValue.pinyin.join(", ")}</S.Pinyin>
           <p>{hanziValue.definition}</p>
           {hanziValue.etymology && (
             <p>{etymologyToString(hanziValue.etymology)}</p>
