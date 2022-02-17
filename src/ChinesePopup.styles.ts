@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
     margin: 0;
   }
   a {
+    display: inline-block;
     color: inherit;
     text-decoration: none;
   }

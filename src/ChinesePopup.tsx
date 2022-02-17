@@ -2,7 +2,6 @@ import * as S from "./ChinesePopup.styles";
 import React from "react";
 import { WBPopup } from "./WBPopup";
 import hanzi from "./hanzi.json";
-import { Console } from "console";
 
 const etymologyToString = (etymology: any) => {
   if (etymology.type === "pictophonetic") {
@@ -36,13 +35,13 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         return;
       }
 
-      if (
-        caretRange.startContainer.parentElement?.closest(".secret-pleco-link")
-      ) {
+      const elementAtPoint = document.elementFromPoint(x, y);
+
+      if (elementAtPoint?.classList.contains("secret-pleco-link")) {
         return;
       }
 
-      if (caretRange.startContainer.parentElement?.closest(".no-popup")) {
+      if (elementAtPoint?.closest(".no-popup")) {
         reset();
         return;
       }
