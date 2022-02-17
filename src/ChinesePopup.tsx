@@ -3,6 +3,13 @@ import React from "react";
 import { WBPopup } from "./WBPopup";
 import hanzi from "./hanzi.json";
 
+const etymologyToString = (etymology: any) => {
+  if (etymology.type === "pictophonetic") {
+    return `pictophonetic: ${etymology.semantic} (${etymology.hint}) provides the meaning while ${etymology.phonetic} provides the pronunciation.`;
+  }
+  return `${etymology.type}: ${etymology.hint}`;
+};
+
 interface ChinesePopupProps {}
 
 const ChinesePopup: React.FC<ChinesePopupProps> = () => {
@@ -122,7 +129,9 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
           <p>{hanziValue.character}</p>
           <p>{hanziValue.pinyin.join(", ")}</p>
           <p>{hanziValue.definition}</p>
-          <p>{JSON.stringify(hanziValue.etymology, null, 10)}</p>
+          {hanziValue.etymology && (
+            <p>{etymologyToString(hanziValue.etymology)}</p>
+          )}
         </S.Wrapper>
       </WBPopup>
     </>
