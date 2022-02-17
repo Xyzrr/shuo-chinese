@@ -157,10 +157,12 @@ const extractContentFromArticlePage = (
                   const addWordsWithAttributes = (attributes: any = {}) => {
                     const words = exampleChild.innerText
                       .trim()
+                      .replaceAll(" ", " ")
                       .replaceAll("、", " 、 ")
                       .replaceAll("，", " ， ")
                       .replaceAll("。", " 。 ")
                       .replaceAll("？", " ？ ")
+                      .replaceAll("！", " ！ ")
                       .split(" ");
                     words.forEach((word) => {
                       if (word !== "") {

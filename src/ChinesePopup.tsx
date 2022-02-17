@@ -2,6 +2,7 @@ import * as S from "./ChinesePopup.styles";
 import React from "react";
 import { WBPopup } from "./WBPopup";
 import hanzi from "./hanzi.json";
+import { Console } from "console";
 
 const etymologyToString = (etymology: any) => {
   if (etymology.type === "pictophonetic") {
@@ -22,13 +23,21 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
   const lastOffsetRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
+    const reset = () => {
+      setCurrentMatch(null);
+      lastNodeRef.current = null;
+      lastOffsetRef.current = null;
+    };
+
     const findMatchFromPoint = (x: number, y: number, toggle = false) => {
       const caretRange = document.caretRangeFromPoint(x, y);
       if (!caretRange) {
+        reset();
         return;
       }
 
       if (caretRange.startContainer.parentElement?.closest(".no-popup")) {
+        reset();
         return;
       }
 
@@ -82,9 +91,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       }
 
       if (!hoveredMatch) {
-        setCurrentMatch(null);
-        lastNodeRef.current = null;
-        lastOffsetRef.current = null;
+        reset();
         return;
       }
 
@@ -93,9 +100,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         lastOffsetRef.current === hoveredMatch.offset
       ) {
         if (toggle) {
-          setCurrentMatch(null);
-          lastNodeRef.current = null;
-          lastOffsetRef.current = null;
+          reset();
         }
         return;
       }
