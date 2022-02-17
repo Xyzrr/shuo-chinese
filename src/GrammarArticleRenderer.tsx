@@ -1,6 +1,11 @@
 import { StyledComponent } from "styled-components";
 import * as S from "./GrammarArticleRenderer.styles";
+import { ArticleLevelIndicator } from "./App.styles";
 import MultiChineseRenderer from "./MultiChineseRenderer";
+
+const cefrToNumber = (level: string) => {
+  return ["A1", "A2", "B1", "B2", "C1"].indexOf(level);
+};
 
 interface GrammarArticleRendererProps {
   article: any;
@@ -11,16 +16,26 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
 }) => {
   return (
     <>
-      <S.OriginalLink>
-        From the{" "}
-        <a
-          href={`https://resources.allsetlearning.com/${article.url}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          AllSet Learning Chinese Grammar Wiki
-        </a>
-      </S.OriginalLink>
+      <S.TopRow>
+        <S.OriginalLink>
+          From the{" "}
+          <a
+            href={`https://resources.allsetlearning.com/${article.url}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            AllSet Learning Chinese Grammar Wiki
+          </a>
+        </S.OriginalLink>
+        <S.ArticleLevel>
+          <ArticleLevelIndicator
+            level={cefrToNumber(article.metadata.cefrLevel)}
+          />
+          <S.ArticleLevelString>
+            {article.metadata.cefrLevel}
+          </S.ArticleLevelString>
+        </S.ArticleLevel>
+      </S.TopRow>
       <S.H1>{article.title}</S.H1>
       {article.blocks.map((block: any, i: any) => {
         switch (block.type) {

@@ -2,10 +2,12 @@ import styled from "styled-components";
 import { CODE_BLOCK_COLOR } from "./colors";
 
 export const OriginalLink = styled.div`
-  color: #999;
-  opacity: 0.7;
-  margin-top: 24px;
   font-size: 16px;
+  color: #c8c8c8;
+  opacity: 0.6;
+  a {
+    opacity: 1;
+  }
 `;
 
 export const H1 = styled.h1`
@@ -60,4 +62,20 @@ export const Structure = styled.div`
   border-radius: 4px;
   background: ${CODE_BLOCK_COLOR};
   display: inline-block;
+`;
+
+export const TopRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+`;
+
+export const ArticleLevel = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ArticleLevelString = styled.span`
+  opacity: 0.6;
 `;
