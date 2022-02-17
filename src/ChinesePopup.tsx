@@ -22,8 +22,8 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
   const lastOffsetRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
-    const onMouseMove = (e: MouseEvent) => {
-      const caretRange = document.caretRangeFromPoint(e.clientX, e.clientY);
+    const findMatchFromPoint = (x: number, y: number, toggle = false) => {
+      const caretRange = document.caretRangeFromPoint(x, y);
       if (!caretRange) {
         return;
       }
@@ -51,7 +51,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         const foundHanzi = (hanzi as any)[leftText];
         if (foundHanzi) {
           const leftRect = leftRange.getBoundingClientRect();
-          if (e.clientX <= leftRect.right) {
+          if (x <= leftRect.right) {
             hoveredMatch = {
               text: leftText,
               rect: leftRect,
@@ -66,7 +66,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         const foundHanzi = (hanzi as any)[rightText];
         if (foundHanzi) {
           const rightRect = rightRange.getBoundingClientRect();
-          if (e.clientX > rightRect.left) {
+          if (x > rightRect.left) {
             hoveredMatch = {
               text: rightText,
               rect: rightRect,
@@ -88,6 +88,11 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         lastNodeRef.current === hoveredMatch.node &&
         lastOffsetRef.current === hoveredMatch.offset
       ) {
+        if (toggle) {
+          setCurrentMatch(null);
+          lastNodeRef.current = null;
+          lastOffsetRef.current = null;
+        }
         return;
       }
 
@@ -97,15 +102,35 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       setCurrentMatch({ text: hoveredMatch.text, rect: hoveredMatch.rect });
     };
 
+    const onMouseMove = (e: MouseEvent) => {
+      findMatchFromPoint(e.clientX, e.clientY);
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      findMatchFromPoint(
+        e.changedTouches[0].clientX,
+        e.changedTouches[0].clientY,
+        true
+      );
+    };
+
     const onScroll = () => {
       setCurrentMatch(null);
     };
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("click", onMouseMove);
+
+    const canHover = window.matchMedia("(any-hover: none").matches;
+    if (canHover) {
+      window.addEventListener("mousemove", onMouseMove);
+    } else {
+      window.addEventListener("touchend", onTouchEnd);
+    }
     window.addEventListener("scroll", onScroll);
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("click", onMouseMove);
+      if (canHover) {
+        window.removeEventListener("mousemove", onMouseMove);
+      } else {
+        window.removeEventListener("touchend", onTouchEnd);
+      }
       window.removeEventListener("scroll", onScroll);
     };
   });
