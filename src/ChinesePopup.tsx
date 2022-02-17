@@ -6,9 +6,9 @@ import { getHSKLevel } from "./hsk";
 
 const etymologyToString = (etymology: any) => {
   if (etymology.type === "pictophonetic") {
-    return `pictophonetic: ${etymology.semantic} (${etymology.hint}) provides the meaning while ${etymology.phonetic} provides the pronunciation.`;
+    return `${etymology.semantic} (${etymology.hint}) provides the meaning while ${etymology.phonetic} provides the pronunciation.`;
   }
-  return `${etymology.type}: ${etymology.hint}`;
+  return `${etymology.hint}`;
 };
 
 interface ChinesePopupProps {}
@@ -190,7 +190,10 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
           <S.Pinyin>{hanziValue.pinyin.join(", ")}</S.Pinyin>
           <p>{hanziValue.definition}</p>
           {hanziValue.etymology && (
-            <p>{etymologyToString(hanziValue.etymology)}</p>
+            <p>
+              <S.EtymologyType>{hanziValue.etymology.type}: </S.EtymologyType>
+              {etymologyToString(hanziValue.etymology)}
+            </p>
           )}
         </S.Wrapper>
       </WBPopup>

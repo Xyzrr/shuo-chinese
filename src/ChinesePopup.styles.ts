@@ -36,10 +36,14 @@ export const Character = styled.a`
 `;
 
 export const HSKLevelPrefix = styled.span`
-  opacity: 0.6;
+  opacity: 0.7;
 `;
 export const HSKLevel = styled.div``;
 
 export const Pinyin = styled.div`
-  opacity: 0.6;
+  opacity: 0.7;
+`;
+
+export const EtymologyType = styled.span`
+  opacity: 0.7;
 `;
