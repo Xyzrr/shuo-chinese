@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import { FOREGROUND_COLOR } from "./colors";
 
 export const Wrapper = styled.div`
   padding: 8px;
-  background: #323232;
+  background: ${FOREGROUND_COLOR};
   border: 1px solid #555;
   border-radius: 4px;
   p {
@@ -10,7 +11,7 @@ export const Wrapper = styled.div`
   }
   a {
     display: inline-block;
-    color: inherit;
+    opacity: 1;
     text-decoration: none;
   }
 `;

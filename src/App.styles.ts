@@ -1,11 +1,11 @@
 import styled, { css, createGlobalStyle } from "styled-components";
 import Slider from "@mui/material/Slider";
-import { LEVEL_COLORS } from "./colors";
+import { LEVEL_COLORS, FOREGROUND_COLOR, BACKGROUND_COLOR } from "./colors";
 import { FormControlLabel } from "@mui/material";
 
 export const GlobalStyle = createGlobalStyle`
   body {
-      background: #252525;
+      background: ${BACKGROUND_COLOR};
       color: #c8c8c8;
       font-family: Source Sans Pro;
   }
@@ -13,9 +13,10 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   a {
-    color: #989898;
+    color: #c8c8c8;
+    opacity: 0.7;
     &:hover {
-      color: #a8a8a8;
+      opacity: 0.8;
     }
   }
 `;
@@ -87,14 +88,14 @@ export const EnglishItem = styled.div<{
         `
       : css`
           ${EnglishItemInner} {
-            background: #323232 !important;
+            background: ${FOREGROUND_COLOR} !important;
           }
         `)}
 `;
 
 export const GrammarArticleWrapper = styled.div`
   outline: none;
-  background: #323232;
+  background: ${FOREGROUND_COLOR};
   padding: 32px;
   position: fixed;
   right: max(32px + (100vw - 1200px) / 2, 32px);
@@ -145,7 +146,7 @@ export const AnswerWrapper = styled.div`
     top: auto;
     right: auto;
     border-left: none;
-    background: #323232;
+    background: ${FOREGROUND_COLOR};
     z-index: 1;
     width: 100%;
     transform: none;
@@ -192,7 +193,7 @@ export const SettingsButton = styled.div`
   top: 40px;
   color: rgba(200, 200, 200, 0.5);
   border-radius: 50%;
-  background: rgba(37, 37, 37, 0.8);
+  background: ${BACKGROUND_COLOR}dd;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,7 +212,7 @@ export const SettingsButton = styled.div`
 
 export const SettingsWrapper = styled.div`
   width: 200px;
-  background: #323232;
+  background: ${FOREGROUND_COLOR};
   border-radius: 4px;
   padding: 16px 24px;
 `;
@@ -220,7 +221,7 @@ export const CloseArticleButton = styled.div`
   position: fixed;
   top: 48px;
   right: max(48px + (100vw - 1200px) / 2, 48px);
-  background: rgba(50, 50, 50, 0.8);
+  background: ${FOREGROUND_COLOR}dd;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -228,7 +229,7 @@ export const CloseArticleButton = styled.div`
   padding: 8px;
   z-index: 3;
   &:hover {
-    background: rgba(70, 70, 70, 0.8);
+    filter: brightness(1.2);
   }
   @media (max-width: 768px) {
     top: 24px;

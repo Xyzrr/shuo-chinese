@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CODE_BLOCK_COLOR } from "./colors";
 
 export const OriginalLink = styled.div`
   color: #999;
@@ -49,7 +50,7 @@ export const ExampleSet = styled.div`
   margin: 0 -2px 8px;
   border: 1px solid #444;
   border-radius: 4px;
-  background: #2a2a2a;
+  background: ${CODE_BLOCK_COLOR};
 `;
 
 export const Structure = styled.div`
@@ -57,6 +58,6 @@ export const Structure = styled.div`
   margin: 0 -2px;
   border: 1px solid #444;
   border-radius: 4px;
-  background: #2a2a2a;
+  background: ${CODE_BLOCK_COLOR};
   display: inline-block;
 `;

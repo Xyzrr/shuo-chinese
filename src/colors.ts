@@ -8,3 +8,5 @@ export const LEVEL_COLORS = [
 ];
 
 export const BACKGROUND_COLOR = "#211f25";
+export const FOREGROUND_COLOR = "#2b2830";
+export const CODE_BLOCK_COLOR = "#29262e";
