@@ -70,7 +70,11 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         const foundHanzi = (hanzi as any)[leftText];
         if (foundHanzi) {
           const leftRect = leftRange.getBoundingClientRect();
-          if (x <= leftRect.right) {
+          if (
+            x <= leftRect.right &&
+            y >= leftRect.top &&
+            y <= leftRect.bottom
+          ) {
             hoveredMatch = {
               text: leftText,
               rect: leftRect,
@@ -85,7 +89,11 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         const foundHanzi = (hanzi as any)[rightText];
         if (foundHanzi) {
           const rightRect = rightRange.getBoundingClientRect();
-          if (x > rightRect.left) {
+          if (
+            x > rightRect.left &&
+            y >= rightRect.top &&
+            y <= rightRect.bottom
+          ) {
             hoveredMatch = {
               text: rightText,
               rect: rightRect,
