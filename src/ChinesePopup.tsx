@@ -6,57 +6,92 @@ import hanzi from "./hanzi.json";
 interface ChinesePopupProps {}
 
 const ChinesePopup: React.FC<ChinesePopupProps> = () => {
-  const [rect, setRect] = React.useState<DOMRect | null>(null);
-  const [hanziValue, setHanziValue] = React.useState<any>(null);
+  const [currentMatch, setCurrentMatch] = React.useState<{
+    rect: DOMRect;
+    text: string;
+  } | null>(null);
 
   const lastNodeRef = React.useRef<Node | null>(null);
   const lastOffsetRef = React.useRef<number | null>(null);
-  const lastText = React.useRef<string | null>(null);
 
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
       const caretRange = document.caretRangeFromPoint(e.clientX, e.clientY);
+      if (!caretRange) {
+        return;
+      }
+
+      let leftRange = null;
+      try {
+        const temp = document.createRange();
+        temp.setStart(caretRange.startContainer, caretRange.startOffset - 1);
+        temp.setEnd(caretRange.startContainer, caretRange.startOffset);
+        leftRange = temp;
+      } catch (e) {}
+
+      let rightRange = null;
+      try {
+        const temp = document.createRange();
+        temp.setEnd(caretRange.startContainer, caretRange.startOffset + 1);
+        temp.setStart(caretRange.startContainer, caretRange.startOffset);
+        rightRange = temp;
+      } catch (e) {}
+
+      let hoveredMatch: any = null;
+
+      if (leftRange) {
+        const leftText = leftRange.toString();
+        const foundHanzi = (hanzi as any)[leftText];
+        if (foundHanzi) {
+          const leftRect = leftRange.getBoundingClientRect();
+          if (e.clientX <= leftRect.right) {
+            hoveredMatch = {
+              text: leftText,
+              rect: leftRect,
+              node: leftRange.startContainer,
+              offset: leftRange.startOffset,
+            };
+          }
+        }
+      }
+      if (rightRange) {
+        const rightText = rightRange.toString();
+        const foundHanzi = (hanzi as any)[rightText];
+        if (foundHanzi) {
+          const rightRect = rightRange.getBoundingClientRect();
+          if (e.clientX > rightRect.left) {
+            hoveredMatch = {
+              text: rightText,
+              rect: rightRect,
+              node: rightRange.startContainer,
+              offset: rightRange.startOffset,
+            };
+          }
+        }
+      }
+
+      if (!hoveredMatch) {
+        setCurrentMatch(null);
+        lastNodeRef.current = null;
+        lastOffsetRef.current = null;
+        return;
+      }
 
       if (
-        !caretRange ||
-        (lastNodeRef.current === caretRange.startContainer &&
-          lastOffsetRef.current === caretRange.startOffset)
+        lastNodeRef.current === hoveredMatch.node &&
+        lastOffsetRef.current === hoveredMatch.offset
       ) {
         return;
       }
 
-      lastNodeRef.current = caretRange.startContainer;
-      lastOffsetRef.current = caretRange.startOffset;
+      lastNodeRef.current = hoveredMatch.node;
+      lastOffsetRef.current = hoveredMatch.offset;
 
-      const newRange = document.createRange();
-      newRange.setStart(caretRange.startContainer, caretRange.startOffset);
-      try {
-        newRange.setEnd(caretRange.startContainer, caretRange.startOffset + 1);
-      } catch (e) {
-        // Sometimes the range is not valid, in which case we just ignore it
-      }
-      const hoveredText = newRange.toString();
-
-      if (hoveredText === lastText.current) {
-        return;
-      }
-
-      lastText.current = hoveredText;
-
-      const foundHanzi = (hanzi as any)[hoveredText];
-
-      if (foundHanzi) {
-        setRect(newRange.getBoundingClientRect());
-        setHanziValue(foundHanzi);
-      } else {
-        setRect(null);
-        setHanziValue(null);
-      }
+      setCurrentMatch({ text: hoveredMatch.text, rect: hoveredMatch.rect });
     };
 
     const onScroll = () => {
-      setRect(null);
-      setHanziValue(null);
+      setCurrentMatch(null);
     };
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("click", onMouseMove);
@@ -68,20 +103,21 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
     };
   });
 
-  if (!rect || !hanziValue) {
+  if (!currentMatch) {
     return null;
   }
 
-  const goUp = rect.bottom > window.innerHeight - 200;
+  const goUp = currentMatch.rect.bottom > window.innerHeight - 200;
+  const hanziValue = (hanzi as any)[currentMatch.text];
 
   return (
     <>
       <WBPopup
-        x={rect.left}
-        y={goUp ? rect.top : rect.bottom}
+        x={currentMatch.rect.left}
+        y={goUp ? currentMatch.rect.top : currentMatch.rect.bottom}
         direction={goUp ? "top right" : "bottom right"}
       >
-        <S.FakeHighlight rect={rect} />
+        <S.FakeHighlight rect={currentMatch.rect} />
         <S.Wrapper>
           <p>{hanziValue.character}</p>
           <p>{hanziValue.pinyin.join(", ")}</p>
