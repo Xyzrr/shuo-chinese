@@ -279,6 +279,9 @@ const App: React.FC = () => {
             </S.EnglishWrapper>
             {reveal === "article" && (
               <S.GrammarArticleWrapper
+                onScroll={() => {
+                  window.dispatchEvent(new Event("scroll"));
+                }}
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
