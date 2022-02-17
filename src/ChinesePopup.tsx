@@ -171,6 +171,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         x={currentMatch.rect.left}
         y={goUp ? currentMatch.rect.top : currentMatch.rect.bottom}
         direction={goUp ? "top right" : "bottom right"}
+        key={currentMatch.text}
       >
         <S.FakeHighlight rect={currentMatch.rect} />
         <S.Wrapper className="chinese-popup">

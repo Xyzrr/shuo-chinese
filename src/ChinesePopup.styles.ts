@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FOREGROUND_COLOR } from "./colors";
 
 export const Wrapper = styled.div`
+  max-width: 300px;
   padding: 8px;
   background: ${FOREGROUND_COLOR};
   border: 1px solid #555;
