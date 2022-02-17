@@ -25,3 +25,10 @@ export const FakeHighlight = styled.div<{ rect: DOMRect }>`
   height: ${(props) => props.rect.height}px;
   background: rgba(255, 255, 128, 0.15);
 `;
+
+export const TopRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const HSKLevel = styled.div``;

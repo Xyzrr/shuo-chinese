@@ -2,6 +2,7 @@ import * as S from "./ChinesePopup.styles";
 import React from "react";
 import { WBPopup } from "./WBPopup";
 import hanzi from "./hanzi.json";
+import { getHSKLevel } from "./hsk";
 
 const etymologyToString = (etymology: any) => {
   if (etymology.type === "pictophonetic") {
@@ -165,12 +166,15 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       >
         <S.FakeHighlight rect={currentMatch.rect} />
         <S.Wrapper className="chinese-popup">
-          <a
-            className="secret-pleco-link"
-            href={`plecoapi://x-callback-url/s?q=${hanziValue.character}`}
-          >
-            {hanziValue.character}
-          </a>
+          <S.TopRow>
+            <a
+              className="secret-pleco-link"
+              href={`plecoapi://x-callback-url/s?q=${hanziValue.character}`}
+            >
+              {hanziValue.character}
+            </a>
+            <S.HSKLevel>{getHSKLevel(hanziValue.character)}</S.HSKLevel>
+          </S.TopRow>
           <p>{hanziValue.pinyin.join(", ")}</p>
           <p>{hanziValue.definition}</p>
           {hanziValue.etymology && (
