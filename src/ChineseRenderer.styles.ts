@@ -36,7 +36,7 @@ export const Pinyin = styled.div`
 export const EmphasisChars = styled.div`
   font-size: 28px;
   line-height: normal;
-  background: rgba(255, 255, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
   color: #ddd;
 `;
 
