@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { CODE_BLOCK_COLOR } from "./colors";
 
 export const OriginalLink = styled.div`
-  font-size: 16px;
   color: #c8c8c8;
   opacity: 0.6;
   a {
@@ -69,6 +68,12 @@ export const TopRow = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 24px;
+  font-size: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
 `;
 
 export const ArticleLevel = styled.div`
