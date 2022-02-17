@@ -46,7 +46,10 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
           // return <p>{block.html}</p>;
           case "jiegou":
             return (
-              <S.Structure dangerouslySetInnerHTML={{ __html: block.text }} />
+              <S.Structure
+                key={i}
+                dangerouslySetInnerHTML={{ __html: block.text }}
+              />
             );
           case "exampleSet":
             return (
@@ -56,14 +59,29 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
             );
           case "list":
             if (block.ordered) {
-              return <ol dangerouslySetInnerHTML={{ __html: block.html }}></ol>;
+              return (
+                <ol
+                  key={i}
+                  dangerouslySetInnerHTML={{ __html: block.html }}
+                ></ol>
+              );
             } else {
-              return <ul dangerouslySetInnerHTML={{ __html: block.html }}></ul>;
+              return (
+                <ul
+                  key={i}
+                  dangerouslySetInnerHTML={{ __html: block.html }}
+                ></ul>
+              );
             }
           case "table":
-            return <S.Table dangerouslySetInnerHTML={{ __html: block.html }} />;
+            return (
+              <S.Table
+                key={i}
+                dangerouslySetInnerHTML={{ __html: block.html }}
+              />
+            );
         }
-        return <div></div>;
+        return <div key={i}>UNKNOWN BLOCK</div>;
       })}
     </>
   );
