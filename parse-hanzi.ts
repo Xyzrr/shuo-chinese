@@ -9,7 +9,14 @@ try {
     try {
       if (line.length > 0) {
         const json = JSON.parse(line);
-        parsed[json.character] = json;
+        parsed[json.character] = {
+          character: json.character,
+          definition: json.definition,
+          pinyin: json.pinyin,
+          decomposition: json.decomposition,
+          etymology: json.etymology,
+          radical: json.radical,
+        };
       }
     } catch (err) {
       console.error("Failed to parse line:", line);
