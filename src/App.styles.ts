@@ -94,6 +94,7 @@ export const EnglishItem = styled.div<{
 `;
 
 export const GrammarArticleWrapper = styled.div`
+  overflow-wrap: break-word;
   outline: none;
   background: ${FOREGROUND_COLOR};
   padding: 32px;
