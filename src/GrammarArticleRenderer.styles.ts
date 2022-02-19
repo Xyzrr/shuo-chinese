@@ -56,7 +56,7 @@ export const ExampleSet = styled.div`
 
 export const Structure = styled.div`
   padding: 8px 12px;
-  margin: 0 -2px;
+  margin: 0 10px 8px -2px;
   border: 1px solid #444;
   border-radius: 4px;
   background: ${CODE_BLOCK_COLOR};
