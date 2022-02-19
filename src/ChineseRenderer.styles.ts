@@ -5,9 +5,13 @@ import CheckIcon from "@mui/icons-material/Check";
 export const Wrapper = styled.div<{ specialType?: string }>`
   display: flex;
   align-items: center;
-  strong {
-    color: rgb(150, 250, 130);
-  }
+  ${(props) =>
+    props.specialType === "correction" &&
+    css`
+      strong {
+        color: rgb(150, 250, 130);
+      }
+    `}
   ${(props) =>
     props.specialType === "incorrect" &&
     css`
@@ -36,14 +40,14 @@ export const Pinyin = styled.div`
 export const EmphasisChars = styled.div`
   font-size: 28px;
   line-height: normal;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ddd;
+  color: #fffab3;
 `;
 
 export const StrongChars = styled.strong`
   font-weight: normal;
   font-size: 28px;
   line-height: normal;
+  color: #cfa07c;
 `;
 
 export const Chars = styled.div`
