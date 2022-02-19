@@ -71,6 +71,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         if (foundHanzi) {
           const leftRect = leftRange.getBoundingClientRect();
           if (
+            x >= leftRect.left &&
             x <= leftRect.right &&
             y >= leftRect.top &&
             y <= leftRect.bottom
@@ -91,6 +92,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
           const rightRect = rightRange.getBoundingClientRect();
           if (
             x > rightRect.left &&
+            x <= rightRect.right &&
             y >= rightRect.top &&
             y <= rightRect.bottom
           ) {
