@@ -23,10 +23,10 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
       {specialType === "incorrect" && <S.StyledXIcon />}
       <S.InnerWrapper>
         {chineseWords.map((word, i) => {
-          const CharsComponent = word.emphasis
-            ? S.EmphasisChars
-            : word.strong
+          const CharsComponent = word.strong
             ? S.StrongChars
+            : word.emphasis
+            ? S.EmphasisChars
             : S.Chars;
           return (
             <S.WordWrapper key={i}>
