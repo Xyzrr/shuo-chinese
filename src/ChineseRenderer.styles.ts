@@ -40,14 +40,14 @@ export const Pinyin = styled.div`
 export const EmphasisChars = styled.div`
   font-size: 28px;
   line-height: normal;
-  color: #fffab3;
+  color: #91b7ff;
 `;
 
 export const StrongChars = styled.strong`
   font-weight: normal;
   font-size: 28px;
   line-height: normal;
-  color: #cfa07c;
+  color: #e0a375;
 `;
 
 export const Chars = styled.div`
