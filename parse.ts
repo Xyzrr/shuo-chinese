@@ -27,6 +27,15 @@ const extractContentFromArticlePage = (
   const blocks: any[] = [];
   const metadata: any = { similarTo: [], usedFor: [], keywords: [] };
 
+  page.querySelectorAll("a").forEach((a) => {
+    const href = a.getAttribute("href");
+    if (href && href.startsWith("/")) {
+      a.setAttribute("href", `https://resources.allsetlearning.com${href}`);
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noreferrer");
+    }
+  });
+
   const content = page.querySelector(".mw-parser-output");
 
   content?.childNodes.forEach((blockNode) => {
