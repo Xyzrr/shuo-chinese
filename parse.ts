@@ -15,12 +15,20 @@ const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
   const normalSplit = pinyin.replace(/[.,?!/]/g, "").split(" ");
   const splitPinyin: string[] = [];
   normalSplit.forEach((chunk) => {
-    const probablyEnglish = chineseCharGroups.includes(
-      chunk.toLocaleLowerCase()
-    );
-    if (!probablyEnglish) {
-      splitPinyin.push(...split(chunk));
+    const splitted = split(chunk);
+
+    const probablyEnglish = chineseCharGroups.includes(chunk.toLowerCase());
+    if (probablyEnglish) {
+      return;
     }
+
+    if (splitted.join("") + "r" === chunk) {
+      // catch all the "nar", "dianr", "yihuir", etc.
+      splitPinyin.push(...splitted, "r");
+      return;
+    }
+
+    splitPinyin.push(...splitted);
   });
   let pinyinIndex = 0;
 
