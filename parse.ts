@@ -8,11 +8,28 @@ import fs from "fs";
 import split from "pinyin-split";
 
 const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
-  const splitPinyin = split(pinyin);
+  const chineseCharGroups = chineseWords.map((word) =>
+    word.chars.toLowerCase()
+  );
+
+  const normalSplit = pinyin.replace(/[.,?!/]/g, "").split(" ");
+  const splitPinyin: string[] = [];
+  normalSplit.forEach((chunk) => {
+    const probablyEnglish = chineseCharGroups.includes(
+      chunk.toLocaleLowerCase()
+    );
+    if (!probablyEnglish) {
+      splitPinyin.push(...split(chunk));
+    }
+  });
   let pinyinIndex = 0;
+
   chineseWords.forEach((word) => {
-    const notChars = ["，", "。", "？", "、"];
-    if (!notChars.includes(word.chars)) {
+    const isPunctuation = ["，", "。", "？", "、", "！", "⋯", "/"].includes(
+      word.chars
+    );
+    const containsEnglish = /[a-zA-Z]/.test(word.chars);
+    if (!isPunctuation && !containsEnglish) {
       word.pinyin = splitPinyin
         .slice(pinyinIndex, pinyinIndex + word.chars.length)
         .join("");
@@ -172,6 +189,7 @@ const extractContentFromArticlePage = (
                       .replaceAll("。", " 。 ")
                       .replaceAll("？", " ？ ")
                       .replaceAll("！", " ！ ")
+                      .replaceAll("⋯", " ⋯ ")
                       .split(" ");
                     words.forEach((word) => {
                       if (word !== "") {
