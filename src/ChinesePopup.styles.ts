@@ -53,3 +53,7 @@ export const WordDef = styled.div`
   }
   padding: 8px;
 `;
+
+export const DefSeparator = styled.span`
+  opacity: 0.7;
+`;

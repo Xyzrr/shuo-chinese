@@ -198,11 +198,20 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
                 </S.Character>
               </S.TopRow>
               {Object.keys(cedictDefs).map((pinyin) => {
-                const def = cedictDefs[pinyin];
+                const def = cedictDefs[pinyin] as string[];
                 return (
                   <>
                     <S.Pinyin>{pinyin}</S.Pinyin>
-                    <p>{def.join(" | ")}</p>
+                    <p>
+                      {def.map((d, i) => (
+                        <>
+                          {d}
+                          {i < def.length - 1 && (
+                            <S.DefSeparator> | </S.DefSeparator>
+                          )}
+                        </>
+                      ))}
+                    </p>
                   </>
                 );
               })}
