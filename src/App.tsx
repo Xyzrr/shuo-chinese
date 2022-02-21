@@ -174,6 +174,7 @@ const App: React.FC = () => {
         <S.FullPage
           onClick={() => {
             setReveal("none");
+            setSettingsAnchorEl(null);
           }}
         >
           <S.AppWrapper>
@@ -228,6 +229,7 @@ const App: React.FC = () => {
                   reveal={reveal}
                   onClick={(e) => {
                     e.stopPropagation();
+                    setSettingsAnchorEl(null);
                     if (selectedIndex === i) {
                       setReveal((r) => (r === "none" ? "answer" : "none"));
                     } else {
@@ -250,7 +252,12 @@ const App: React.FC = () => {
                   {selectedIndex === i &&
                     reveal === "answer" &&
                     sourceArticle != null && (
-                      <S.AnswerWrapper onClick={(e) => e.stopPropagation()}>
+                      <S.AnswerWrapper
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSettingsAnchorEl(null);
+                        }}
+                      >
                         {selectedCard.multi ? (
                           <MultiChineseRenderer
                             children={selectedCard.children}
