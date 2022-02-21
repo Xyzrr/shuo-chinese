@@ -14,11 +14,13 @@ const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
 
   const normalSplit = pinyin.replace(/[.,?!/]/g, "").split(" ");
   const splitPinyin: string[] = [];
+  const strippedEnglish: string[] = [];
   normalSplit.forEach((chunk) => {
     const splitted = split(chunk);
 
     const probablyEnglish = chineseCharGroups.includes(chunk.toLowerCase());
     if (probablyEnglish) {
+      strippedEnglish.push(chunk);
       return;
     }
 
@@ -36,13 +38,33 @@ const attachPinyinToChinese = (pinyin: string, chineseWords: any[]) => {
     const isPunctuation = ["，", "。", "？", "、", "！", "⋯", "/"].includes(
       word.chars
     );
-    const containsEnglish = /[a-zA-Z]/.test(word.chars);
-    if (!isPunctuation && !containsEnglish) {
-      word.pinyin = splitPinyin
-        .slice(pinyinIndex, pinyinIndex + word.chars.length)
-        .join("");
-      pinyinIndex += word.chars.length;
+    if (isPunctuation) {
+      return;
     }
+
+    const containsEnglish = strippedEnglish.includes(word.chars);
+    if (containsEnglish) {
+      return;
+    }
+
+    let syllables = word.chars.length;
+
+    const containsNumbers = /[0-9]/.test(word.chars);
+    if (containsNumbers) {
+      const parsed = parseInt(word.chars);
+      if (parsed > 20 && parsed < 100 && parsed % 10 !== 0) {
+        syllables++;
+      }
+
+      if (word.chars.includes("%")) {
+        syllables += 2;
+      }
+    }
+
+    word.pinyin = splitPinyin
+      .slice(pinyinIndex, pinyinIndex + syllables)
+      .join("");
+    pinyinIndex += syllables;
   });
 };
 
