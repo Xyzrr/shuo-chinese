@@ -87,201 +87,201 @@ const extractContentFromArticlePage = (
 
   const recurse = (topNode: HTMLElement, inLiju: boolean) => {
     topNode.childNodes.forEach((blockNode) => {
-      if (blockNode instanceof HTMLElement) {
-        if (blockNode.id === "ibox") {
-          blockNode
-            .querySelectorAll(".ibox-level-cefr-hsk a")
-            .forEach((a, i) => {
-              if (i === 0) {
-                metadata.cefrLevel = a.innerText.trim();
-              } else {
-                metadata.hskLevel = a.innerText.trim();
-              }
-            });
-          blockNode
-            .querySelectorAll(".ibox-similarto .smw-row")
-            .forEach((row) => {
-              const link = row.querySelector("a");
-              const url = link?.getAttribute("href");
-              const title = link?.innerText.trim();
-              const cefrLevel = row
-                .querySelectorAll(".smw-value")[1]
-                .innerText.trim();
-              metadata.similarTo.push({
-                url,
-                title,
-                cefrLevel,
-              });
-            });
-          blockNode.querySelectorAll(".ibox-usedfor a").forEach((link) => {
+      if (!(blockNode instanceof HTMLElement)) {
+        return;
+      }
+
+      if (blockNode.id === "ibox") {
+        blockNode.querySelectorAll(".ibox-level-cefr-hsk a").forEach((a, i) => {
+          if (i === 0) {
+            metadata.cefrLevel = a.innerText.trim();
+          } else {
+            metadata.hskLevel = a.innerText.trim();
+          }
+        });
+        blockNode
+          .querySelectorAll(".ibox-similarto .smw-row")
+          .forEach((row) => {
+            const link = row.querySelector("a");
             const url = link?.getAttribute("href");
             const title = link?.innerText.trim();
-            metadata.usedFor.push({
+            const cefrLevel = row
+              .querySelectorAll(".smw-value")[1]
+              .innerText.trim();
+            metadata.similarTo.push({
               url,
               title,
+              cefrLevel,
             });
           });
-          blockNode.querySelectorAll(".ibox-keywords a").forEach((link) => {
-            metadata.keywords.push(link.innerText.trim());
+        blockNode.querySelectorAll(".ibox-usedfor a").forEach((link) => {
+          const url = link?.getAttribute("href");
+          const title = link?.innerText.trim();
+          metadata.usedFor.push({
+            url,
+            title,
           });
-        }
-        if (blockNode.tagName === "P") {
-          blocks.push({ type: "paragraph", html: blockNode.innerHTML });
-        }
-        if (blockNode.tagName === "OL") {
-          blocks.push({
-            type: "list",
-            html: blockNode.innerHTML,
-            ordered: true,
-          });
-        }
-        if (blockNode.tagName === "UL" && !inLiju) {
-          blocks.push({
-            type: "list",
-            html: blockNode.innerHTML,
-            ordered: false,
-          });
-        }
-        if (blockNode.tagName === "TABLE") {
-          blocks.push({
-            type: "table",
-            html: blockNode.innerHTML,
-          });
-        }
-        if (blockNode.classList.contains("jiegou")) {
-          blocks.push({ type: "jiegou", text: blockNode.innerText });
-        }
-        if (blockNode.tagName === "H2") {
-          blocks.push({
-            type: "heading",
-            level: 2,
-            html: blockNode.innerHTML,
-            text: blockNode.text,
-          });
-        }
-        if (blockNode.tagName === "H3") {
-          blocks.push({
-            type: "heading",
-            level: 3,
-            html: blockNode.innerHTML,
-            text: blockNode.text,
-          });
-        }
-        if (blockNode.tagName === "H4") {
-          blocks.push({
-            type: "heading",
-            level: 4,
-            html: blockNode.innerHTML,
-            text: blockNode.text,
-          });
+        });
+        blockNode.querySelectorAll(".ibox-keywords a").forEach((link) => {
+          metadata.keywords.push(link.innerText.trim());
+        });
+      }
+      if (blockNode.tagName === "P") {
+        blocks.push({ type: "paragraph", html: blockNode.innerHTML });
+      }
+      if (blockNode.tagName === "OL") {
+        blocks.push({
+          type: "list",
+          html: blockNode.innerHTML,
+          ordered: true,
+        });
+      }
+      if (blockNode.tagName === "UL" && !inLiju) {
+        blocks.push({
+          type: "list",
+          html: blockNode.innerHTML,
+          ordered: false,
+        });
+      }
+      if (blockNode.tagName === "TABLE") {
+        blocks.push({
+          type: "table",
+          html: blockNode.innerHTML,
+        });
+      }
+      if (blockNode.classList.contains("jiegou")) {
+        blocks.push({ type: "jiegou", text: blockNode.innerText });
+      }
+      if (blockNode.tagName === "H2") {
+        blocks.push({
+          type: "heading",
+          level: 2,
+          html: blockNode.innerHTML,
+          text: blockNode.text,
+        });
+      }
+      if (blockNode.tagName === "H3") {
+        blocks.push({
+          type: "heading",
+          level: 3,
+          html: blockNode.innerHTML,
+          text: blockNode.text,
+        });
+      }
+      if (blockNode.tagName === "H4") {
+        blocks.push({
+          type: "heading",
+          level: 4,
+          html: blockNode.innerHTML,
+          text: blockNode.text,
+        });
+      }
+
+      if (blockNode.tagName === "UL" && inLiju) {
+        const block: any = {
+          type: "exampleSet",
+          children: [],
+        };
+
+        if (blockNode.classList.contains("dialog")) {
+          block.specialType = "dialogue";
         }
 
-        if (blockNode.tagName === "UL" && inLiju) {
-          const block: any = {
-            type: "exampleSet",
-            children: [],
+        blockNode.querySelectorAll("li").forEach((exampleNode) => {
+          const example: any = {
+            chineseWords: [],
           };
 
-          if (blockNode.classList.contains("dialog")) {
-            block.specialType = "dialogue";
+          if (exampleNode.classList.contains("q")) {
+            // ???
+            example.specialType = "q";
+          }
+          if (exampleNode.classList.contains("x")) {
+            example.specialType = "incorrect";
+          }
+          if (exampleNode.classList.contains("o")) {
+            example.specialType = "correction";
+          }
+          const speakerNode = exampleNode.querySelector(".speaker");
+          if (speakerNode) {
+            example.speaker = speakerNode.innerText.trim().slice(0, -1);
+            speakerNode.remove();
           }
 
-          blockNode.querySelectorAll("li").forEach((exampleNode) => {
-            const example: any = {
-              chineseWords: [],
-            };
+          if (blockNode.classList.contains("liju-en")) {
+            example.english = exampleNode.innerText;
+          } else {
+            exampleNode.childNodes.forEach((exampleChild) => {
+              const addWordsWithAttributes = (attributes: any = {}) => {
+                const words = exampleChild.innerText
+                  .trim()
+                  .replaceAll("&#160;", " ")
+                  .replaceAll("、", " 、 ")
+                  .replaceAll("，", " ， ")
+                  .replaceAll("。", " 。 ")
+                  .replaceAll("？", " ？ ")
+                  .replaceAll("！", " ！ ")
+                  .replaceAll("⋯", " ⋯ ")
+                  .split(" ");
+                words.forEach((word) => {
+                  if (word !== "") {
+                    example.chineseWords.push({
+                      chars: word,
+                      ...attributes,
+                    });
+                  }
+                });
+              };
 
-            if (exampleNode.classList.contains("q")) {
-              // ???
-              example.specialType = "q";
-            }
-            if (exampleNode.classList.contains("x")) {
-              example.specialType = "incorrect";
-            }
-            if (exampleNode.classList.contains("o")) {
-              example.specialType = "correction";
-            }
-            const speakerNode = exampleNode.querySelector(".speaker");
-            if (speakerNode) {
-              example.speaker = speakerNode.innerText.trim().slice(0, -1);
-              speakerNode.remove();
-            }
+              if (exampleChild instanceof TextNode) {
+                addWordsWithAttributes();
+              }
+              if (
+                exampleChild instanceof HTMLElement &&
+                exampleChild.tagName === "EM"
+              ) {
+                addWordsWithAttributes({ emphasis: true });
+              }
+              if (
+                exampleChild instanceof HTMLElement &&
+                exampleChild.tagName === "STRONG"
+              ) {
+                addWordsWithAttributes({ strong: true });
+              }
+              if (
+                exampleChild instanceof HTMLElement &&
+                exampleChild.tagName === "SPAN" &&
+                exampleChild.classList.contains("expl")
+              ) {
+                example.explanation = exampleChild.innerText;
+              }
+              if (
+                exampleChild instanceof HTMLElement &&
+                exampleChild.tagName === "SPAN" &&
+                exampleChild.classList.contains("pinyin")
+              ) {
+                attachPinyinToChinese(
+                  exampleChild.innerText.trim(),
+                  example.chineseWords
+                );
+              }
+              if (
+                exampleChild instanceof HTMLElement &&
+                exampleChild.tagName === "SPAN" &&
+                exampleChild.classList.contains("trans")
+              ) {
+                example.english = exampleChild.innerText;
+              }
+            });
+          }
 
-            if (blockNode.classList.contains("liju-en")) {
-              example.english = exampleNode.innerText;
-            } else {
-              exampleNode.childNodes.forEach((exampleChild) => {
-                const addWordsWithAttributes = (attributes: any = {}) => {
-                  const words = exampleChild.innerText
-                    .trim()
-                    .replaceAll("&#160;", " ")
-                    .replaceAll("、", " 、 ")
-                    .replaceAll("，", " ， ")
-                    .replaceAll("。", " 。 ")
-                    .replaceAll("？", " ？ ")
-                    .replaceAll("！", " ！ ")
-                    .replaceAll("⋯", " ⋯ ")
-                    .split(" ");
-                  words.forEach((word) => {
-                    if (word !== "") {
-                      example.chineseWords.push({
-                        chars: word,
-                        ...attributes,
-                      });
-                    }
-                  });
-                };
+          block.children.push(example);
+        });
+        blocks.push(block);
+      }
 
-                if (exampleChild instanceof TextNode) {
-                  addWordsWithAttributes();
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "EM"
-                ) {
-                  addWordsWithAttributes({ emphasis: true });
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "STRONG"
-                ) {
-                  addWordsWithAttributes({ strong: true });
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "SPAN" &&
-                  exampleChild.classList.contains("expl")
-                ) {
-                  example.explanation = exampleChild.innerText;
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "SPAN" &&
-                  exampleChild.classList.contains("pinyin")
-                ) {
-                  attachPinyinToChinese(
-                    exampleChild.innerText.trim(),
-                    example.chineseWords
-                  );
-                }
-                if (
-                  exampleChild instanceof HTMLElement &&
-                  exampleChild.tagName === "SPAN" &&
-                  exampleChild.classList.contains("trans")
-                ) {
-                  example.english = exampleChild.innerText;
-                }
-              });
-            }
-
-            block.children.push(example);
-          });
-          blocks.push(block);
-        }
-
-        if (blockNode.classList.contains("liju")) {
-          recurse(blockNode, true);
-        }
+      if (blockNode.classList.contains("liju")) {
+        recurse(blockNode, true);
       }
     });
   };
