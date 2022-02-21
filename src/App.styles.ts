@@ -30,7 +30,7 @@ export const Logo = styled.div`
   padding-left: 20px;
   margin-bottom: 24px;
   margin-top: 0px;
-  font-weight: bold;
+  // font-weight: bold;
 `;
 
 export const EnglishWrapper = styled.div`
