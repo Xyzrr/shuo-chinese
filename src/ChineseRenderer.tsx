@@ -21,6 +21,7 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
     <S.Wrapper specialType={specialType}>
       {specialType === "correction" && <S.StyledCheckIcon />}
       {specialType === "incorrect" && <S.StyledXIcon />}
+      {specialType === "q" && <S.StyledWarningIcon />}
       <S.InnerWrapper>
         {chineseWords.map((word, i) => {
           const CharsComponent = word.strong

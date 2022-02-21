@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import XIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
+import WarningIcon from "@mui/icons-material/Warning";
 
 export const InnerWrapper = styled.div``;
 
@@ -49,6 +50,11 @@ export const StyledCheckIcon = styled(CheckIcon)`
 
 export const StyledXIcon = styled(XIcon)`
   color: rgb(235, 59, 46);
+  margin-right: 8px;
+`;
+
+export const StyledWarningIcon = styled(WarningIcon)`
+  color: #dfe30e;
   margin-right: 8px;
 `;
 
