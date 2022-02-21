@@ -183,7 +183,7 @@ const App: React.FC = () => {
               anchorEl={settingsAnchorEl}
               placement="left-start"
             >
-              <S.SettingsWrapper>
+              <S.SettingsWrapper onClick={(e) => e.stopPropagation()}>
                 <S.StyledSlider
                   size="small"
                   value={levels}
