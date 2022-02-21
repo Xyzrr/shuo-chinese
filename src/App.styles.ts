@@ -219,6 +219,7 @@ export const SettingsWrapper = styled.div`
 `;
 
 export const CloseArticleButton = styled.div`
+  color: #888;
   position: fixed;
   top: 48px;
   right: max(48px + (100vw - 1200px) / 2, 48px);
@@ -233,8 +234,8 @@ export const CloseArticleButton = styled.div`
     filter: brightness(1.2);
   }
   @media (max-width: 768px) {
-    top: 24px;
-    right: 24px;
+    top: 16px;
+    right: 16px;
   }
 `;
 

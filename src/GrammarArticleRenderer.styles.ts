@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { CODE_BLOCK_COLOR } from "./colors";
+import { LEVEL_COLORS } from "./colors";
 
 export const OriginalLink = styled.div`
   color: #c8c8c8;
@@ -10,19 +11,23 @@ export const OriginalLink = styled.div`
 `;
 
 export const H1 = styled.h1`
+  font-size: 40px;
+  // margin-top: 32px;
   margin-top: 0;
-  font-size: 36px;
+  margin-bottom: 16px;
   line-height: normal;
 `;
 
 export const H2 = styled.h2`
-  font-size: 24px;
+  font-size: 28px;
   margin-top: 32px;
+  margin-bottom: 8px;
   line-height: normal;
 `;
 
 export const H3 = styled.h3`
   font-size: 20px;
+  margin-bottom: 8px;
   line-height: normal;
 `;
 
@@ -66,21 +71,26 @@ export const Structure = styled.div`
 export const TopRow = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 24px;
   font-size: 16px;
-
-  @media (max-width: 768px) {
-    flex-direction: column-reverse;
-    align-items: flex-start;
-  }
+  margin-top: -10px;
+  margin-bottom: 32px;
 `;
 
-export const ArticleLevel = styled.div`
+export const ArticleLevel = styled.div<{ level: number }>`
   display: flex;
   align-items: center;
+  background: ${(props) => LEVEL_COLORS[props.level]};
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 2px;
+  color: #2a282f;
+  line-height: normal;
+  margin-right: 8px;
+  margin-left: 2px;
 `;
 
-export const ArticleLevelString = styled.span`
-  opacity: 0.6;
+export const DesktopOnly = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

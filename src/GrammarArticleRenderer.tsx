@@ -17,26 +17,22 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
   return (
     <>
       <S.TopRow>
+        <S.ArticleLevel level={cefrToNumber(article.metadata.cefrLevel)}>
+          {article.metadata.cefrLevel}
+        </S.ArticleLevel>
         <S.OriginalLink>
-          From the{" "}
+          from the{" "}
           <a
             href={`https://resources.allsetlearning.com/${article.url}`}
             target="_blank"
             rel="noreferrer"
           >
-            AllSet Learning Chinese Grammar Wiki
+            AllSet <S.DesktopOnly>Learning Chinese</S.DesktopOnly> Grammar Wiki
           </a>
         </S.OriginalLink>
-        <S.ArticleLevel>
-          <ArticleLevelIndicator
-            level={cefrToNumber(article.metadata.cefrLevel)}
-          />
-          <S.ArticleLevelString>
-            {article.metadata.cefrLevel}
-          </S.ArticleLevelString>
-        </S.ArticleLevel>
       </S.TopRow>
       <S.H1>{article.title}</S.H1>
+
       {article.blocks.map((block: any, i: any) => {
         switch (block.type) {
           case "heading":
