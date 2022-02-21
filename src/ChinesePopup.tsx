@@ -196,10 +196,6 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
                 >
                   {word}
                 </S.Character>
-                <S.HSKLevel>
-                  <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
-                  {getHSKLevel(word)}
-                </S.HSKLevel>
               </S.TopRow>
               {Object.keys(cedictDefs).map((pinyin) => {
                 const def = cedictDefs[pinyin];
