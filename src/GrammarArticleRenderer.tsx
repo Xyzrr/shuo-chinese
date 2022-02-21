@@ -1,6 +1,5 @@
 import { StyledComponent } from "styled-components";
 import * as S from "./GrammarArticleRenderer.styles";
-import { ArticleLevelIndicator } from "./App.styles";
 import MultiChineseRenderer from "./MultiChineseRenderer";
 
 const cefrToNumber = (level: string) => {
@@ -53,7 +52,9 @@ const GrammarArticleRenderer: React.FC<GrammarArticleRendererProps> = ({
             }
             return <Component key={i}>{block.text}</Component>;
           case "paragraph":
-            return <p dangerouslySetInnerHTML={{ __html: block.html }}></p>;
+            return (
+              <p key={i} dangerouslySetInnerHTML={{ __html: block.html }}></p>
+            );
           // return <p>{block.html}</p>;
           case "jiegou":
             return (
