@@ -175,7 +175,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
   const goUp = rect.bottom > window.innerHeight - 200;
   const hanziValue = (hanzi as any)[word[0]];
 
-  const cedictDefs = (cedict as any)[word].d;
+  const cedictDefs = (cedict as any)[word];
 
   return (
     <>
@@ -187,29 +187,31 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       >
         <S.FakeHighlight rect={rect} />
         <S.Wrapper className="chinese-popup">
-          <S.WordDef>
-            <S.TopRow>
-              <S.Character
-                className="secret-pleco-link"
-                href={`plecoapi://x-callback-url/s?q=${word}`}
-              >
-                {word}
-              </S.Character>
-              <S.HSKLevel>
-                <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
-                {getHSKLevel(word)}
-              </S.HSKLevel>
-            </S.TopRow>
-            {Object.keys(cedictDefs).map((pinyin) => {
-              const def = cedictDefs[pinyin];
-              return (
-                <>
-                  <S.Pinyin>{pinyin}</S.Pinyin>
-                  <p>{def.join(" | ")}</p>
-                </>
-              );
-            })}
-          </S.WordDef>
+          {word.length > 1 && (
+            <S.WordDef>
+              <S.TopRow>
+                <S.Character
+                  className="secret-pleco-link"
+                  href={`plecoapi://x-callback-url/s?q=${word}`}
+                >
+                  {word}
+                </S.Character>
+                <S.HSKLevel>
+                  <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
+                  {getHSKLevel(word)}
+                </S.HSKLevel>
+              </S.TopRow>
+              {Object.keys(cedictDefs).map((pinyin) => {
+                const def = cedictDefs[pinyin];
+                return (
+                  <>
+                    <S.Pinyin>{pinyin}</S.Pinyin>
+                    <p>{def.join(" | ")}</p>
+                  </>
+                );
+              })}
+            </S.WordDef>
+          )}
           <S.WordDef>
             <S.TopRow>
               <S.Character

@@ -1,27 +1,27 @@
-const cedict =  require("./cedict.json");
+const fs = require("fs");
+const cedict = require("./cedict-original.json");
+const utils = require("pinyin-utils");
 
 try {
   const keys = Object.keys(cedict);
-  const counter = {};
-  const uniq = new Set();
-  for (const key of keys) {
-    if (counter[key.length] == null) {
-      counter[key.length] = 1;
-    } else {
-      counter[key.length]++;
+  const result = {};
+
+  keys.forEach((key) => {
+    if (cedict[key].s) {
+      return;
     }
 
-    if (key.length === 15) {
-      console.log(key)
-      console.log(cedict[key])
-    }
-    for (const char of key) {
-      uniq.add(char);
-    }
-  }
-  console.log(counter)
-  console.log(uniq.size)
-  //   fs.writeFileSync(`./src/hanzi.json`, JSON.stringify(parsed));
+    const originalDefs = cedict[key].d;
+    const cloned = {};
+
+    Object.keys(originalDefs).forEach((defKey) => {
+      cloned[utils.numberToMark(defKey)] = originalDefs[defKey];
+    });
+
+    result[key] = cloned;
+  });
+
+  fs.writeFileSync(`./src/cedict.json`, JSON.stringify(result));
 } catch (err) {
   console.error(err);
 }
