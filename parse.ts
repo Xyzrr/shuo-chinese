@@ -211,68 +211,79 @@ const extractContentFromArticlePage = (
           if (blockNode.classList.contains("liju-en")) {
             example.english = exampleNode.innerText;
           } else {
-            exampleNode.childNodes.forEach((exampleChild) => {
-              const addWordsWithAttributes = (attributes: any = {}) => {
-                const words = exampleChild.innerText
-                  .trim()
-                  .replaceAll("&#160;", " ")
-                  .replaceAll("、", " 、 ")
-                  .replaceAll("，", " ， ")
-                  .replaceAll("。", " 。 ")
-                  .replaceAll("？", " ？ ")
-                  .replaceAll("！", " ！ ")
-                  .replaceAll("⋯", " ⋯ ")
-                  .split(" ");
-                words.forEach((word) => {
-                  if (word !== "") {
-                    example.chineseWords.push({
-                      chars: word,
-                      ...attributes,
-                    });
-                  }
-                });
-              };
+            const parseExampleContent = (exampleTopNode: HTMLElement) => {
+              exampleTopNode.childNodes.forEach((exampleChild) => {
+                const addWordsWithAttributes = (attributes: any = {}) => {
+                  const words = exampleChild.innerText
+                    .trim()
+                    .replaceAll("&#160;", " ")
+                    .replaceAll("、", " 、 ")
+                    .replaceAll("，", " ， ")
+                    .replaceAll("。", " 。 ")
+                    .replaceAll("？", " ？ ")
+                    .replaceAll("！", " ！ ")
+                    .replaceAll("⋯", " ⋯ ")
+                    .split(" ");
+                  words.forEach((word) => {
+                    if (word !== "") {
+                      example.chineseWords.push({
+                        chars: word,
+                        ...attributes,
+                      });
+                    }
+                  });
+                };
 
-              if (exampleChild instanceof TextNode) {
-                addWordsWithAttributes();
-              }
-              if (
-                exampleChild instanceof HTMLElement &&
-                exampleChild.tagName === "EM"
-              ) {
-                addWordsWithAttributes({ emphasis: true });
-              }
-              if (
-                exampleChild instanceof HTMLElement &&
-                exampleChild.tagName === "STRONG"
-              ) {
-                addWordsWithAttributes({ strong: true });
-              }
-              if (
-                exampleChild instanceof HTMLElement &&
-                exampleChild.tagName === "SPAN" &&
-                exampleChild.classList.contains("expl")
-              ) {
-                example.explanation = exampleChild.innerText;
-              }
-              if (
-                exampleChild instanceof HTMLElement &&
-                exampleChild.tagName === "SPAN" &&
-                exampleChild.classList.contains("pinyin")
-              ) {
-                attachPinyinToChinese(
-                  exampleChild.innerText.trim(),
-                  example.chineseWords
-                );
-              }
-              if (
-                exampleChild instanceof HTMLElement &&
-                exampleChild.tagName === "SPAN" &&
-                exampleChild.classList.contains("trans")
-              ) {
-                example.english = exampleChild.innerText;
-              }
-            });
+                if (exampleChild instanceof TextNode) {
+                  addWordsWithAttributes();
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "EM"
+                ) {
+                  addWordsWithAttributes({ emphasis: true });
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "STRONG"
+                ) {
+                  addWordsWithAttributes({ strong: true });
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "SPAN" &&
+                  exampleChild.classList.contains("expl")
+                ) {
+                  example.explanation = exampleChild.innerText;
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "SPAN" &&
+                  exampleChild.classList.contains("pinyin")
+                ) {
+                  attachPinyinToChinese(
+                    exampleChild.innerText.trim(),
+                    example.chineseWords
+                  );
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "SPAN" &&
+                  exampleChild.classList.contains("trans")
+                ) {
+                  example.english = exampleChild.innerText;
+                }
+                if (
+                  exampleChild instanceof HTMLElement &&
+                  exampleChild.tagName === "SPAN" &&
+                  exampleChild.classList.contains("liju")
+                ) {
+                  parseExampleContent(exampleChild);
+                }
+              });
+            };
+
+            parseExampleContent(exampleNode);
           }
 
           block.children.push(example);
