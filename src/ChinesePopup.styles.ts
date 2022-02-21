@@ -3,7 +3,6 @@ import { FOREGROUND_COLOR } from "./colors";
 
 export const Wrapper = styled.div`
   max-width: 300px;
-  padding: 8px;
   background: ${FOREGROUND_COLOR};
   border: 1px solid #555;
   border-radius: 4px;
@@ -46,4 +45,11 @@ export const Pinyin = styled.div`
 
 export const EtymologyType = styled.span`
   opacity: 0.7;
+`;
+
+export const WordDef = styled.div`
+  &:not(:last-child) {
+    border-bottom: 1px solid #555;
+  }
+  padding: 8px;
 `;

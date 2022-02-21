@@ -3,6 +3,7 @@ import React from "react";
 import { WBPopup } from "./WBPopup";
 import hanzi from "./hanzi.json";
 import { getHSKLevel } from "./hsk";
+import cedict from "./cedict.json";
 
 const etymologyToString = (etymology: any) => {
   if (etymology.type === "pictophonetic") {
@@ -14,17 +15,14 @@ const etymologyToString = (etymology: any) => {
 interface ChinesePopupProps {}
 
 const ChinesePopup: React.FC<ChinesePopupProps> = () => {
-  const [currentMatch, setCurrentMatch] = React.useState<{
-    rect: DOMRect;
-    text: string;
-  } | null>(null);
+  const [currentRange, setCurrentRange] = React.useState<Range | null>(null);
 
   const lastNodeRef = React.useRef<Node | null>(null);
   const lastOffsetRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
     const reset = () => {
-      setCurrentMatch(null);
+      setCurrentRange(null);
       lastNodeRef.current = null;
       lastOffsetRef.current = null;
     };
@@ -63,7 +61,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         rightRange = temp;
       } catch (e) {}
 
-      let hoveredMatch: any = null;
+      let hoveredCharRange: Range | null = null;
 
       if (leftRange) {
         const leftText = leftRange.toString();
@@ -76,12 +74,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
             y >= leftRect.top &&
             y <= leftRect.bottom
           ) {
-            hoveredMatch = {
-              text: leftText,
-              rect: leftRect,
-              node: leftRange.startContainer,
-              offset: leftRange.startOffset,
-            };
+            hoveredCharRange = leftRange;
           }
         }
       }
@@ -96,24 +89,19 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
             y >= rightRect.top &&
             y <= rightRect.bottom
           ) {
-            hoveredMatch = {
-              text: rightText,
-              rect: rightRect,
-              node: rightRange.startContainer,
-              offset: rightRange.startOffset,
-            };
+            hoveredCharRange = rightRange;
           }
         }
       }
 
-      if (!hoveredMatch) {
+      if (!hoveredCharRange) {
         reset();
         return;
       }
 
       if (
-        lastNodeRef.current === hoveredMatch.node &&
-        lastOffsetRef.current === hoveredMatch.offset
+        lastNodeRef.current === hoveredCharRange.startContainer &&
+        lastOffsetRef.current === hoveredCharRange.startOffset
       ) {
         if (toggle) {
           reset();
@@ -121,10 +109,27 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         return;
       }
 
-      lastNodeRef.current = hoveredMatch.node;
-      lastOffsetRef.current = hoveredMatch.offset;
+      lastNodeRef.current = hoveredCharRange.startContainer;
+      lastOffsetRef.current = hoveredCharRange.startOffset;
 
-      setCurrentMatch({ text: hoveredMatch.text, rect: hoveredMatch.rect });
+      const hoveredWordRange = hoveredCharRange.cloneRange();
+      for (let n = 4; n >= 1; n--) {
+        try {
+          hoveredWordRange.setEnd(
+            hoveredCharRange.endContainer,
+            hoveredCharRange.endOffset + n
+          );
+          console.log("HOVERED WORD", n, hoveredWordRange.toString());
+
+          if ((cedict as any)[hoveredWordRange.toString()]) {
+            break;
+          }
+        } catch (e) {
+          // keep trying till it works
+        }
+      }
+
+      setCurrentRange(hoveredWordRange);
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -140,7 +145,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
     };
 
     const onScroll = () => {
-      setCurrentMatch(null);
+      setCurrentRange(null);
     };
 
     const canHover = window.matchMedia("(hover: hover)").matches;
@@ -160,43 +165,73 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
     };
   });
 
-  if (!currentMatch) {
+  if (!currentRange) {
     return null;
   }
 
-  const goUp = currentMatch.rect.bottom > window.innerHeight - 200;
-  const hanziValue = (hanzi as any)[currentMatch.text];
+  const word = currentRange.toString();
+  const rect = currentRange.getBoundingClientRect();
+
+  const goUp = rect.bottom > window.innerHeight - 200;
+  const hanziValue = (hanzi as any)[word[0]];
+
+  const cedictDefs = (cedict as any)[word].d;
 
   return (
     <>
       <WBPopup
-        x={currentMatch.rect.left}
-        y={goUp ? currentMatch.rect.top : currentMatch.rect.bottom}
+        x={rect.left}
+        y={goUp ? rect.top : rect.bottom}
         direction={goUp ? "top right" : "bottom right"}
-        key={currentMatch.text}
+        key={word}
       >
-        <S.FakeHighlight rect={currentMatch.rect} />
+        <S.FakeHighlight rect={rect} />
         <S.Wrapper className="chinese-popup">
-          <S.TopRow>
-            <S.Character
-              className="secret-pleco-link"
-              href={`plecoapi://x-callback-url/s?q=${hanziValue.character}`}
-            >
-              {hanziValue.character}
-            </S.Character>
-            <S.HSKLevel>
-              <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
-              {getHSKLevel(hanziValue.character)}
-            </S.HSKLevel>
-          </S.TopRow>
-          <S.Pinyin>{hanziValue.pinyin.join(", ")}</S.Pinyin>
-          <p>{hanziValue.definition}</p>
-          {hanziValue.etymology && (
-            <p>
-              <S.EtymologyType>{hanziValue.etymology.type}: </S.EtymologyType>
-              {etymologyToString(hanziValue.etymology)}
-            </p>
-          )}
+          <S.WordDef>
+            <S.TopRow>
+              <S.Character
+                className="secret-pleco-link"
+                href={`plecoapi://x-callback-url/s?q=${word}`}
+              >
+                {word}
+              </S.Character>
+              <S.HSKLevel>
+                <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
+                {getHSKLevel(word)}
+              </S.HSKLevel>
+            </S.TopRow>
+            {Object.keys(cedictDefs).map((pinyin) => {
+              const def = cedictDefs[pinyin];
+              return (
+                <>
+                  <S.Pinyin>{pinyin}</S.Pinyin>
+                  <p>{def.join(" | ")}</p>
+                </>
+              );
+            })}
+          </S.WordDef>
+          <S.WordDef>
+            <S.TopRow>
+              <S.Character
+                className="secret-pleco-link"
+                href={`plecoapi://x-callback-url/s?q=${hanziValue.character}`}
+              >
+                {hanziValue.character}
+              </S.Character>
+              <S.HSKLevel>
+                <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
+                {getHSKLevel(hanziValue.character)}
+              </S.HSKLevel>
+            </S.TopRow>
+            <S.Pinyin>{hanziValue.pinyin.join(", ")}</S.Pinyin>
+            <p>{hanziValue.definition}</p>
+            {hanziValue.etymology && (
+              <p>
+                <S.EtymologyType>{hanziValue.etymology.type}: </S.EtymologyType>
+                {etymologyToString(hanziValue.etymology)}
+              </p>
+            )}
+          </S.WordDef>
         </S.Wrapper>
       </WBPopup>
     </>

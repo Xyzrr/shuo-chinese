@@ -21,6 +21,7 @@
     "find-hanzi": "^1.0.11",
     "hanzi": "^2.1.5",
     "hsk-words": "github:pepebecker/hsk-words",
+    "mdbg": "^1.73.0",
     "node-fetch": "^3.2.0",
     "node-html-parser": "^5.2.0",
     "pinyin-split": "^1.170.0",
@@ -40,7 +41,8 @@
     "eject": "react-scripts eject",
     "scrape": "ncc run ./scrape.ts",
     "parse": "ncc run ./parse.ts",
-    "parse-hanzi": "ncc run ./parse-hanzi.ts"
+    "parse-hanzi": "ncc run ./parse-hanzi.ts",
+    "parse-cedict": "ncc run ./parse-cedict.ts"
   },
   "eslintConfig": {
     "extends": [
