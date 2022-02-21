@@ -10,12 +10,16 @@ try {
     if (cedict[key].s) {
       return;
     }
+    if (key.length === 1) {
+      return;
+    }
 
     const originalDefs = cedict[key].d;
     const cloned = {};
 
     Object.keys(originalDefs).forEach((defKey) => {
-      cloned[utils.numberToMark(defKey)] = originalDefs[defKey];
+      const markedPinyin = utils.numberToMark(defKey.split(" ")).join(" ");
+      cloned[markedPinyin] = originalDefs[defKey];
     });
 
     result[key] = cloned;
