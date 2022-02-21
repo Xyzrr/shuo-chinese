@@ -44,9 +44,6 @@ const extractCards = (level: number) => {
   const cards: any[] = [];
 
   articleSet.forEach((article) => {
-    if (!article.title.includes("bei")) {
-      return;
-    }
     article.blocks.forEach((block: any) => {
       if (block.type === "exampleSet") {
         if (block.specialType === "dialogue") {
