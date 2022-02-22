@@ -51,3 +51,7 @@ export const articleFromCard = (card: any) => {
     (article) => article.title === card.article
   );
 };
+
+export const chineseTextToFilename = (text: string) => {
+  return text.replace("/", "slash");
+};

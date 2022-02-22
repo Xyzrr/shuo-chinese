@@ -2,7 +2,7 @@ import textToSpeech from "@google-cloud/text-to-speech";
 import fs from "fs";
 import util from "util";
 import { Storage } from "@google-cloud/storage";
-import { extractCards } from "./src/card-utils";
+import { chineseTextToFilename, extractCards } from "./src/card-utils";
 
 const client = new textToSpeech.TextToSpeechClient();
 const storage = new Storage();
@@ -24,7 +24,7 @@ const genAudioForText = async (text: string) => {
 
   // Write the binary audio content to a local file
   const writeFile = util.promisify(fs.writeFile);
-  const fname = `audio/${text}.mp3`;
+  const fname = `audio/${chineseTextToFilename(text)}.mp3`;
   await writeFile(fname, response.audioContent as string, "binary");
   console.log(`Wrote to file!`);
 
@@ -41,7 +41,22 @@ const genAudioForCard = async (card: any) => {
 };
 
 const genAudio = async () => {
-  const cards = extractCards(2);
+  let cards = extractCards(3);
+  let i = 0;
+
+  // const resumeIndex = cards.findIndex((c) => {
+  //   if (c.multi) {
+  //     return false;
+  //   }
+  //   const t = c.chineseWords.map((w: any) => w.chars).join("");
+  //   if (t.includes("上海在江苏省和")) {
+  //     return true;
+  //   }
+  //   return false;
+  // });
+  // cards = cards.slice(resumeIndex);
+  // i = resumeIndex;
+
   for (const card of cards) {
     if (card.multi) {
       for (const example of card.children) {
@@ -50,6 +65,8 @@ const genAudio = async () => {
     } else {
       await genAudioForCard(card);
     }
+    console.log(i + 1, "of", cards.length);
+    i++;
   }
 };
 
