@@ -41,14 +41,16 @@ const genAudioForCard = async (card: any) => {
 };
 
 const genAudio = async () => {
-  const cards = extractCards(0);
-  cards.forEach(async (card) => {
+  const cards = extractCards(2);
+  for (const card of cards) {
     if (card.multi) {
-      card.children.forEach(genAudioForCard);
+      for (const example of card.children) {
+        await genAudioForCard(example);
+      }
     } else {
       await genAudioForCard(card);
     }
-  });
+  }
 };
 
 genAudio();

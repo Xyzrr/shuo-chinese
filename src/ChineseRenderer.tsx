@@ -3,6 +3,8 @@ import { SettingsContext } from "./App";
 import * as S from "./ChineseRenderer.styles";
 import AudioIcon from "@mui/icons-material/VolumeUp";
 
+let currentAudio: HTMLAudioElement | null;
+
 interface ChineseRendererProps {
   chineseWords: any[];
   english?: string;
@@ -43,12 +45,15 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
           {/* Filler pinyin to guarantee alignment */}
           {settingsContext.showPinyin && <S.Pinyin>{"\xa0"}</S.Pinyin>}
           <S.AudioButton
-            onClick={() => {
-              new Audio(
+            onClick={async () => {
+              currentAudio?.pause();
+              const thisAudio = new Audio(
                 `https://storage.googleapis.com/shuo-chinese-audio-samples/${chineseWords
                   .map((w) => w.chars)
                   .join("")}.mp3`
-              ).play();
+              );
+              currentAudio = thisAudio;
+              await thisAudio.play();
             }}
           >
             <AudioIcon />

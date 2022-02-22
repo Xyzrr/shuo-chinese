@@ -205,12 +205,12 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
                     <S.Pinyin>{pinyin}</S.Pinyin>
                     <p>
                       {def.map((d, i) => (
-                        <>
+                        <React.Fragment key={i}>
                           {d}
                           {i < def.length - 1 && (
                             <S.DefSeparator> | </S.DefSeparator>
                           )}
-                        </>
+                        </React.Fragment>
                       ))}
                     </p>
                   </>
