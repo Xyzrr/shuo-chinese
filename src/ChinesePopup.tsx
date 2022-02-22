@@ -235,7 +235,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
               </S.Character>
               <S.HSKLevel>
                 <S.HSKLevelPrefix>HSK </S.HSKLevelPrefix>
-                {getHSKLevel(hanziValue.character)}
+                {getHSKLevel(hanziValue.character) || "7+"}
               </S.HSKLevel>
             </S.TopRow>
             <S.Pinyin>{hanziValue.pinyin.join(", ")}</S.Pinyin>

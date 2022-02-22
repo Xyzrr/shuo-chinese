@@ -5038,7 +5038,7 @@ export const getHSKLevel = (text: string) => {
   let maxDifficulty = 0;
   for (let char of text.split("")) {
     if (!hskDict[char] && hasCharacterText(char)) {
-      return 7;
+      return null;
     }
     if (hskDict[char] > maxDifficulty) {
       maxDifficulty = hskDict[char];
