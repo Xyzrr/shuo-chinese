@@ -41,7 +41,8 @@ const genAudioForCard = async (card: any) => {
 };
 
 const genAudio = async () => {
-  let cards = extractCards(3);
+  let cards = extractCards(4);
+  const total = cards.length;
   let i = 0;
 
   // const resumeIndex = cards.findIndex((c) => {
@@ -49,7 +50,7 @@ const genAudio = async () => {
   //     return false;
   //   }
   //   const t = c.chineseWords.map((w: any) => w.chars).join("");
-  //   if (t.includes("上海在江苏省和")) {
+  //   if (t.includes("从这里向/朝/往")) {
   //     return true;
   //   }
   //   return false;
@@ -65,7 +66,7 @@ const genAudio = async () => {
     } else {
       await genAudioForCard(card);
     }
-    console.log(i + 1, "of", cards.length);
+    console.log(i + 1, "of", total);
     i++;
   }
 };

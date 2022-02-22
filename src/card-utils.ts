@@ -53,5 +53,5 @@ export const articleFromCard = (card: any) => {
 };
 
 export const chineseTextToFilename = (text: string) => {
-  return text.replace("/", "slash");
+  return text.replaceAll("/", "slash");
 };

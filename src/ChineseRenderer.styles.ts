@@ -87,6 +87,7 @@ export const AudioButton = styled.div`
   width: 32px;
   height: 32px;
   border: 1px solid #555;
+  margin-left: 8px;
   &:hover {
     background: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.7);

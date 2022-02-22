@@ -201,7 +201,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
               {Object.keys(cedictDefs).map((pinyin) => {
                 const def = cedictDefs[pinyin] as string[];
                 return (
-                  <>
+                  <React.Fragment key={pinyin}>
                     <S.Pinyin>{pinyin}</S.Pinyin>
                     <p>
                       {def.map((d, i) => (
@@ -213,7 +213,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
                         </React.Fragment>
                       ))}
                     </p>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </S.WordDef>
