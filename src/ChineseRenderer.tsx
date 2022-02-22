@@ -2,6 +2,7 @@ import React from "react";
 import { SettingsContext } from "./App";
 import * as S from "./ChineseRenderer.styles";
 import AudioIcon from "@mui/icons-material/VolumeUp";
+import StopIcon from "@mui/icons-material/Stop";
 
 let currentAudio: HTMLAudioElement | null;
 
@@ -19,6 +20,8 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
   explanation,
 }) => {
   const settingsContext = React.useContext(SettingsContext);
+
+  const [audioPlaying, setAudioPlaying] = React.useState(false);
 
   return (
     <S.Wrapper specialType={specialType}>
@@ -46,6 +49,11 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
           {settingsContext.showPinyin && <S.Pinyin>{"\xa0"}</S.Pinyin>}
           <S.AudioButton
             onClick={async () => {
+              if (audioPlaying) {
+                currentAudio?.pause();
+                return;
+              }
+
               currentAudio?.pause();
               const thisAudio = new Audio(
                 `https://storage.googleapis.com/shuo-chinese-audio-samples/${chineseWords
@@ -53,10 +61,17 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
                   .join("")}.mp3`
               );
               currentAudio = thisAudio;
+              setAudioPlaying(true);
               await thisAudio.play();
+              thisAudio.onended = () => {
+                setAudioPlaying(false);
+              };
+              thisAudio.onpause = () => {
+                setAudioPlaying(false);
+              };
             }}
           >
-            <AudioIcon />
+            {audioPlaying ? <StopIcon /> : <AudioIcon />}
           </S.AudioButton>
         </S.WordWrapper>
         {english && (
