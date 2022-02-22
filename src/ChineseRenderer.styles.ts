@@ -88,9 +88,17 @@ export const AudioButton = styled.div`
   height: 32px;
   border: 1px solid #555;
   margin-left: 8px;
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
+  @media (hover: hover) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+  @media (hover: none) {
+    &:active {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+    }
   }
   .MuiSvgIcon-root {
     font-size: 20px;
