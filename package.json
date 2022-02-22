@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@emotion/styled": "^11.6.0",
+    "@google-cloud/storage": "^5.18.2",
+    "@google-cloud/text-to-speech": "^3.4.0",
     "@mui/icons-material": "^5.4.1",
     "@mui/material": "^5.4.1",
     "@testing-library/jest-dom": "^5.16.1",
@@ -43,7 +45,8 @@
     "scrape": "ncc run ./scrape.ts",
     "parse": "ncc run ./parse.ts",
     "parse-hanzi": "ncc run ./parse-hanzi.ts",
-    "parse-cedict": "ncc run ./parse-cedict.ts"
+    "parse-cedict": "ncc run ./parse-cedict.ts",
+    "gen-audio": "GOOGLE_APPLICATION_CREDENTIALS='./text-to-speech-cred.json' ncc run ./gen-audio.ts"
   },
   "eslintConfig": {
     "extends": [

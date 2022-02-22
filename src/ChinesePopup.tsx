@@ -178,13 +178,6 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
 
   const cedictDefs = (cedict as any)[word];
 
-  console.log(
-    "current range",
-    currentRange,
-    currentRange.toString(),
-    cedictDefs
-  );
-
   return (
     <>
       <WBPopup

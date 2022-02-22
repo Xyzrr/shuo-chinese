@@ -24,3 +24,5 @@ yarn-error.log*
 
 # custom
 /src/scraped/*
+text-to-speech-cred.json
+/audio/*

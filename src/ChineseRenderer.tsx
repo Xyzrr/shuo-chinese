@@ -42,7 +42,15 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
         <S.WordWrapper>
           {/* Filler pinyin to guarantee alignment */}
           {settingsContext.showPinyin && <S.Pinyin>{"\xa0"}</S.Pinyin>}
-          <S.AudioButton>
+          <S.AudioButton
+            onClick={() => {
+              new Audio(
+                `https://storage.googleapis.com/shuo-chinese-audio-samples/${chineseWords
+                  .map((w) => w.chars)
+                  .join("")}.mp3`
+              ).play();
+            }}
+          >
             <AudioIcon />
           </S.AudioButton>
         </S.WordWrapper>
