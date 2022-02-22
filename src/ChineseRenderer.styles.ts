@@ -5,10 +5,15 @@ import WarningIcon from "@mui/icons-material/Warning";
 
 export const InnerWrapper = styled.div``;
 
-export const WordWrapper = styled.div`
+export const WordWrapper = styled.div<{ rightMargin?: boolean }>`
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+  ${(props) =>
+    props.rightMargin &&
+    css`
+      margin-right: 8px;
+    `}
 `;
 
 export const Pinyin = styled.div`
@@ -77,7 +82,7 @@ export const Wrapper = styled.div<{ specialType?: string }>`
     `}
 `;
 
-export const AudioButton = styled.div<{ noMargin?: boolean }>`
+export const AudioButton = styled.div`
   margin-top: 4px;
   font-size: 20px;
   border-radius: 50%;
@@ -87,7 +92,6 @@ export const AudioButton = styled.div<{ noMargin?: boolean }>`
   width: 32px;
   height: 32px;
   border: 1px solid #555;
-  margin-left: ${(props) => (props.noMargin ? 0 : 8)}px;
   @media (hover: hover) {
     &:hover {
       background: rgba(255, 255, 255, 0.1);
