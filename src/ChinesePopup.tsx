@@ -112,16 +112,17 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
       lastNodeRef.current = hoveredCharRange.startContainer;
       lastOffsetRef.current = hoveredCharRange.startOffset;
 
-      const hoveredWordRange = hoveredCharRange.cloneRange();
+      let hoveredWordRange = hoveredCharRange.cloneRange();
       for (let n = 4; n >= 1; n--) {
         try {
-          hoveredWordRange.setEnd(
+          const tempRange = hoveredCharRange.cloneRange();
+          tempRange.setEnd(
             hoveredCharRange.endContainer,
             hoveredCharRange.endOffset + n
           );
-          console.log("HOVERED WORD", n, hoveredWordRange.toString());
 
-          if ((cedict as any)[hoveredWordRange.toString()]) {
+          if ((cedict as any)[tempRange.toString()]) {
+            hoveredWordRange = tempRange;
             break;
           }
         } catch (e) {
@@ -176,6 +177,13 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
   const hanziValue = (hanzi as any)[word[0]];
 
   const cedictDefs = (cedict as any)[word];
+
+  console.log(
+    "current range",
+    currentRange,
+    currentRange.toString(),
+    cedictDefs
+  );
 
   return (
     <>
