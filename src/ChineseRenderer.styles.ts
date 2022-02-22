@@ -76,3 +76,23 @@ export const Wrapper = styled.div<{ specialType?: string }>`
       }
     `}
 `;
+
+export const AudioButton = styled.div`
+  margin-top: 4px;
+  font-size: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #555;
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .MuiSvgIcon-root {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+`;

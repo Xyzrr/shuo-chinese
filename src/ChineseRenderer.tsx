@@ -1,6 +1,7 @@
 import React from "react";
 import { SettingsContext } from "./App";
 import * as S from "./ChineseRenderer.styles";
+import AudioIcon from "@mui/icons-material/VolumeUp";
 
 interface ChineseRendererProps {
   chineseWords: any[];
@@ -38,6 +39,13 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
             </S.WordWrapper>
           );
         })}
+        <S.WordWrapper>
+          {/* Filler pinyin to guarantee alignment */}
+          {settingsContext.showPinyin && <S.Pinyin>{"\xa0"}</S.Pinyin>}
+          <S.AudioButton>
+            <AudioIcon />
+          </S.AudioButton>
+        </S.WordWrapper>
         {english && (
           <S.English>
             {english}
