@@ -77,7 +77,7 @@ export const Wrapper = styled.div<{ specialType?: string }>`
     `}
 `;
 
-export const AudioButton = styled.div`
+export const AudioButton = styled.div<{ noMargin?: boolean }>`
   margin-top: 4px;
   font-size: 20px;
   border-radius: 50%;
@@ -87,7 +87,7 @@ export const AudioButton = styled.div`
   width: 32px;
   height: 32px;
   border: 1px solid #555;
-  margin-left: 8px;
+  margin-left: ${(props) => (props.noMargin ? 0 : 8)}px;
   @media (hover: hover) {
     &:hover {
       background: rgba(255, 255, 255, 0.1);

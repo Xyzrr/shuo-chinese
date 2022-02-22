@@ -23,6 +23,9 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
   const settingsContext = React.useContext(SettingsContext);
 
   const [audioPlaying, setAudioPlaying] = React.useState(false);
+  const endsWithPunctuation = ["。", "？", "！"].includes(
+    chineseWords[chineseWords.length - 1].chars
+  );
 
   return (
     <S.Wrapper specialType={specialType}>
@@ -49,6 +52,7 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
           {/* Filler pinyin to guarantee alignment */}
           {settingsContext.showPinyin && <S.Pinyin>{"\xa0"}</S.Pinyin>}
           <S.AudioButton
+            noMargin={endsWithPunctuation}
             onClick={async () => {
               if (audioPlaying) {
                 currentAudio?.pause();
