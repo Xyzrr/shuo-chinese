@@ -19,7 +19,7 @@ export const FakeHighlight = styled.div<{ rect: DOMRect }>`
   left: ${(props) => props.rect.left}px;
   width: ${(props) => props.rect.width}px;
   height: ${(props) => props.rect.height}px;
-  background: rgba(255, 255, 128, 0.15);
+  background: rgba(255, 255, 255, 0.08);
 `;
 
 export const TopRow = styled.div`

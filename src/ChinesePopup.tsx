@@ -16,6 +16,9 @@ interface ChinesePopupProps {}
 
 const ChinesePopup: React.FC<ChinesePopupProps> = () => {
   const [currentRange, setCurrentRange] = React.useState<Range | null>(null);
+  const [currentCharRange, setCurrentCharRange] = React.useState<Range | null>(
+    null
+  );
 
   const lastNodeRef = React.useRef<Node | null>(null);
   const lastOffsetRef = React.useRef<number | null>(null);
@@ -109,6 +112,8 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         return;
       }
 
+      setCurrentCharRange(hoveredCharRange);
+
       lastNodeRef.current = hoveredCharRange.startContainer;
       lastOffsetRef.current = hoveredCharRange.startOffset;
 
@@ -166,12 +171,14 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
     };
   });
 
-  if (!currentRange) {
+  if (!currentRange || !currentCharRange) {
     return null;
   }
 
   const word = currentRange.toString();
   const rect = currentRange.getBoundingClientRect();
+
+  const charRect = currentCharRange.getBoundingClientRect();
 
   const goUp = rect.bottom > window.innerHeight - 200;
   const hanziValue = (hanzi as any)[word[0]];
@@ -187,6 +194,7 @@ const ChinesePopup: React.FC<ChinesePopupProps> = () => {
         key={word}
       >
         <S.FakeHighlight rect={rect} />
+        <S.FakeHighlight rect={charRect} />
         <S.Wrapper className="chinese-popup">
           {word.length > 1 && (
             <S.WordDef>
