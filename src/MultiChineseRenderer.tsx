@@ -1,3 +1,4 @@
+import React from "react";
 import ChineseRenderer from "./ChineseRenderer";
 import * as S from "./MultiChineseRenderer.styles";
 

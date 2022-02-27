@@ -1,3 +1,4 @@
+import React from "react";
 import EnglishRenderer from "./EnglishRenderer";
 import * as S from "./MultiEnglishRenderer.styles";
 

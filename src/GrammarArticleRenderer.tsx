@@ -1,3 +1,4 @@
+import React from "react";
 import { StyledComponent } from "styled-components";
 import * as S from "./GrammarArticleRenderer.styles";
 import MultiChineseRenderer from "./MultiChineseRenderer";
