@@ -13,6 +13,30 @@ import Checkbox from "@mui/material/Checkbox";
 import ChinesePopup from "./ChinesePopup";
 import { extractCards, articleFromCard } from "./card-utils";
 
+const SpeechRecognition =
+  (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+const SpeechGrammarList =
+  (window as any).SpeechGrammarList || (window as any).webkitSpeechGrammarList;
+const SpeechRecognitionEvent =
+  (window as any).SpeechRecognitionEvent ||
+  (window as any).webkitSpeechRecognitionEvent;
+
+var commands = ["english", "chinese", "next", "previous"];
+var grammar =
+  "#JSGF V1.0; grammar commands; public <command> = " +
+  commands.join(" | ") +
+  " ;";
+
+const recognition = new SpeechRecognition();
+const speechRecognitionList = new SpeechGrammarList();
+
+speechRecognitionList.addFromString(grammar, 1);
+recognition.grammars = speechRecognitionList;
+recognition.continuous = false;
+recognition.lang = "en-US";
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+
 interface SettingsContextValue {
   showPinyin: boolean;
 }
@@ -119,6 +143,7 @@ const App: React.FC = () => {
   const open = Boolean(settingsAnchorEl);
 
   const [showPinyin, setShowPinyin] = React.useState(true);
+  const [voiceControl, setVoiceControl] = React.useState(false);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -166,7 +191,49 @@ const App: React.FC = () => {
                       }}
                     />
                   }
-                ></S.StyledFormControlLabel>
+                />
+                <S.StyledFormControlLabel
+                  label="Voice control"
+                  control={
+                    <Checkbox
+                      checked={voiceControl}
+                      onChange={(e, checked) => {
+                        setVoiceControl(checked);
+                        if (checked) {
+                          recognition.start();
+                          console.log("recon started");
+
+                          recognition.onresult = (e: any) => {
+                            console.log("RESULTS", e.results);
+                            const result =
+                              e.results[0][0].transcript.toLowerCase();
+                            if (result.includes("next")) {
+                              setSelectedIndex((i) =>
+                                Math.min(cards.length - 1, i + 1)
+                              );
+                            }
+                            if (result.includes("previous")) {
+                              setSelectedIndex((i) => Math.max(0, i - 1));
+                            }
+                            if (result.includes("chinese")) {
+                              setReveal("answer");
+                            }
+                            if (result.includes("english")) {
+                              setReveal("none");
+                            }
+                          };
+
+                          recognition.onend = (e: any) => {
+                            recognition.start();
+                          };
+                        } else {
+                          recognition.onend = () => {};
+                          recognition.stop();
+                        }
+                      }}
+                    />
+                  }
+                />
               </S.SettingsWrapper>
             </Popper>
             <S.SettingsButton onClick={handleSettingsClick}>
