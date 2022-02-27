@@ -19,7 +19,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src"
-, "scrape.ts", "parse.ts"  ]
+  "include": ["src"]
 }
