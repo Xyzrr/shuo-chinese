@@ -15,26 +15,11 @@ import { extractCards, articleFromCard } from "./card-utils";
 
 const SpeechRecognition =
   (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-const SpeechGrammarList =
-  (window as any).SpeechGrammarList || (window as any).webkitSpeechGrammarList;
-const SpeechRecognitionEvent =
-  (window as any).SpeechRecognitionEvent ||
-  (window as any).webkitSpeechRecognitionEvent;
-
-var commands = ["english", "chinese", "next", "previous"];
-var grammar =
-  "#JSGF V1.0; grammar commands; public <command> = " +
-  commands.join(" | ") +
-  " ;";
 
 const recognition = new SpeechRecognition();
-const speechRecognitionList = new SpeechGrammarList();
-
-speechRecognitionList.addFromString(grammar, 1);
-recognition.grammars = speechRecognitionList;
 recognition.continuous = false;
 recognition.lang = "en-US";
-recognition.interimResults = false;
+recognition.interimResults = true;
 recognition.maxAlternatives = 1;
 
 interface SettingsContextValue {
@@ -145,6 +130,8 @@ const App: React.FC = () => {
   const [showPinyin, setShowPinyin] = React.useState(true);
   const [voiceControl, setVoiceControl] = React.useState(false);
 
+  const [temp, setTemp] = React.useState("");
+
   return (
     <ThemeProvider theme={darkTheme}>
       <ChinesePopup />
@@ -201,30 +188,48 @@ const App: React.FC = () => {
                         setVoiceControl(checked);
                         if (checked) {
                           recognition.start();
-                          console.log("recon started");
 
-                          recognition.onresult = (e: any) => {
-                            console.log("RESULTS", e.results);
+                          const reset = () => {
+                            recognition.onresult = undefined;
+                            recognition.stop();
+                          };
+
+                          const onResult = (e: SpeechRecognitionEvent) => {
                             const result =
                               e.results[0][0].transcript.toLowerCase();
+                            setTemp(
+                              e.results[0][0].transcript +
+                                "|" +
+                                e.results[0][0].confidence
+                            );
+                            console.log("result", e);
                             if (result.includes("next")) {
+                              reset();
                               setSelectedIndex((i) =>
                                 Math.min(cards.length - 1, i + 1)
                               );
                             }
                             if (result.includes("previous")) {
+                              reset();
                               setSelectedIndex((i) => Math.max(0, i - 1));
                             }
                             if (result.includes("chinese")) {
+                              reset();
                               setReveal("answer");
                             }
                             if (result.includes("english")) {
+                              reset();
                               setReveal("none");
                             }
                           };
 
+                          recognition.onresult = onResult;
+
                           recognition.onend = (e: any) => {
-                            recognition.start();
+                            window.setTimeout(() => {
+                              recognition.start();
+                              recognition.onresult = onResult;
+                            }, 2000);
                           };
                         } else {
                           recognition.onend = () => {};
