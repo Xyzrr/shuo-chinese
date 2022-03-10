@@ -46,6 +46,20 @@ export const extractCards = (level: number) => {
   return cards;
 };
 
+const shuffleArray = (array: any[]) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+};
+
+export const allCards: any[] = [];
+for (let i = 0; i < articleSets.length; i++) {
+  const cards = extractCards(i);
+  allCards.push(...cards);
+}
+shuffleArray(allCards);
+
 export const articleFromCard = (card: any) => {
   return articleSets[card.level].find(
     (article) => article.title === card.article

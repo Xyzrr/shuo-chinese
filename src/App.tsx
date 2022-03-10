@@ -11,7 +11,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import XIcon from "@mui/icons-material/Clear";
 import Checkbox from "@mui/material/Checkbox";
 import ChinesePopup from "./ChinesePopup";
-import { extractCards, articleFromCard } from "./card-utils";
+import { extractCards, articleFromCard, allCards } from "./card-utils";
 
 const SpeechRecognition =
   (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -35,13 +35,6 @@ const darkTheme = createTheme({
     mode: "dark",
   },
 });
-
-const shuffleArray = (array: any[]) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-};
 
 const App: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -71,10 +64,10 @@ const App: React.FC = () => {
   }, []);
 
   const cards = React.useMemo(() => {
-    let result: any[] = [];
-    for (let i = levels[0]; i <= levels[1]; i++) {
-      result.push(...extractCards(i));
-    }
+    let result = allCards.filter(
+      (c: any) => c.level >= levels[0] && c.level <= levels[1]
+    );
+
     if (searching && searchText !== "") {
       const lowercased = searchText.toLowerCase();
       result = result.filter((c) => {
@@ -92,8 +85,8 @@ const App: React.FC = () => {
       });
     }
 
-    shuffleArray(result);
     result = result.slice(0, 50);
+
     return result;
   }, [levels, searchText, searching]);
 
