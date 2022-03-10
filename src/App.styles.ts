@@ -281,4 +281,5 @@ export const SearchInput = styled.input`
   padding: 4px 8px;
   padding-left: 32px;
   font-family: Source Sans Pro;
+  height: 30px;
 `;
