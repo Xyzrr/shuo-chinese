@@ -163,9 +163,6 @@ const App: React.FC = () => {
   const open = Boolean(settingsAnchorEl);
 
   const [showPinyin, setShowPinyin] = React.useState(true);
-  const [voiceControl, setVoiceControl] = React.useState(false);
-
-  const [temp, setTemp] = React.useState("");
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -210,66 +207,6 @@ const App: React.FC = () => {
                       checked={showPinyin}
                       onChange={(e, checked) => {
                         setShowPinyin(checked);
-                      }}
-                    />
-                  }
-                />
-                <S.StyledFormControlLabel
-                  label="Voice control"
-                  control={
-                    <Checkbox
-                      checked={voiceControl}
-                      onChange={(e, checked) => {
-                        setVoiceControl(checked);
-                        if (checked) {
-                          recognition.start();
-
-                          const reset = () => {
-                            recognition.onresult = undefined;
-                            recognition.stop();
-                          };
-
-                          const onResult = (e: SpeechRecognitionEvent) => {
-                            const result =
-                              e.results[0][0].transcript.toLowerCase();
-                            setTemp(
-                              e.results[0][0].transcript +
-                                "|" +
-                                e.results[0][0].confidence
-                            );
-                            console.log("result", e);
-                            if (result.includes("next")) {
-                              reset();
-                              setSelectedIndex((i) =>
-                                Math.min(cards.length - 1, i + 1)
-                              );
-                            }
-                            if (result.includes("previous")) {
-                              reset();
-                              setSelectedIndex((i) => Math.max(0, i - 1));
-                            }
-                            if (result.includes("chinese")) {
-                              reset();
-                              setReveal("answer");
-                            }
-                            if (result.includes("english")) {
-                              reset();
-                              setReveal("none");
-                            }
-                          };
-
-                          recognition.onresult = onResult;
-
-                          recognition.onend = (e: any) => {
-                            window.setTimeout(() => {
-                              recognition.start();
-                              recognition.onresult = onResult;
-                            }, 2000);
-                          };
-                        } else {
-                          recognition.onend = () => {};
-                          recognition.stop();
-                        }
                       }}
                     />
                   }
