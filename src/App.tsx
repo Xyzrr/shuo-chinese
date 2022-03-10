@@ -42,7 +42,7 @@ const App: React.FC = () => {
   const [levels, setLevels] = React.useState<number[]>([1, 2]);
 
   const [searching, setSearching] = React.useState(false);
-  const [searchText, setSearchText] = React.useState("");
+  const [searchString, setSearchString] = React.useState("");
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -68,8 +68,8 @@ const App: React.FC = () => {
       (c: any) => c.level >= levels[0] && c.level <= levels[1]
     );
 
-    if (searching && searchText !== "") {
-      const lowercased = searchText.toLowerCase();
+    if (searching && searchString !== "") {
+      const lowercased = searchString.toLowerCase();
       result = result.filter((c) => {
         if (c.multi) {
           return false;
@@ -88,7 +88,7 @@ const App: React.FC = () => {
     result = result.slice(0, 50);
 
     return result;
-  }, [levels, searchText, searching]);
+  }, [levels, searchString, searching]);
 
   const selectedCard = cards[selectedIndex];
 
@@ -286,9 +286,9 @@ const App: React.FC = () => {
                   <S.SearchInput
                     ref={searchInputRef}
                     autoFocus
-                    value={searchText}
+                    value={searchString}
                     onChange={(e) => {
-                      setSearchText(e.target.value);
+                      setSearchString(e.target.value);
                     }}
                   />
                 </S.SearchWrapper>
@@ -315,11 +315,15 @@ const App: React.FC = () => {
                 >
                   <S.EnglishItemInner>
                     {card.multi ? (
-                      <MultiEnglishRenderer children={card.children} />
+                      <MultiEnglishRenderer
+                        children={card.children}
+                        searchString={searching ? searchString : undefined}
+                      />
                     ) : (
                       <EnglishRenderer
                         english={card.english}
                         explanation={card.explanation}
+                        searchString={searching ? searchString : undefined}
                       />
                     )}
                   </S.EnglishItemInner>

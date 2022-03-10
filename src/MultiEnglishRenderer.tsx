@@ -4,10 +4,12 @@ import * as S from "./MultiEnglishRenderer.styles";
 
 interface MultiEnglishRendererProps {
   children: any[];
+  searchString?: string;
 }
 
 const MultiEnglishRenderer: React.FC<MultiEnglishRendererProps> = ({
   children,
+  searchString,
 }) => {
   return (
     <>
@@ -18,6 +20,7 @@ const MultiEnglishRenderer: React.FC<MultiEnglishRendererProps> = ({
             <EnglishRenderer
               english={child.english}
               explanation={child.explanation}
+              searchString={searchString}
             />
           </S.Child>
         );
