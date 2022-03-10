@@ -1,5 +1,5 @@
 import * as S from "./App.styles";
-import React from "react";
+import React, { useEffect } from "react";
 
 import ChineseRenderer from "./ChineseRenderer";
 import GrammarArticleRenderer from "./GrammarArticleRenderer";
@@ -48,19 +48,61 @@ const App: React.FC = () => {
 
   const [levels, setLevels] = React.useState<number[]>([1, 2]);
 
+  const [searching, setSearching] = React.useState(false);
+  const [searchText, setSearchText] = React.useState("");
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const onKeyPress = (e: KeyboardEvent) => {
+      console.log("key", e.key, e.metaKey);
+      if (e.key === "f" && e.metaKey && e.shiftKey) {
+        e.preventDefault();
+        setSearching(true);
+        searchInputRef.current?.focus();
+      }
+      if (e.key === "Escape") {
+        setSearching(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyPress);
+    return () => {
+      window.removeEventListener("keydown", onKeyPress);
+    };
+  }, []);
+
   const cards = React.useMemo(() => {
     let result: any[] = [];
     for (let i = levels[0]; i <= levels[1]; i++) {
       result.push(...extractCards(i));
     }
+    if (searching && searchText !== "") {
+      const lowercased = searchText.toLowerCase();
+      result = result.filter((c) => {
+        if (c.multi) {
+          return false;
+        }
+        return (
+          c.chineseWords
+            .map((w: any) => w.chars)
+            .join("")
+            .toLowerCase()
+            .includes(lowercased) ||
+          c.english.toLowerCase().includes(lowercased)
+        );
+      });
+    }
+
     shuffleArray(result);
     result = result.slice(0, 50);
     return result;
-  }, [levels]);
+  }, [levels, searchText, searching]);
 
   const selectedCard = cards[selectedIndex];
 
   const sourceArticle = React.useMemo(() => {
+    if (!selectedCard) {
+      return null;
+    }
     return articleFromCard(selectedCard);
   }, [selectedCard]);
 
@@ -245,9 +287,23 @@ const App: React.FC = () => {
               <SettingsIcon />
             </S.SettingsButton>
             <S.EnglishWrapper>
-              <S.Logo className="no-popup">
-                说 <strong>Chinese</strong>
-              </S.Logo>
+              {searching ? (
+                <S.SearchWrapper>
+                  <S.StyledSearchIcon />
+                  <S.SearchInput
+                    ref={searchInputRef}
+                    autoFocus
+                    value={searchText}
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
+                  />
+                </S.SearchWrapper>
+              ) : (
+                <S.Logo className="no-popup">
+                  说 <strong>Chinese</strong>
+                </S.Logo>
+              )}
               {cards.map((card, i) => (
                 <S.EnglishItem
                   key={i}

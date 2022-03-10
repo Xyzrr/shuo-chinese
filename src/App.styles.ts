@@ -2,6 +2,7 @@ import styled, { css, createGlobalStyle } from "styled-components";
 import Slider from "@mui/material/Slider";
 import { LEVEL_COLORS, FOREGROUND_COLOR, BACKGROUND_COLOR } from "./colors";
 import { FormControlLabel } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -29,12 +30,13 @@ export const Logo = styled.div`
   font-size: 32px;
   padding-left: 20px;
   margin-bottom: 24px;
-  margin-top: 0px;
+  margin-top: 32px;
   // font-weight: bold;
 `;
 
 export const EnglishWrapper = styled.div`
-  padding: 32px;
+  padding-bottom: 128px;
+  padding-right: 32px;
   padding-left: 16px;
   text-align: left;
   width: calc(min(45vw, 1200px * 0.45) - 32px);
@@ -245,4 +247,38 @@ export const StyledFormControlLabel = styled(FormControlLabel)`
   .MuiTypography-root {
     font-family: Source Sans Pro;
   }
+`;
+
+export const SearchWrapper = styled.div`
+  background: ${BACKGROUND_COLOR};
+  position: sticky;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  top: 0;
+  padding-left: 12px;
+  padding-top: 40px;
+  padding-bottom: 16px;
+  margin-bottom: 15px;
+`;
+
+export const StyledSearchIcon = styled(SearchIcon)`
+  position: absolute;
+  left: 16px;
+  font-size: 14px;
+  opacity: 0.5;
+  transform: scale(0.8);
+`;
+
+export const SearchInput = styled.input`
+  background: none;
+  border: none;
+  outline: none;
+  background: ${FOREGROUND_COLOR};
+  color: #c8c8c8;
+  font-size: 18px;
+  border-radius: 4px;
+  padding: 4px 8px;
+  padding-left: 32px;
+  font-family: Source Sans Pro;
 `;
