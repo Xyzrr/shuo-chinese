@@ -47,8 +47,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const onKeyPress = (e: KeyboardEvent) => {
-      console.log("key", e.key, e.metaKey);
-      if (e.key === "f" && e.metaKey && e.shiftKey) {
+      if (e.key === "f" && (e.metaKey || e.ctrlKey) && e.shiftKey) {
         e.preventDefault();
         setSearching(true);
         searchInputRef.current?.focus();
