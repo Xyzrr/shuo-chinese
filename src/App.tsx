@@ -258,7 +258,9 @@ const App: React.FC = () => {
                 <>
                   {i === filteredSearchedCards.length &&
                     otherSearchedCards.length > 0 && (
-                      <S.OtherResultsLabel>Other results</S.OtherResultsLabel>
+                      <S.OtherResultsLabel>
+                        Results outside level filter
+                      </S.OtherResultsLabel>
                     )}
                   <InteractiveExample
                     key={i}
