@@ -8,7 +8,12 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import XIcon from "@mui/icons-material/Clear";
 import Checkbox from "@mui/material/Checkbox";
 import ChinesePopup from "./ChinesePopup";
-import { extractCards, articleFromCard, allCards } from "./card-utils";
+import {
+  extractCards,
+  articleFromCard,
+  allCards,
+  allLevels,
+} from "./card-utils";
 import InteractiveExample from "./InteractiveExample";
 
 const SpeechRecognition =
@@ -212,13 +217,7 @@ const App: React.FC = () => {
                   min={0}
                   max={4}
                   step={1}
-                  marks={[
-                    { value: 0, label: "A1" },
-                    { value: 1, label: "A2" },
-                    { value: 2, label: "B1" },
-                    { value: 3, label: "B2" },
-                    { value: 4, label: "C1" },
-                  ]}
+                  marks={allLevels.map((l, i) => ({ value: i, label: l }))}
                 />
                 <S.StyledFormControlLabel
                   label="Show pinyin"
