@@ -12,7 +12,7 @@ import {
   extractCards,
   articleFromCard,
   allCards,
-  levelNames,
+  LEVEL_NAMES,
 } from "./card-utils";
 import InteractiveExample from "./InteractiveExample";
 
@@ -217,7 +217,7 @@ const App: React.FC = () => {
                   min={0}
                   max={4}
                   step={1}
-                  marks={levelNames.map((l, i) => ({ value: i, label: l }))}
+                  marks={LEVEL_NAMES.map((l, i) => ({ value: i, label: l }))}
                 />
                 <S.StyledFormControlLabel
                   label="Show pinyin"
@@ -252,8 +252,8 @@ const App: React.FC = () => {
                 <S.LevelsHeader>
                   Level{" "}
                   <S.LevelNames>
-                    {levelNames[levels[0]]}
-                    {levels[1] !== levels[0] && ` - ${levelNames[levels[1]]}`}
+                    {LEVEL_NAMES[levels[0]]}
+                    {levels[1] !== levels[0] && ` - ${LEVEL_NAMES[levels[1]]}`}
                   </S.LevelNames>
                 </S.LevelsHeader>
               )}
