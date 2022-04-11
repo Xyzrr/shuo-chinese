@@ -1,17 +1,15 @@
 import * as S from "./App.styles";
 import React, { useEffect } from "react";
 
-import ChineseRenderer from "./ChineseRenderer";
 import GrammarArticleRenderer from "./GrammarArticleRenderer";
-import EnglishRenderer from "./EnglishRenderer";
-import MultiEnglishRenderer from "./MultiEnglishRenderer";
-import MultiChineseRenderer from "./MultiChineseRenderer";
+
 import { createTheme, ThemeProvider, Popper } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import XIcon from "@mui/icons-material/Clear";
 import Checkbox from "@mui/material/Checkbox";
 import ChinesePopup from "./ChinesePopup";
 import { extractCards, articleFromCard, allCards } from "./card-utils";
+import InteractiveExample from "./InteractiveExample";
 
 const SpeechRecognition =
   (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -234,10 +232,14 @@ const App: React.FC = () => {
                 </S.Logo>
               )}
               {cards.map((card, i) => (
-                <S.EnglishItem
+                <InteractiveExample
                   key={i}
                   reveal={reveal}
-                  onClick={(e) => {
+                  searchString={searchString}
+                  active={selectedIndex === i}
+                  card={card}
+                  searching={searching}
+                  onClickEnglish={(e) => {
                     e.stopPropagation();
                     setSettingsAnchorEl(null);
                     if (selectedIndex === i) {
@@ -247,58 +249,15 @@ const App: React.FC = () => {
                       setReveal("answer");
                     }
                   }}
-                  active={selectedIndex === i}
-                >
-                  <S.EnglishItemInner>
-                    {card.multi ? (
-                      <MultiEnglishRenderer
-                        children={card.children}
-                        searchString={searching ? searchString : undefined}
-                      />
-                    ) : (
-                      <EnglishRenderer
-                        english={card.english}
-                        explanation={card.explanation}
-                        searchString={searching ? searchString : undefined}
-                      />
-                    )}
-                  </S.EnglishItemInner>
-                  {selectedIndex === i &&
-                    reveal === "answer" &&
-                    sourceArticle != null && (
-                      <S.AnswerWrapper
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSettingsAnchorEl(null);
-                        }}
-                      >
-                        {selectedCard.multi ? (
-                          <MultiChineseRenderer
-                            children={selectedCard.children}
-                            hideEnglish
-                          />
-                        ) : (
-                          <ChineseRenderer
-                            chineseWords={selectedCard.chineseWords}
-                          />
-                        )}
-                        <S.ShowArticleButton
-                          className="no-popup"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setReveal("article");
-                          }}
-                        >
-                          <S.ArticleLevelIndicator level={selectedCard.level} />
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: sourceArticle.pattern,
-                            }}
-                          />
-                        </S.ShowArticleButton>
-                      </S.AnswerWrapper>
-                    )}
-                </S.EnglishItem>
+                  onClickShowArticle={(e) => {
+                    e.stopPropagation();
+                    setReveal("article");
+                  }}
+                  onClickAnswer={(e) => {
+                    e.stopPropagation();
+                    setSettingsAnchorEl(null);
+                  }}
+                />
               ))}
             </S.EnglishWrapper>
             {reveal === "article" && (
