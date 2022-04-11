@@ -4,7 +4,7 @@ import B1 from "./parsed/B1.json";
 import B2 from "./parsed/B2.json";
 import C1 from "./parsed/C1.json";
 
-export const allLevels = ["A1", "A2", "B1", "B2", "C1"];
+export const levelNames = ["A1", "A2", "B1", "B2", "C1"];
 const articleSets: any[][] = [A1, A2, B1, B2, C1];
 
 export const extractCards = (level: number) => {

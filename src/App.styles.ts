@@ -24,14 +24,18 @@ export const GlobalStyle = createGlobalStyle`
 
 export const FullPage = styled.div``;
 
-export const Logo = styled.div`
+export const LevelsHeader = styled.div`
   user-select: none;
-  color: rgba(200, 200, 200, 0.3);
-  font-size: 32px;
+  color: rgba(200, 200, 200, 0.5);
+  font-size: 24px;
   padding-left: 20px;
   margin-bottom: 24px;
-  margin-top: 32px;
-  // font-weight: bold;
+  margin-top: 42px;
+`;
+
+export const LevelNames = styled.span`
+  font-weight: bold;
+  color: rgba(200, 200, 200, 0.7);
 `;
 
 export const GrammarArticleWrapper = styled.div`
