@@ -65,29 +65,52 @@ const App: React.FC = () => {
       (c: any) => c.level >= levels[0] && c.level <= levels[1]
     );
 
-    if (searching && searchString !== "") {
-      const lowercased = searchString.toLowerCase();
-      result = result.filter((c) => {
-        if (c.multi) {
-          return false;
-        }
-        return (
-          c.chineseWords
-            .map((w: any) => w.chars)
-            .join("")
-            .toLowerCase()
-            .includes(lowercased) ||
-          c.english.toLowerCase().includes(lowercased)
-        );
-      });
-    }
-
     result = result.slice(0, 50);
 
     return result;
   }, [levels, searchString, searching]);
 
-  const selectedCard = cards[selectedIndex];
+  const [filteredSearchedCards, otherSearchedCards] = React.useMemo(() => {
+    if (!searching || searchString === "") {
+      return [[], []];
+    }
+
+    let filteredCards = allCards.filter(
+      (c: any) => c.level >= levels[0] && c.level <= levels[1]
+    );
+    let otherCards = allCards.filter(
+      (c: any) => c.level < levels[0] || c.level > levels[1]
+    );
+
+    const lowercased = searchString.toLowerCase();
+    const filterFunc = (c: any) => {
+      if (c.multi) {
+        return false;
+      }
+      return (
+        c.chineseWords
+          .map((w: any) => w.chars)
+          .join("")
+          .toLowerCase()
+          .includes(lowercased) || c.english.toLowerCase().includes(lowercased)
+      );
+    };
+
+    filteredCards = filteredCards.filter(filterFunc);
+    otherCards = otherCards.filter(filterFunc);
+
+    filteredCards = filteredCards.slice(0, 50);
+    otherCards = otherCards.slice(0, Math.max(50 - filteredCards.length, 0));
+
+    return [filteredCards, otherCards];
+  }, [cards, searchString, searching]);
+
+  const displayedCards =
+    searching && searchString !== ""
+      ? filteredSearchedCards.concat(otherSearchedCards)
+      : cards;
+
+  const selectedCard = displayedCards[selectedIndex];
 
   const sourceArticle = React.useMemo(() => {
     if (!selectedCard) {
@@ -106,7 +129,7 @@ const App: React.FC = () => {
         case "ArrowDown":
           if (reveal !== "article") {
             e.preventDefault();
-            setSelectedIndex((i) => Math.min(cards.length - 1, i + 1));
+            setSelectedIndex((i) => Math.min(displayedCards.length - 1, i + 1));
           }
           break;
         case "ArrowUp":
@@ -231,33 +254,39 @@ const App: React.FC = () => {
                   说 <strong>Chinese</strong>
                 </S.Logo>
               )}
-              {cards.map((card, i) => (
-                <InteractiveExample
-                  key={i}
-                  reveal={reveal}
-                  searchString={searchString}
-                  active={selectedIndex === i}
-                  card={card}
-                  searching={searching}
-                  onClickEnglish={(e) => {
-                    e.stopPropagation();
-                    setSettingsAnchorEl(null);
-                    if (selectedIndex === i) {
-                      setReveal((r) => (r === "none" ? "answer" : "none"));
-                    } else {
-                      setSelectedIndex(i);
-                      setReveal("answer");
-                    }
-                  }}
-                  onClickShowArticle={(e) => {
-                    e.stopPropagation();
-                    setReveal("article");
-                  }}
-                  onClickAnswer={(e) => {
-                    e.stopPropagation();
-                    setSettingsAnchorEl(null);
-                  }}
-                />
+              {displayedCards.map((card, i) => (
+                <>
+                  {i === filteredSearchedCards.length &&
+                    otherSearchedCards.length > 0 && (
+                      <S.OtherResultsLabel>Other results</S.OtherResultsLabel>
+                    )}
+                  <InteractiveExample
+                    key={i}
+                    reveal={reveal}
+                    searchString={searchString}
+                    active={selectedIndex === i}
+                    card={card}
+                    searching={searching}
+                    onClickEnglish={(e) => {
+                      e.stopPropagation();
+                      setSettingsAnchorEl(null);
+                      if (selectedIndex === i) {
+                        setReveal((r) => (r === "none" ? "answer" : "none"));
+                      } else {
+                        setSelectedIndex(i);
+                        setReveal("answer");
+                      }
+                    }}
+                    onClickShowArticle={(e) => {
+                      e.stopPropagation();
+                      setReveal("article");
+                    }}
+                    onClickAnswer={(e) => {
+                      e.stopPropagation();
+                      setSettingsAnchorEl(null);
+                    }}
+                  />
+                </>
               ))}
             </S.EnglishWrapper>
             {reveal === "article" && (

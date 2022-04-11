@@ -9,7 +9,6 @@ import { articleFromCard } from "./card-utils";
 interface InteractiveExampleProps {
   reveal: "none" | "answer" | "article";
   searchString: string;
-
   active: boolean;
   card: any;
   searching?: boolean;
@@ -21,7 +20,6 @@ interface InteractiveExampleProps {
 const InteractiveExample: React.FC<InteractiveExampleProps> = ({
   reveal,
   searchString,
-
   active,
   card,
   searching,

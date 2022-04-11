@@ -187,3 +187,9 @@ export const SearchInput = styled.input`
   font-family: Source Sans Pro;
   height: 30px;
 `;
+
+export const OtherResultsLabel = styled.div`
+  color: #999;
+  margin-left: 20px;
+  margin-top: 32px;
+`;
