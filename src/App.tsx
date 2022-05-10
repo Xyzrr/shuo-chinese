@@ -6,6 +6,7 @@ import GrammarArticleRenderer from "./GrammarArticleRenderer";
 import { createTheme, ThemeProvider, Popper } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import XIcon from "@mui/icons-material/Clear";
+import SearchIcon from "@mui/icons-material/Search";
 import Checkbox from "@mui/material/Checkbox";
 import ChinesePopup from "./ChinesePopup";
 import {
@@ -236,27 +237,35 @@ const App: React.FC = () => {
               <SettingsIcon />
             </S.SettingsButton>
             <S.EnglishWrapper>
-              {searching ? (
-                <S.SearchWrapper>
-                  <S.StyledSearchIcon />
-                  <S.SearchInput
-                    ref={searchInputRef}
-                    autoFocus
-                    value={searchString}
-                    onChange={(e) => {
-                      setSearchString(e.target.value);
-                    }}
-                  />
-                </S.SearchWrapper>
-              ) : (
-                <S.LevelsHeader>
-                  Level{" "}
-                  <S.LevelNames>
-                    {LEVEL_NAMES[levels[0]]}
-                    {levels[1] !== levels[0] && ` - ${LEVEL_NAMES[levels[1]]}`}
-                  </S.LevelNames>
-                </S.LevelsHeader>
-              )}
+              <S.TopBar>
+                {searching ? (
+                  <S.SearchWrapper>
+                    <S.StyledSearchIcon />
+                    <S.SearchInput
+                      ref={searchInputRef}
+                      autoFocus
+                      value={searchString}
+                      onChange={(e) => {
+                        setSearchString(e.target.value);
+                      }}
+                    />
+                  </S.SearchWrapper>
+                ) : (
+                  <>
+                    <S.LevelsHeader>
+                      Level{" "}
+                      <S.LevelNames>
+                        {LEVEL_NAMES[levels[0]]}
+                        {levels[1] !== levels[0] &&
+                          ` - ${LEVEL_NAMES[levels[1]]}`}
+                      </S.LevelNames>
+                    </S.LevelsHeader>
+                    <S.TopButton onClick={() => setSearching(true)}>
+                      <SearchIcon />
+                    </S.TopButton>
+                  </>
+                )}
+              </S.TopBar>
               {displayedCards.map((card, i) => (
                 <>
                   {i === filteredSearchedCards.length &&

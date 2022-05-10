@@ -29,8 +29,25 @@ export const LevelsHeader = styled.div`
   color: rgba(200, 200, 200, 0.5);
   font-size: 24px;
   padding-left: 20px;
-  margin-bottom: 24px;
+`;
+
+export const TopBar = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 42px;
+  margin-bottom: 24px;
+`;
+
+export const TopButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 24px;
+  opacity: 0.45;
+  transform: translateY(1px);
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 export const LevelNames = styled.span`
@@ -159,15 +176,10 @@ export const StyledFormControlLabel = styled(FormControlLabel)`
 
 export const SearchWrapper = styled.div`
   background: ${BACKGROUND_COLOR};
-  position: sticky;
-  z-index: 1;
+  position: relative;
   display: flex;
   align-items: center;
-  top: 0;
   padding-left: 12px;
-  padding-top: 40px;
-  padding-bottom: 16px;
-  margin-bottom: 15px;
 `;
 
 export const StyledSearchIcon = styled(SearchIcon)`
