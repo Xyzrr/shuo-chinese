@@ -51,6 +51,10 @@ const App: React.FC = () => {
     return [1, 2];
   });
 
+  React.useEffect(() => {
+    localStorage.setItem("levels", JSON.stringify(levels));
+  }, [levels]);
+
   const [searching, setSearching] = React.useState(false);
   const [searchString, setSearchString] = React.useState("");
   const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -194,7 +198,17 @@ const App: React.FC = () => {
 
   const open = Boolean(settingsAnchorEl);
 
-  const [showPinyin, setShowPinyin] = React.useState(true);
+  const [showPinyin, setShowPinyin] = React.useState(() => {
+    const storedString = localStorage.getItem("showPinyin");
+    if (storedString) {
+      return JSON.parse(storedString);
+    }
+    return true;
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("showPinyin", JSON.stringify(showPinyin));
+  });
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -223,7 +237,6 @@ const App: React.FC = () => {
                   onChange={(e, value) => {
                     const v = value as number[];
                     if (v[0] !== levels[0] || v[1] !== levels[1]) {
-                      localStorage.setItem("levels", JSON.stringify(v));
                       setLevels(v);
                     }
                   }}
