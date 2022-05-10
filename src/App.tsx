@@ -198,6 +198,9 @@ const App: React.FC = () => {
           onClick={() => {
             setReveal("none");
             setSettingsAnchorEl(null);
+            if (searchString === "") {
+              setSearching(false);
+            }
           }}
         >
           <S.AppWrapper>
@@ -239,7 +242,7 @@ const App: React.FC = () => {
             <S.EnglishWrapper>
               <S.TopBar>
                 {searching ? (
-                  <S.SearchWrapper>
+                  <S.SearchWrapper onClick={(e) => e.stopPropagation()}>
                     <S.StyledSearchIcon />
                     <S.SearchInput
                       ref={searchInputRef}
@@ -260,7 +263,12 @@ const App: React.FC = () => {
                           ` - ${LEVEL_NAMES[levels[1]]}`}
                       </S.LevelNames>
                     </S.LevelsHeader>
-                    <S.TopButton onClick={() => setSearching(true)}>
+                    <S.TopButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSearching(true);
+                      }}
+                    >
                       <SearchIcon />
                     </S.TopButton>
                   </>
