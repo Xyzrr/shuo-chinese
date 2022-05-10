@@ -43,7 +43,13 @@ const darkTheme = createTheme({
 const App: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  const [levels, setLevels] = React.useState<number[]>([1, 2]);
+  const [levels, setLevels] = React.useState<number[]>(() => {
+    const storedString = localStorage.getItem("levels");
+    if (storedString) {
+      return JSON.parse(storedString);
+    }
+    return [1, 2];
+  });
 
   const [searching, setSearching] = React.useState(false);
   const [searchString, setSearchString] = React.useState("");
@@ -216,7 +222,10 @@ const App: React.FC = () => {
                   value={levels}
                   onChange={(e, value) => {
                     const v = value as number[];
-                    if (v[0] !== levels[0] || v[1] !== levels[1]) setLevels(v);
+                    if (v[0] !== levels[0] || v[1] !== levels[1]) {
+                      localStorage.setItem("levels", JSON.stringify(v));
+                      setLevels(v);
+                    }
                   }}
                   min={0}
                   max={4}
