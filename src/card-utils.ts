@@ -35,7 +35,9 @@ export const extractCards = (level: number) => {
             if (
               !example.specialType &&
               example.chineseWords.length > 0 &&
-              example.english
+              example.english &&
+              example.english.trim() !== "" &&
+              example.english.trim() !== "." // weird C level placeholders
             ) {
               cards.push({ ...example, level, article: article.title });
             }
