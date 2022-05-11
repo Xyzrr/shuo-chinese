@@ -56,6 +56,9 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
             })}
           </S.CharsWrapper>
           <S.AudioButton
+            style={{
+              marginTop: settingsContext.showPinyin ? 22 : 0 /* brittle */,
+            }}
             playing={audioPlaying}
             onClick={async () => {
               if (audioPlaying) {
