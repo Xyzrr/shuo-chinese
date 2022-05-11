@@ -82,7 +82,8 @@ export const Wrapper = styled.div<{ specialType?: string }>`
     `}
 `;
 
-export const AudioButton = styled.div`
+export const AudioButton = styled.div<{ playing?: boolean }>`
+  flex-shrink: 0;
   margin-top: 4px;
   font-size: 20px;
   border-radius: 50%;
@@ -91,7 +92,7 @@ export const AudioButton = styled.div`
   justify-content: center;
   width: 32px;
   height: 32px;
-  border: 1px solid #555;
+  border: 1px solid ${(props) => (props.playing ? "#555" : "transparent")};
   @media (hover: hover) {
     &:hover {
       background: rgba(255, 255, 255, 0.1);
@@ -108,4 +109,11 @@ export const AudioButton = styled.div`
     font-size: 20px;
     color: rgba(255, 255, 255, 0.6);
   }
+`;
+
+export const CharsWrapper = styled.div``;
+
+export const CharsAndAudioWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;

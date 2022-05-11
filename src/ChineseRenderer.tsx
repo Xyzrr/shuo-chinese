@@ -30,32 +30,33 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
       {specialType === "incorrect" && <S.StyledXIcon />}
       {specialType === "q" && <S.StyledWarningIcon />}
       <S.InnerWrapper>
-        {chineseWords.map((word, i) => {
-          const CharsComponent = word.strong
-            ? S.StrongChars
-            : word.emphasis
-            ? S.EmphasisChars
-            : S.Chars;
+        <S.CharsAndAudioWrapper>
+          <S.CharsWrapper>
+            {chineseWords.map((word, i) => {
+              const CharsComponent = word.strong
+                ? S.StrongChars
+                : word.emphasis
+                ? S.EmphasisChars
+                : S.Chars;
 
-          return (
-            <S.WordWrapper
-              key={i}
-              rightMargin={
-                i === chineseWords.length - 1 &&
-                !["。", "？", "！"].includes(word.chars)
-              }
-            >
-              {settingsContext.showPinyin && (
-                <S.Pinyin>{word.pinyin || "\xa0"}</S.Pinyin>
-              )}
-              <CharsComponent>{word.chars}</CharsComponent>
-            </S.WordWrapper>
-          );
-        })}
-        <S.WordWrapper>
-          {/* Filler pinyin to guarantee alignment */}
-          {settingsContext.showPinyin && <S.Pinyin>{"\xa0"}</S.Pinyin>}
+              return (
+                <S.WordWrapper
+                  key={i}
+                  rightMargin={
+                    i === chineseWords.length - 1 &&
+                    !["。", "？", "！"].includes(word.chars)
+                  }
+                >
+                  {settingsContext.showPinyin && (
+                    <S.Pinyin>{word.pinyin || "\xa0"}</S.Pinyin>
+                  )}
+                  <CharsComponent>{word.chars}</CharsComponent>
+                </S.WordWrapper>
+              );
+            })}
+          </S.CharsWrapper>
           <S.AudioButton
+            playing={audioPlaying}
             onClick={async () => {
               if (audioPlaying) {
                 currentAudio?.pause();
@@ -81,7 +82,7 @@ const ChineseRenderer: React.FC<ChineseRendererProps> = ({
           >
             {audioPlaying ? <StopIcon /> : <AudioIcon />}
           </S.AudioButton>
-        </S.WordWrapper>
+        </S.CharsAndAudioWrapper>
         {english && (
           <S.English>
             {english}
